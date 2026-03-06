@@ -1,0 +1,10 @@
+# ── API Key (QUAN TRỌNG - không push lên GitHub) ──
+.env
+
+# ── Python cache ──
+__pycache__/
+*.py[cod]
+
+# ── OS ──
+.DS_Store
+Thumbs.db

@@ -1,0 +1,48 @@
+# Walkthrough: Chat History & Conversation Memory
+
+## Changes Made
+
+| File | Status | Description |
+|------|--------|-------------|
+| [chat_store.py](file:///c:/Users/AnPQ7/OneDrive%20-%20FPT%20Corporation/Documents/vanna_sql_agent/chat_store.py) | NEW | SQLite storage for conversations & messages |
+| [sql_agent.py](file:///c:/Users/AnPQ7/OneDrive%20-%20FPT%20Corporation/Documents/vanna_sql_agent/sql_agent.py) | MODIFIED | Added history param (20 Q&A pairs max), current-SQL-only response |
+| [app.py](file:///c:/Users/AnPQ7/OneDrive%20-%20FPT%20Corporation/Documents/vanna_sql_agent/app.py) | MODIFIED | Conversation CRUD endpoints + memory-aware `/chat` |
+| [index.html](file:///c:/Users/AnPQ7/OneDrive%20-%20FPT%20Corporation/Documents/vanna_sql_agent/templates/index.html) | MODIFIED | Sidebar + conversation switching + auto-title |
+
+## How It Works
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant FE as Frontend
+    participant API as FastAPI
+    participant Store as ChatStore
+    participant Agent as SQLAgent
+    participant LLM as OpenAI
+
+    U->>FE: Sends question
+    FE->>API: POST /chat {question, conversation_id}
+    API->>Store: get_history_for_llm(conv_id)
+    Store-->>API: Last 20 Q&A pairs
+    API->>Store: save user message
+    API->>Agent: chat(question, history)
+    Agent->>LLM: system_prompt + history + question
+    LLM-->>Agent: SQL + response
+    Agent-->>API: result
+    API->>Store: save assistant message + SQL metadata
+    API-->>FE: {answer, sql, data, conversation_id}
+    FE->>FE: Update chat UI + sidebar
+```
+
+## Test Results
+
+✅ **Context Memory Works**: Follow-up question "Còn transactions thì sao?" was correctly understood as referring to the count query from the previous question.
+
+![Chat history test result](C:/Users/AnPQ7/.gemini/antigravity/brain/29963d7a-6fb8-4b23-acdb-8aa893fa77c5/chat_history_screenshot.png)
+
+## Verification Checklist
+- ✅ AI remembers previous questions within conversation
+- ✅ Sidebar shows conversations with auto-title
+- ✅ Conversation list loads on page refresh
+- ✅ [generate_response](file:///c:/Users/AnPQ7/OneDrive%20-%20FPT%20Corporation/Documents/vanna_sql_agent/sql_agent.py#193-238) only uses current SQL (not previous)
+- ✅ SQL security validation still active

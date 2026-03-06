@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataChat - Trợ lý Phân tích Dữ liệu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-elevated: #1a1a24;
+            --bg-input: #0f0f15;
+            --bg-sidebar: #0e0e16;
+            --text-primary: #f0f0f5;
+            --text-secondary: #8888a0;
+            --text-muted: #5a5a70;
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.3);
+            --accent-hover: #818cf8;
+            --success: #22c55e;
+            --error: #ef4444;
+            --border: rgba(255, 255, 255, 0.08);
+            --gradient-1: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            --sidebar-width: 280px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* ── Animated background ── */
+        .bg-effect {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; overflow: hidden;
+        }
+        .bg-effect::before {
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 30% 20%, rgba(99,102,241,0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 70% 80%, rgba(168,85,247,0.06) 0%, transparent 40%);
+            animation: bgPulse 15s ease-in-out infinite;
+        }
+        @keyframes bgPulse {
+            0%,100% { transform: translate(0,0) scale(1); }
+            50% { transform: translate(-2%,-2%) scale(1.05); }
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            position: relative; z-index: 20;
+            width: var(--sidebar-width); min-width: var(--sidebar-width);
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            display: flex; flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+        .sidebar-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .new-chat-btn {
+            width: 100%; padding: 0.75rem 1rem;
+            border: 1px dashed var(--border); border-radius: 12px;
+            background: transparent; color: var(--text-primary);
+            font-size: 0.875rem; font-weight: 500; cursor: pointer;
+            display: flex; align-items: center; gap: 0.5rem;
+            transition: all 0.2s;
+        }
+        .new-chat-btn:hover {
+            background: var(--accent); border-color: var(--accent);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        .sidebar-list {
+            flex: 1; overflow-y: auto; padding: 0.5rem;
+            scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent;
+        }
+        .sidebar-list::-webkit-scrollbar { width: 4px; }
+        .sidebar-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+        .conv-item {
+            padding: 0.75rem 1rem; border-radius: 10px;
+            cursor: pointer; margin-bottom: 2px;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: all 0.15s; position: relative;
+        }
+        .conv-item:hover { background: var(--bg-elevated); }
+        .conv-item.active { background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); }
+        .conv-item-text {
+            flex: 1; font-size: 0.825rem; color: var(--text-secondary);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .conv-item.active .conv-item-text { color: var(--text-primary); font-weight: 500; }
+        .conv-item-delete {
+            opacity: 0; background: none; border: none;
+            color: var(--text-muted); cursor: pointer; font-size: 0.75rem;
+            padding: 4px 6px; border-radius: 6px; transition: all 0.15s;
+            flex-shrink: 0; margin-left: 4px;
+        }
+        .conv-item:hover .conv-item-delete { opacity: 1; }
+        .conv-item-delete:hover { background: var(--error); color: white; }
+
+        /* ── Main area ── */
+        .main-area {
+            flex: 1; display: flex; flex-direction: column;
+            position: relative; z-index: 5; min-width: 0;
+        }
+
+        /* ── Header ── */
+        .header {
+            padding: 1rem 1.5rem;
+            background: rgba(10,10,15,0.8); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo { display: flex; align-items: center; gap: 0.75rem; }
+        .logo-icon {
+            width: 36px; height: 36px; background: var(--gradient-1);
+            border-radius: 10px; display: flex; align-items: center;
+            justify-content: center; font-size: 1.1rem;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        .logo-text h1 {
+            font-size: 1.1rem; font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .logo-text p { font-size: 0.7rem; color: var(--text-muted); }
+        .header-actions { display: flex; gap: 0.5rem; }
+        .btn-icon {
+            width: 34px; height: 34px; border-radius: 8px;
+            border: 1px solid var(--border); background: var(--bg-elevated);
+            color: var(--text-secondary); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s; font-size: 0.85rem;
+        }
+        .btn-icon:hover { background: var(--accent); color: white; border-color: var(--accent); }
+        .hamburger { display: none; }
+
+        /* ── Chat container ── */
+        .chat-area {
+            flex: 1; display: flex; flex-direction: column;
+            max-width: 900px; width: 100%; margin: 0 auto;
+            padding: 1rem 1.5rem; min-height: 0;
+        }
+        .chat-container {
+            flex: 1; overflow-y: auto; overflow-x: hidden;
+            padding: 1rem 0.5rem 1rem 0;
+            display: flex; flex-direction: column; gap: 1.5rem;
+            min-height: 0; scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.2) transparent;
+        }
+        .chat-container::-webkit-scrollbar { width: 5px; }
+        .chat-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+
+        /* ── Welcome ── */
+        .welcome {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            text-align: center; padding: 2rem;
+        }
+        .welcome-icon {
+            width: 72px; height: 72px; background: var(--gradient-1);
+            border-radius: 20px; display: flex; align-items: center;
+            justify-content: center; font-size: 2.25rem;
+            margin-bottom: 1.25rem; box-shadow: 0 8px 40px var(--accent-glow);
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .welcome h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .welcome p { color: var(--text-secondary); max-width: 400px; line-height: 1.6; font-size: 0.9rem; }
+        .examples { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; margin-top: 1.5rem; }
+        .example-btn {
+            padding: 0.6rem 1rem; background: var(--bg-elevated);
+            border: 1px solid var(--border); border-radius: 10px;
+            color: var(--text-primary); font-size: 0.8rem;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .example-btn:hover {
+            background: var(--accent); border-color: var(--accent);
+            transform: translateY(-2px); box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        /* ── Messages ── */
+        .message { display: flex; gap: 0.75rem; animation: slideIn 0.3s ease; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .message.user { flex-direction: row-reverse; }
+        .avatar {
+            width: 32px; height: 32px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem; flex-shrink: 0;
+        }
+        .message.user .avatar { background: var(--gradient-1); }
+        .message.assistant .avatar { background: var(--bg-elevated); border: 1px solid var(--border); }
+        .message-content { max-width: 78%; }
+        .message-bubble {
+            padding: 0.85rem 1.1rem; border-radius: 14px;
+            line-height: 1.6; font-size: 0.9rem;
+        }
+        .message.user .message-bubble { background: var(--accent); border-bottom-right-radius: 4px; }
+        .message.assistant .message-bubble {
+            background: var(--bg-elevated); border: 1px solid var(--border);
+            border-bottom-left-radius: 4px;
+        }
+
+        /* ── SQL & Data ── */
+        .sql-container {
+            margin-top: 0.75rem; background: var(--bg-input);
+            border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+        }
+        .sql-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.6rem 0.85rem; background: rgba(99,102,241,0.1);
+            border-bottom: 1px solid var(--border);
+        }
+        .sql-header span {
+            font-size: 0.7rem; font-weight: 600; color: var(--accent);
+            display: flex; align-items: center; gap: 0.4rem;
+        }
+        .copy-btn {
+            padding: 0.2rem 0.4rem; border: none; border-radius: 5px;
+            background: transparent; color: var(--text-muted);
+            font-size: 0.65rem; cursor: pointer; transition: all 0.2s;
+        }
+        .copy-btn:hover { background: var(--accent); color: white; }
+        .sql-code {
+            padding: 0.85rem; font-family: 'JetBrains Mono','Fira Code',monospace;
+            font-size: 0.8rem; color: var(--text-primary);
+            overflow-x: auto; white-space: pre-wrap;
+        }
+        .data-container {
+            margin-top: 0.75rem; border: 1px solid var(--border);
+            border-radius: 10px; overflow: hidden;
+        }
+        .data-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.6rem 0.85rem; background: rgba(34,197,94,0.1);
+            border-bottom: 1px solid var(--border);
+        }
+        .data-header span {
+            font-size: 0.7rem; font-weight: 600; color: var(--success);
+            display: flex; align-items: center; gap: 0.4rem;
+        }
+        .data-table-wrap { overflow-x: auto; }
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+        .data-table th, .data-table td {
+            padding: 0.5rem 0.85rem; text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .data-table th {
+            background: var(--bg-elevated); font-weight: 600;
+            color: var(--text-secondary); text-transform: uppercase;
+            font-size: 0.65rem; letter-spacing: 0.05em;
+        }
+        .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+        /* ── Loading ── */
+        .loading-dots { display: flex; gap: 0.25rem; padding: 0.5rem 0; }
+        .loading-dots span {
+            width: 7px; height: 7px; background: var(--accent);
+            border-radius: 50%; animation: pulse 1.4s infinite;
+        }
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes pulse {
+            0%,80%,100% { transform: scale(0.6); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* ── Input area ── */
+        .input-area { padding: 1rem 0 0; }
+        .input-wrapper {
+            display: flex; gap: 0.6rem; padding: 0.6rem;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 14px; transition: all 0.2s;
+        }
+        .input-wrapper:focus-within {
+            border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+        .input-wrapper input {
+            flex: 1; padding: 0.65rem; border: none; background: transparent;
+            color: var(--text-primary); font-size: 0.9rem;
+            font-family: inherit; outline: none;
+        }
+        .input-wrapper input::placeholder { color: var(--text-muted); }
+        .send-btn {
+            padding: 0.65rem 1.25rem; border: none; border-radius: 10px;
+            background: var(--gradient-1); color: white;
+            font-size: 0.85rem; font-weight: 600; cursor: pointer;
+            transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
+        }
+        .send-btn:hover:not(:disabled) {
+            transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .sidebar { position: fixed; left: 0; top: 0; height: 100vh; z-index: 100; transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; }
+            .sidebar.open + .sidebar-overlay { display: block; }
+            .hamburger { display: flex; }
+            .chat-area { padding: 0.75rem; }
+            .message-content { max-width: 88%; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-effect"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <button class="new-chat-btn" id="newChatBtn" onclick="createNewChat()">
+                ✨ Cuộc hội thoại mới
+            </button>
+        </div>
+        <div class="sidebar-list" id="conversationList">
+            <!-- Conversations loaded here -->
+        </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- Main area -->
+    <div class="main-area">
+        <header class="header">
+            <div style="display:flex;align-items:center;gap:0.75rem;">
+                <button class="btn-icon hamburger" onclick="toggleSidebar()">☰</button>
+                <div class="logo">
+                    <div class="logo-icon">💬</div>
+                    <div class="logo-text">
+                        <h1>DataChat</h1>
+                        <p>Trợ lý phân tích dữ liệu thông minh</p>
+                    </div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn-icon" onclick="createNewChat()" title="Hội thoại mới">✨</button>
+            </div>
+        </header>
+
+        <div class="chat-area">
+            <div class="chat-container" id="chatContainer">
+                <div class="welcome" id="welcomeScreen">
+                    <div class="welcome-icon">🤖</div>
+                    <h2>Xin chào!</h2>
+                    <p>Tôi là trợ lý phân tích dữ liệu. Hãy hỏi tôi bất kỳ điều gì về dữ liệu của bạn bằng tiếng Việt.</p>
+                    <div class="examples">
+                        <button class="example-btn" onclick="askExample(this)">📊 Có bao nhiêu sự kiện trong database?</button>
+                        <button class="example-btn" onclick="askExample(this)">🏆 Top 5 sản phẩm bán chạy nhất</button>
+                        <button class="example-btn" onclick="askExample(this)">📱 Thống kê theo platform</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <div class="input-wrapper">
+                    <input type="text" id="questionInput" placeholder="Hỏi bất kỳ điều gì về dữ liệu..."
+                        onkeypress="if(event.key==='Enter' && !event.shiftKey) sendQuestion()">
+                    <button class="send-btn" id="sendBtn" onclick="sendQuestion()">
+                        Gửi ➤
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ── State ──
+        let currentConversationId = null;
+        const chatContainer = document.getElementById('chatContainer');
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const questionInput = document.getElementById('questionInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        // ── Init ──
+        document.addEventListener('DOMContentLoaded', () => {
+            loadConversations();
+        });
+
+        // ── Sidebar ──
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        async function loadConversations() {
+            try {
+                const res = await fetch('/conversations');
+                const convs = await res.json();
+                renderConversationList(convs);
+            } catch (e) { console.error('Failed to load conversations:', e); }
+        }
+
+        function renderConversationList(convs) {
+            const list = document.getElementById('conversationList');
+            if (convs.length === 0) {
+                list.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:2rem 1rem;font-size:0.8rem;">Chưa có hội thoại nào</p>';
+                return;
+            }
+            list.innerHTML = convs.map(c => `
+                <div class="conv-item ${c.id === currentConversationId ? 'active' : ''}"
+                     onclick="selectConversation('${c.id}')">
+                    <span class="conv-item-text">💬 ${escapeHtml(c.title)}</span>
+                    <button class="conv-item-delete" onclick="event.stopPropagation(); deleteConversation('${c.id}')" title="Xóa">🗑</button>
+                </div>
+            `).join('');
+        }
+
+        async function selectConversation(convId) {
+            currentConversationId = convId;
+            // Highlight active
+            document.querySelectorAll('.conv-item').forEach(el => el.classList.remove('active'));
+            const activeEl = [...document.querySelectorAll('.conv-item')].find(el => el.onclick.toString().includes(convId));
+            if (activeEl) activeEl.classList.add('active');
+
+            // Load messages
+            try {
+                const res = await fetch(`/conversations/${convId}/messages`);
+                const data = await res.json();
+                renderMessages(data.messages);
+            } catch (e) { console.error('Failed to load messages:', e); }
+
+            // Close sidebar on mobile
+            document.getElementById('sidebar').classList.remove('open');
+        }
+
+        function renderMessages(messages) {
+            chatContainer.innerHTML = '';
+            if (messages.length === 0) {
+                chatContainer.appendChild(welcomeScreen);
+                welcomeScreen.style.display = 'flex';
+                return;
+            }
+            welcomeScreen.style.display = 'none';
+            messages.forEach(msg => {
+                if (msg.role === 'user') {
+                    addMessageUI(msg.content, 'user');
+                } else {
+                    addMessageUI(msg.content, 'assistant', {
+                        sql: msg.sql_query,
+                        data: msg.sql_data,
+                        columns: msg.sql_columns,
+                        row_count: msg.row_count
+                    });
+                }
+            });
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        async function createNewChat() {
+            currentConversationId = null;
+            chatContainer.innerHTML = '';
+            chatContainer.appendChild(welcomeScreen);
+            welcomeScreen.style.display = 'flex';
+            questionInput.focus();
+            document.getElementById('sidebar').classList.remove('open');
+            // Refresh list to deselect
+            await loadConversations();
+        }
+
+        async function deleteConversation(convId) {
+            try {
+                await fetch(`/conversations/${convId}`, { method: 'DELETE' });
+                if (currentConversationId === convId) {
+                    currentConversationId = null;
+                    chatContainer.innerHTML = '';
+                    chatContainer.appendChild(welcomeScreen);
+                    welcomeScreen.style.display = 'flex';
+                }
+                await loadConversations();
+            } catch (e) { console.error('Failed to delete:', e); }
+        }
+
+        // ── Chat ──
+        function askExample(btn) {
+            const text = btn.textContent.replace(/^[^\s]+\s/, '');
+            questionInput.value = text;
+            sendQuestion();
+        }
+
+        function hideWelcome() {
+            if (welcomeScreen) welcomeScreen.style.display = 'none';
+        }
+
+        function addMessageUI(content, type, extra = null) {
+            hideWelcome();
+            const msg = document.createElement('div');
+            msg.className = `message ${type}`;
+
+            let bubbleContent = `<p>${escapeHtml(content)}</p>`;
+
+            if (extra) {
+                if (extra.sql) {
+                    bubbleContent += `
+                        <div class="sql-container">
+                            <div class="sql-header">
+                                <span>📝 SQL Query</span>
+                                <button class="copy-btn" onclick="copySQL(this)">Sao chép</button>
+                            </div>
+                            <pre class="sql-code">${escapeHtml(extra.sql)}</pre>
+                        </div>`;
+                }
+                if (extra.data && extra.columns && extra.data.length > 0) {
+                    const rows = extra.data.slice(0, 10);
+                    bubbleContent += `
+                        <div class="data-container">
+                            <div class="data-header">
+                                <span>📊 Kết quả (${extra.row_count} dòng${extra.row_count > 10 ? ', hiển thị 10' : ''})</span>
+                            </div>
+                            <div class="data-table-wrap">
+                                <table class="data-table">
+                                    <thead><tr>${extra.columns.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
+                                    <tbody>${rows.map(row =>
+                                        `<tr>${row.map(cell => `<td>${escapeHtml(String(cell ?? ''))}</td>`).join('')}</tr>`
+                                    ).join('')}</tbody>
+                                </table>
+                            </div>
+                        </div>`;
+                }
+            }
+
+            msg.innerHTML = `
+                <div class="avatar">${type === 'user' ? '👤' : '🤖'}</div>
+                <div class="message-content">
+                    <div class="message-bubble">${bubbleContent}</div>
+                </div>`;
+
+            chatContainer.appendChild(msg);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function addLoading() {
+            hideWelcome();
+            const msg = document.createElement('div');
+            msg.className = 'message assistant';
+            msg.id = 'loadingMsg';
+            msg.innerHTML = `
+                <div class="avatar">🤖</div>
+                <div class="message-content">
+                    <div class="message-bubble">
+                        <div class="loading-dots"><span></span><span></span><span></span></div>
+                    </div>
+                </div>`;
+            chatContainer.appendChild(msg);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function removeLoading() {
+            const el = document.getElementById('loadingMsg');
+            if (el) el.remove();
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function copySQL(btn) {
+            const sql = btn.closest('.sql-container').querySelector('.sql-code').textContent;
+            navigator.clipboard.writeText(sql);
+            btn.textContent = 'Đã sao chép!';
+            setTimeout(() => btn.textContent = 'Sao chép', 2000);
+        }
+
+        async function sendQuestion() {
+            const question = questionInput.value.trim();
+            if (!question) return;
+
+            questionInput.value = '';
+            addMessageUI(question, 'user');
+            addLoading();
+            sendBtn.disabled = true;
+
+            try {
+                const res = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        question,
+                        conversation_id: currentConversationId
+                    })
+                });
+
+                const data = await res.json();
+                removeLoading();
+
+                // Update conversation ID (may be new)
+                if (data.conversation_id) {
+                    currentConversationId = data.conversation_id;
+                }
+
+                addMessageUI(data.answer, 'assistant', {
+                    sql: data.sql,
+                    data: data.data,
+                    columns: data.columns,
+                    row_count: data.row_count
+                });
+
+                // Refresh sidebar
+                await loadConversations();
+
+            } catch (err) {
+                removeLoading();
+                addMessageUI(`❌ Lỗi: ${err.message}`, 'assistant');
+            }
+
+            sendBtn.disabled = false;
+            questionInput.focus();
+        }
+    </script>
+</body>
+
+</html>

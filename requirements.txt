@@ -1,0 +1,6 @@
+# Custom SQL Agent Dependencies
+openai
+fastapi
+uvicorn
+pydantic
+python-dotenv
