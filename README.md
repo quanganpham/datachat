@@ -1,100 +1,91 @@
-# Vanna AI SQL Agent
+# 💬 DataChat - Trợ lý Phân tích Dữ liệu
 
-A natural language SQL agent powered by **Vanna AI 2.0** and **OpenAI GPT-4o**.
+SQL Agent thông minh - hỏi đáp dữ liệu bằng tiếng Việt, có lưu lịch sử hội thoại.
 
-Ask questions in plain English and get SQL results, charts, and insights!
+![DataChat UI](https://img.shields.io/badge/Python-3.10+-blue) ![FastAPI](https://img.shields.io/badge/FastAPI-🚀-green) ![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o-purple)
 
-## Quick Start
+## ✨ Tính năng
 
-### 1. Install Dependencies
+- 🤖 Hỏi đáp dữ liệu bằng **tiếng Việt tự nhiên**
+- 🧠 AI **nhớ ngữ cảnh** cuộc trò chuyện (20 cặp Q&A)
+- 💾 Lưu lịch sử hội thoại, chuyển đổi giữa các cuộc chat
+- 🛡️ Chặn các lệnh SQL nguy hiểm (DELETE, DROP, INSERT...)
+- 🎨 Giao diện dark theme premium
+
+---
+
+## 🚀 Hướng dẫn cài đặt
+
+### 1. Clone repo
+
+```bash
+git clone https://github.com/quanganpham/datachat.git
+cd datachat
+```
+
+### 2. Cài dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Configure API Key
+### 3. Tạo file `.env`
 
-Copy the example environment file and add your OpenAI API key:
+Tạo file `.env` trong thư mục gốc (copy từ `.env.example`):
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` and set your API key:
+Mở file `.env` và điền API key:
+
 ```
-OPENAI_API_KEY=sk-your-api-key-here
+OPENAI_API_KEY=sk-proj-xxxxxxxxxxxxxxxxxxxxxxxx
+HOST=localhost
+PORT=8000
 ```
 
-### 3. Create Sample Database
+> ⚠️ Bạn cần có OpenAI API key. Lấy tại: https://platform.openai.com/api-keys
+
+### 4. Chạy server
 
 ```bash
-python setup_database.py
+python app.py
 ```
 
-This creates a sample SQLite database with:
-- 8 departments
-- 50 employees
-- 12 projects
+### 5. Mở trình duyệt
 
-### 4. Run the Agent
+Truy cập: **http://localhost:8000**
 
-```bash
-python main.py
-```
+---
 
-### 5. Open the Web Interface
-
-Navigate to: **http://localhost:8000**
-
-## Sample Queries
-
-Try these natural language queries:
-
-- "Show all employees"
-- "What is the average salary by department?"
-- "List all projects that are in progress"
-- "Which department has the highest budget?"
-- "Show me employees hired in 2024"
-- "What's the total budget across all departments?"
-- "Who are the highest paid employees?"
-- "Show me a chart of employees per department"
-
-## User Roles
-
-| Role | Email | Permissions |
-|------|-------|-------------|
-| Admin | `admin@example.com` | See SQL, save memory, full access |
-| User | Any other email | Query and visualize only |
-
-To switch users, set the `vanna_email` cookie in your browser.
-
-## Project Structure
+## 📁 Cấu trúc project
 
 ```
-vanna_sql_agent/
-├── main.py           # Main application
-├── config.py         # Configuration settings
-├── setup_database.py # Database setup script
-├── sample_data.db    # SQLite database (created)
-├── requirements.txt  # Python dependencies
-├── .env.example      # Environment template
-└── README.md         # This file
+datachat/
+├── app.py              # FastAPI server
+├── sql_agent.py        # Core AI agent (OpenAI GPT-4o)
+├── chat_store.py       # Lưu trữ lịch sử hội thoại
+├── train_schema.py     # SCHEMA_PROMPT (business rules)
+├── config.py           # Configuration
+├── csv_to_db.py        # Import CSV vào SQLite
+├── explore_db.py       # Khám phá cấu trúc database
+├── my_data.db          # SQLite database
+├── requirements.txt    # Dependencies
+├── .env.example        # Mẫu file environment
+├── templates/
+│   └── index.html      # Giao diện chat
+└── csv_data/           # Dữ liệu CSV gốc
 ```
 
-## Configuration
+## 🔧 Cách cập nhật dữ liệu
 
-Edit `config.py` to customize:
+1. Đặt file CSV mới vào `csv_data/`
+2. Chạy `python csv_to_db.py` để import vào database
+3. (Tùy chọn) Chạy `python explore_db.py` để xem cấu trúc
+4. Cập nhật business rules trong `train_schema.py` nếu cần
+5. Restart server: `python app.py`
 
-- **OPENAI_MODEL**: Change to `gpt-4o-mini` for faster/cheaper responses
-- **DATABASE_PATH**: Point to your own SQLite database
-- **HOST/PORT**: Change server binding
-- **ADMIN_EMAILS**: Add admin users
+## 📝 License
 
-## Features
-
-- 🗣️ **Natural Language to SQL** - Ask in English, get SQL results
-- 📊 **Auto Visualization** - Charts generated from query results
-- 🧠 **Agent Memory** - Learns from past interactions
-- 🔐 **User Authentication** - Role-based access control
-- ⚡ **Real-time Streaming** - Live responses
-- 🌐 **Beautiful Web UI** - Pre-built chat component
+MIT
