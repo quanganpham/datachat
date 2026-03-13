@@ -12,7 +12,20 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from sql_agent import SQLAgent
 from chat_store import ChatStore
-from config import HOST, PORT
+from config import HOST, PORT, DATABASE_PATH
+
+# ── Startup Checks ───────────────────────────────────────
+if not os.path.exists(DATABASE_PATH):
+    print("=" * 60)
+    print("❌ LỖI: Không tìm thấy file database!")
+    print(f"Đường dẫn mục tiêu: {DATABASE_PATH}")
+    print("-" * 60)
+    print("HƯỚNG DẪN XỬ LÝ:")
+    print("1. Kiểm tra xem bạn đã có file 'my_data.db' chưa.")
+    print("2. Nếu chưa, hãy chạy lệnh sau để import dữ liệu từ CSV:")
+    print("   python csv_to_db.py")
+    print("=" * 60)
+    # Don't exit here to allow for troubleshooting, but the agent won't work
 
 # Initialize FastAPI app
 app = FastAPI(

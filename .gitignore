@@ -5,6 +5,10 @@
 __pycache__/
 *.py[cod]
 
+# ── Database & Env ──
+*.db
+.venv/
+
 # ── OS ──
 .DS_Store
 Thumbs.db

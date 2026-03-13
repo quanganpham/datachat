@@ -89,3 +89,22 @@ datachat/
 ## 📝 License
 
 MIT
+
+---
+
+## 🆘 Troubleshooting (Xử lý sự cố)
+
+### 1. Lỗi Conflict khi `git pull`
+Nếu bạn thấy báo lỗi conflict ở file `chat_history.db` hoặc `my_data.db`, hãy chạy lệnh sau để reset local database và nhận bản cập nhật mới nhất (Lưu ý: lệnh này sẽ xóa lịch sử chat local của bạn):
+
+```bash
+git checkout HEAD -- chat_history.db my_data.db
+git pull origin main
+```
+
+### 2. Lỗi "Không tìm thấy OPENAI_API_KEY"
+- Đảm bảo bạn đã đổi tên file `.env.example` thành `.env`.
+- Trên Mac, file có dấu chấm ở đầu là file ẩn. Nhấn `Command + Shift + .` để hiện file.
+
+### 3. Lỗi "Không tìm thấy file database"
+- Chạy lệnh `python csv_to_db.py` để tạo file database từ dữ liệu CSV có sẵn trong thư mục `csv_data/`.
