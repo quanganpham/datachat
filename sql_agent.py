@@ -50,9 +50,7 @@ class SQLAgent:
 **Năm hiện tại:** {today.year}
 
 Khi user hỏi về "hôm nay", "tuần này", "tháng này" → sử dụng năm {today.year}.
-Dữ liệu trong database có từ 2025-08-01 đến 2025-12-16 (tháng 8 đến tháng 12 năm 2025).
-
-**Format ngày trong database:** YYYY-MM-DD (VD: 2025-03-10 = ngày 10 tháng 3 năm 2025)
+Dữ liệu trong database có từ tháng 1/2026 đến tháng 3/2026 (format: M/D/YYYY, ví dụ: 3/7/2026).
 
 """
         return date_context + self._base_prompt
@@ -292,7 +290,7 @@ if __name__ == "__main__":
     agent = SQLAgent()
     
     # Test question
-    test_question = "Có bao nhiêu sự kiện trong database?"
+    test_question = "Thống kê tổng doanh thu theo nhóm sản phẩm (product_group_name) và cho biết tỉnh thành có doanh thu cao nhất cho từng nhóm?"
     print(f"❓ Question: {test_question}")
     print()
     

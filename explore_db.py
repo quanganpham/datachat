@@ -21,12 +21,12 @@ def explore_database(db_path):
         print("=" * 60)
         
         # Get row count
-        cursor.execute(f"SELECT COUNT(*) FROM {table}")
+        cursor.execute(f'SELECT COUNT(*) FROM "{table}"')
         count = cursor.fetchone()[0]
         print(f"Total rows: {count:,}")
         
         # Get columns and types
-        cursor.execute(f"PRAGMA table_info({table})")
+        cursor.execute(f'PRAGMA table_info("{table}")')
         columns = cursor.fetchall()
         print(f"\nColumns ({len(columns)}):")
         for col in columns:
@@ -34,7 +34,7 @@ def explore_database(db_path):
         
         # Sample data
         print(f"\nSample data (3 rows):")
-        cursor.execute(f"SELECT * FROM {table} LIMIT 3")
+        cursor.execute(f'SELECT * FROM "{table}" LIMIT 3')
         rows = cursor.fetchall()
         col_names = [c[1] for c in columns]
         for row in rows:
@@ -45,7 +45,7 @@ def explore_database(db_path):
         for col in columns:
             if col[2] == 'TEXT':
                 col_name = col[1]
-                cursor.execute(f"SELECT DISTINCT {col_name} FROM {table} WHERE {col_name} IS NOT NULL LIMIT 10")
+                cursor.execute(f'SELECT DISTINCT "{col_name}" FROM "{table}" WHERE "{col_name}" IS NOT NULL LIMIT 10')
                 values = [v[0] for v in cursor.fetchall()]
                 if values:
                     print(f"  {col_name}: {values[:5]}{'...' if len(values) > 5 else ''}")

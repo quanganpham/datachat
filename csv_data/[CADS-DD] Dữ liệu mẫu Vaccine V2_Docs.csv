@@ -1,0 +1,392 @@
+No,TableName,ColumnName,ColumnDescription
+1,dim_shop,code,Mã shop/c?a hàng (??nh danh n?i b?)
+2,dim_shop,shop_type,Nhóm/lo?i shop (ví d?: VACCINE)
+3,dim_shop,region_insurance,Mã vùng b?o hi?m
+4,dim_shop,legal_entity,Mã pháp nhân
+5,dim_shop,regulated_ward,Mã ph??ng/xã sau sát nh?p
+6,dim_shop,regulated_province,Mã t?nh/thành sau sát nh?p
+7,dim_shop,district,Mã qu?n/huy?n (theo h? th?ng n?i b?/master data)
+8,dim_shop,ward,Mã ph??ng/xã (theo h? th?ng n?i b?/master data)
+9,dim_shop,region,Mã vùng/mi?n (region)
+10,dim_shop,area,Mã khu v?c/??n v? vùng nh? h?n (area)
+11,dim_shop,province,Mã t?nh/thành (theo h? th?ng n?i b?/master data)
+12,dim_shop,name,Tên ??y ?? c?a shop
+13,dim_shop,pw_dqg,M?t kh?u/khóa truy c?p DQG (n?u có)
+14,dim_shop,acc_dqg,Tài kho?n/username DQG (n?u có)
+15,dim_shop,status,Tr?ng thái ho?t ??ng (TRUE/FALSE)
+16,dim_shop,address,??a ch? ??y ?? (d?ng hi?n th?/ghi nh?n n?i b?)
+17,dim_shop,code_dqg,Mã shop trên h? th?ng DQG (n?u có)
+18,dim_shop,ip_phone,IP/thi?t b? ?i?n tho?i (VoIP/IP phone) c?a shop (n?u có)
+19,dim_shop,shop_scope,Ph?m vi shop (mã phân lo?i scope v?n hành)
+20,dim_shop,short_name,Tên vi?t t?t/mã t?t dùng n?i b?
+21,dim_shop,name_on_bill,Tên in trên hóa ??n/ch?ng t?
+22,dim_shop,cash_account,S? tài kho?n qu?/thu ti?n (cash account)
+23,dim_shop,shop_code_hub,Mã shop trên hub/tích h?p (integration hub)
+24,dim_shop,ware_house_ho,Mã kho HO (kho t?ng/c?p phát) g?n v?i shop
+25,dim_shop,region_inside,Mã vùng n?i b? (phân vùng qu?n tr? n?i b?)
+26,dim_shop,short_address,??a ch? rút g?n
+27,dim_shop,province_inside,Mã t?nh n?i b? (mapping qu?n tr? n?i b?)
+28,dim_shop,warehouse_ho_mrp,Mã kho HO dùng cho MRP/ho?ch ??nh (n?u tách riêng)
+29,dim_shop,cash_account_name,Tên tài kho?n qu?/thu ti?n
+30,dim_shop,grand_opening_date,Ngày khai tr??ng chính th?c
+31,dim_shop,opening_date,Ngày b?t ??u ho?t ??ng/m? bán
+32,dim_shop,regulated_address,??a ch? sau sát nh?p
+33,dim_shop,regulated_short_address,??a ch? rút g?n sau sát nh?p
+34,dim_shop,closing_date,Ngày ?óng c?a/ng?ng ho?t ??ng
+35,dim_shop,ware_house_ho_vac,Mã kho HO ph?c v? vaccine (n?u tách kho)
+36,dim_shop,province_name,Tên t?nh/thành
+37,dim_shop,area_name,Tên khu v?c (area)
+38,dim_shop,region_name,Tên vùng/mi?n (region)
+39,dim_shop,ward_name,Tên ph??ng/xã
+40,dim_shop,district_name,Tên qu?n/huy?n
+41,dim_shop,longitude,Kinh ??
+42,dim_shop,latitude,V? ??
+43,dim_shop,coordinate,"T?a ?? d?ng chu?i “long, lat”"
+44,dim_shop,region_type_code,Mã lo?i vùng/chu?i (region type)
+45,dim_shop,region_type_name,Tên lo?i vùng/chu?i
+46,dim_shop,regulated_province_name,Tên t?nh/thành sau sát nh?p
+47,dim_shop,regulated_ward_name,Tên ph??ng/xã sau sát nh?p
+48,dim_shop,legal_entity_name,Tên pháp nhân
+49,dim_shop,tax_code,Mã s? thu? c?a pháp nhân/shop
+50,dim_shop,region_insurance_name,Tên vùng b?o hi?m
+51,dim_shop,shop_type_name,Tên lo?i shop (hi?n th?)
+52,dim_shop,asm_code,Mã ASM ph? trách
+53,dim_shop,rsm_code,Mã RSM ph? trách
+54,dim_shop,rsm_name,Tên RSM ph? trách
+55,dim_shop,asm_name,Tên ASM ph? trách
+56,dim_shop,asm_email,Email ASM ph? trách
+57,dim_shop,etl_date,Th?i ?i?m ETL/load d? li?u (d?u th?i gian)
+58,dim_shop,tenant,Tenant/môi tr??ng d? li?u
+59,dim_satellite_shop,id,Khóa ??nh danh b?n ghi (UUID)
+60,dim_satellite_shop,shop_code_vaccine,Mã trung tâm tiêm ch?ng (shop Vaccine)
+61,dim_satellite_shop,shop_name_vaccine,Tên trung tâm tiêm ch?ng (shop Vaccine)
+62,dim_satellite_shop,shop_code_lc,Mã shop v? tinh Long Châu (shop LC)
+63,dim_satellite_shop,shop_name_lc,Tên shop v? tinh Long Châu1 (shop LC)
+64,dim_satellite_shop,shop_type,Lo?i quan h?/nhóm shop v? tinh (ví d?: VT)
+65,dim_satellite_shop,status,Tr?ng thái hi?u l?c/?ang áp d?ng (TRUE/FALSE)
+66,dim_satellite_shop,effective_from_date,Ngày b?t ??u liên k?t shop v? tinh
+67,dim_satellite_shop,effective_to_date,Ngày k?t thúc liên k?t shop v? tinh
+68,dim_satellite_shop,is_deleted,"Flag xóa logic (FALSE = còn dùng, TRUE = ?ã xóa)"
+69,dim_satellite_shop,etl_date,Th?i ?i?m ETL/load d? li?u
+70,dim_satellite_shop,etl_by,H? th?ng/ti?n trình th?c hi?n ETL (ví d?: DataBricks)
+71,dim_satellite_shop,primary_checksum,Checksum theo khóa chính (ph?c v? ki?m tra thay ??i/??i soát)
+72,dim_satellite_shop,record_checksum,Checksum toàn b?n ghi (ph?c v? phát hi?n thay ??i n?i dung)
+73,dim_vaccine_regimen,regimen_detail_id,Khóa ??nh danh chi ti?t phác ?? (UUID)
+74,dim_vaccine_regimen,regimen_id,Khóa ??nh danh phác ?? (nhóm phác ??)
+75,dim_vaccine_regimen,vaccine_id,ID vaccine
+76,dim_vaccine_regimen,from_age,Tu?i b?t ??u áp d?ng (d?ng text)
+77,dim_vaccine_regimen,to_age,Tu?i k?t thúc áp d?ng (d?ng text)
+78,dim_vaccine_regimen,age_unit_code,Mã ??n v? tu?i (ví d?: 3)
+79,dim_vaccine_regimen,age_unit,Tên ??n v? tu?i (ví d?: Age)
+80,dim_vaccine_regimen,from_age_number,Tu?i b?t ??u (d?ng s?)
+81,dim_vaccine_regimen,to_age_number,Tu?i k?t thúc (d?ng s?)
+82,dim_vaccine_regimen,schedule_type,Mô t? ??i t??ng theo tu?i (ví d?: t? 50 tu?i tr? lên)
+83,dim_vaccine_regimen,required_injections,S? m?i b?t bu?c theo phác ??
+84,dim_vaccine_regimen,max_injections,S? m?i t?i ?a cho phép theo phác ??
+85,dim_vaccine_regimen,unit,??n v? li?u (ví d?: ml)
+86,dim_vaccine_regimen,regimen_detail_note,Ghi chú ng?n cho chi ti?t phác ??
+87,dim_vaccine_regimen,dosage,Li?u l??ng m?i m?i (theo unit)
+88,dim_vaccine_regimen,nearest_injection_distance,Kho?ng cách khuy?n ngh? g?n nh?t gi?a các m?i (th??ng theo ngày/tháng tùy h?)
+89,dim_vaccine_regimen,max_distance,Kho?ng cách t?i ?a gi?a các m?i (ng??ng cho phép)
+90,dim_vaccine_regimen,min_distance,Kho?ng cách t?i thi?u gi?a các m?i (ng??ng an toàn/qui ??nh)
+91,dim_vaccine_regimen,is_pregnant_regimen,Flag ?ánh d?u phác ?? cho ??i t??ng mang thai (TRUE/FALSE)
+92,dim_vaccine_regimen,is_required,Flag ?ánh d?u b?t bu?c áp d?ng phác ??/chi ti?t này (TRUE/FAL
+93,dim_vaccine_regimen,note,"Ghi chú (l?ch tiêm chi ti?t, l?u ý,...)"
+94,dim_vaccine_regimen,created_at,Th?i ?i?m t?o b?n ghi
+95,dim_vaccine_regimen,modified_at,Th?i ?i?m c?p nh?t b?n ghi
+96,dim_vaccine_regimen,etl_date,Th?i ?i?m ETL/load d? li?u
+97,dim_vaccine_regimen,etl_by,H? th?ng/ti?n trình ETL (ví d?: Databricks)
+98,dim_vaccine_regimen,record_checksum,Checksum toàn b?n ghi (phát hi?n thay ??i n?i dung)
+99,dim_vaccine_regimen,primary_checksum,Checksum theo khóa chính (ph?c v? ??i soát/CDC)
+100,dim_vaccine_disease_group,id,Khóa ??nh danh b?n ghi
+101,dim_vaccine_disease_group,sku,Mã SKU/s?n ph?m c?a vaccine
+102,dim_vaccine_disease_group,vaccine_id,ID vaccine
+103,dim_vaccine_disease_group,vaccine_name,Tên vaccine
+104,dim_vaccine_disease_group,note,Ghi chú (n?u có)
+105,dim_vaccine_disease_group,disease_group_id,Khóa ??nh danh nhóm b?nh (disease group)
+106,dim_vaccine_disease_group,disease_group_name,Tên nhóm b?nh vaccine phòng/ng?a
+107,dim_vaccine_disease_group,created_at,Th?i ?i?m t?o b?n ghi
+108,dim_vaccine_disease_group,modified_at,Th?i ?i?m c?p nh?t b?n ghi
+109,dim_vaccine_disease_group,start_date,Ngày/gi? b?t ??u hi?u l?c c?a mapping (SCD)
+110,dim_vaccine_disease_group,end_date,Ngày/gi? k?t thúc hi?u l?c c?a mapping (SCD; th??ng 9999-12-31 n?u còn hi?u l?c)
+111,dim_vaccine_disease_group,current_flag,Flag ?ánh d?u b?n ghi hi?n hành (Y = hi?n hành)
+112,dim_vaccine_disease_group,etl_date,Th?i ?i?m ETL/load d? li?u
+113,dim_vaccine_disease_group,etl_by,H? th?ng/ti?n trình ETL (ví d?: Databricks)
+114,dim_vaccine_disease_group,scd_checksum,Checksum ph?c v? theo dõi thay ??i theo SCD (l?ch s?)
+115,dim_vaccine_disease_group,primary_checksum,Checksum theo khóa chính (??i soát/CDC)
+116,dim_vaccine_disease_group,record_checksum,Checksum toàn b?n ghi (phát hi?n thay ??i n?i dung)
+117,dim_product,product_unit_id,ID ??n v? s?n ph?m
+118,dim_product,product_id,ID s?n ph?m
+119,dim_product,product_name,Tên s?n ph?m
+120,dim_product,confirm_status,Tr?ng thái xác nh?n
+121,dim_product,is_active,Tr?ng thái ho?t ??ng
+122,dim_product,item_code,Mã sku
+123,dim_product,product_upc,UPC s?n ph?m
+124,dim_product,product_industry_code,Mã ngành s?n ph?m
+125,dim_product,product_industry_name,Tên ngành s?n ph?m
+126,dim_product,product_group_code,Mã nhóm s?n ph?m
+127,dim_product,product_group_name,Tên nhóm s?n ph?m
+128,dim_product,pm,Thông tin PM
+129,dim_product,is_hot,Ki?m tra là s?n ph?m hot
+130,dim_product,is_po,Ki?m tra là s?n ph?m thu?c PO
+131,dim_product,vat_output,Giá tr? VAT ??u ra
+132,dim_product,vat_output_name,Tên VAT ??u ra
+133,dim_product,vat_output_rate,T? l? VAT ??u ra
+134,dim_product,vat_input,Giá tr? VAT ??u vào
+135,dim_product,vat_input_name,Tên giá tr? VAT ??u vào
+136,dim_product,vat_input_rate,T? l? VAT ??u vào
+137,dim_product,supplier_code,Mã nhà cung c?p
+138,dim_product,supplier_name,Tên nhà cung c?p
+139,dim_product,brand_name,Tên th??ng hi?u
+140,dim_product,unit_code_level1,Mã ??n v? m?c 1
+141,dim_product,unit_name_level1,Tên ??n v? m?c 1
+142,dim_product,ratio_level1,T? l? quy ??i m?c 1
+143,dim_product,unit_code_level2,Mã ??n v? m?c 2
+144,dim_product,unit_name_level2,Tên ??n v? m?c 2
+145,dim_product,ratio_level2,T? l? quy ??i m?c 2
+146,dim_product,unit_code_level3,Mã ??n v? m?c 3
+147,dim_product,unit_name_level3,Tên ??n v? m?c 3
+148,dim_product,ratio_level3,T? l? quy ??i m?c 3
+149,dim_product,smallest_unit_name,Tên ??n v? nh? nh?t
+150,dim_product,smallest_unit_code,Mã ??n v? nh? nh?t
+151,dim_product,created_date,Ngày ???c t?o
+152,dim_product,updated_date,Ngày c?p nh?t
+153,dim_product,etl_date,Ngày insert insert
+154,dim_product,product_industry_code_pos,Mã ngành s?n ph?m POS
+155,dim_product,product_group_code_pos,Mã nhóm s?n ph?m POS
+156,dim_product,is_inventory_item,?ánh d?u s?n ph?m qu?n lí t?n
+157,dim_product,is_combo,?ánh d?u s?n ph?m combo
+158,dim_product,is_dose,?ánh d?u s?n ph?m thu?c kê ??n
+159,dim_product,is_reasonname_shop,"Thu?c tính s?n ph?m (Ng?ng ??t hàng,H?t hàng,..)"
+160,dim_product,is_chronic_disease,?ánh d?u b?nh mãn tính
+161,dim_product,productCategory_hcm_class,Phân lo?i hàng bán ch?y ? HCM
+162,dim_product,productCategory_hni_class,Phân lo?i hàng bán ch?y ? HN
+163,dim_product,productCategory_nwc_class,Phân lo?i hàng bán ch?y toàn qu?c
+164,fact_vaccine_sales_order_detail,attachment_code,Mã m?i tiêm
+165,fact_vaccine_sales_order_detail,order_detail_id,ID chi ti?t ??n hàng
+166,fact_vaccine_sales_order_detail,order_code,Mã ??n hàng (khóa liên k?t header)
+167,fact_vaccine_sales_order_detail,order_status,Tr?ng thái ??n (mã)
+168,fact_vaccine_sales_order_detail,order_creation_date,Th?i ?i?m KH kh?i t?o ??n
+169,fact_vaccine_sales_order_detail,order_completion_date,Th?i ?i?m nhân viên/h? th?ng hoàn t?t ??n
+170,fact_vaccine_sales_order_detail,order_completed_by,Mã nhân viên/h? th?ng hoàn t?t ??n
+171,fact_vaccine_sales_order_detail,order_type,Lo?i ??n (mã phân lo?i nghi?p v?)
+172,fact_vaccine_sales_order_detail,package_type,Lo?i ??n l? hay gói
+173,fact_vaccine_sales_order_detail,order_code_refer,Mã ??n tham chi?u (n?u có)
+174,fact_vaccine_sales_order_detail,order_attribute,Thu?c tính ??n (mã phân lo?i b? sung)
+175,fact_vaccine_sales_order_detail,order_channel,Kênh ??t/mua hàng
+176,fact_vaccine_sales_order_detail,payment_method,Ph??ng th?c thanh toán (mã)
+177,fact_vaccine_sales_order_detail,shop_code,Mã c? s?/shop phát sinh ??n
+178,fact_vaccine_sales_order_detail,shop_name,Tên c? s?/shop phát sinh ??n
+179,fact_vaccine_sales_order_detail,customer_id,ID khách hàng
+180,fact_vaccine_sales_order_detail,customer_phone,S?T khách hàng
+181,fact_vaccine_sales_order_detail,lcv_id,ID khách hàng trên h? LC/Vaccine
+182,fact_vaccine_sales_order_detail,customer_name,Tên khách hàng
+183,fact_vaccine_sales_order_detail,shop_employee_id,Mã nhân viên x? lý bán
+184,fact_vaccine_sales_order_detail,shop_employee_name,Tên nhân viên x? lý bán
+185,fact_vaccine_sales_order_detail,warehouse_code,Mã kho xu?t hàng
+186,fact_vaccine_sales_order_detail,warehouse_name,Tên kho xu?t hàng
+187,fact_vaccine_sales_order_detail,service_code,Mã d?ch v? (n?u dòng là d?ch v?)
+188,fact_vaccine_sales_order_detail,service_name,Tên d?ch v?
+189,fact_vaccine_sales_order_detail,sku,SKU hàng hóa/vaccine
+190,fact_vaccine_sales_order_detail,line_item_name,Tên dòng hàng/d?ch v?
+191,fact_vaccine_sales_order_detail,line_item_quantity,S? l??ng
+192,fact_vaccine_sales_order_detail,line_item_price,??n giá
+193,fact_vaccine_sales_order_detail,line_item_servicefee,Phí d?ch v? c?a dòng (n?u tách riêng)
+194,fact_vaccine_sales_order_detail,line_item_amount,Thành ti?n tr??c gi?m (th??ng = qty * price + service fee)
+195,fact_vaccine_sales_order_detail,line_item_servicefee_percent,% phí d?ch v? (n?u tính theo %)
+196,fact_vaccine_sales_order_detail,line_item_discount_promotion,Gi?m giá t? CTKM/promotion (ti?n)
+197,fact_vaccine_sales_order_detail,line_item_discount,Gi?m giá khác/chi?t kh?u b? sung (ti?n)
+198,fact_vaccine_sales_order_detail,line_item_amount_after_discount,Thành ti?n sau gi?m
+199,fact_vaccine_sales_order_detail,line_item_unit_code,Mã ??n v? tính
+200,fact_vaccine_sales_order_detail,line_item_unit_name,Tên ??n v? tính
+201,fact_vaccine_sales_order_detail,line_item_discount_reason_code,Mã lý do gi?m giá
+202,fact_vaccine_sales_order_detail,line_item_discount_reason_name,Tên lý do gi?m giá
+203,fact_vaccine_sales_order_detail,is_partial_payment,Flag ?ánh d?u thanh toán m?t ph?n
+204,fact_vaccine_sales_order_detail,attachment_code_base,Mã m?i tiêm c?a ??n g?c (dùng ?? tham chi?u)
+205,fact_vaccine_sales_order_detail,created_at,Th?i ?i?m t?o b?n ghi
+206,fact_vaccine_sales_order_detail,modified_at,Th?i ?i?m c?p nh?t b?n ghi
+207,fact_vaccine_sales_order_detail,is_test,Flag ?ánh d?u d? li?u test
+208,fact_vaccine_sales_order_detail,etl_date,Th?i ?i?m ETL/load d? li?u
+209,fact_vaccine_sales_order_detail,etl_by,H? th?ng/ti?n trình ETL (ví d?: Databricks)
+210,fact_vaccine_sales_order_detail,primary_checksum,Checksum theo khóa chính (??i soát/CDC)
+211,fact_vaccine_sales_order_detail,record_checksum,Checksum toàn b?n ghi (phát hi?n thay ??i n?i dung)
+212,fact_vaccine_sales_order_detail,order_injection,S? th? t? m?i tiêm (n?u vaccine có nhi?u m?i)
+213,fact_vaccine_returned_order_detail,attachment_code,Mã m?i tiêm
+214,fact_vaccine_returned_order_detail,return_order_detail_id,ID chi ti?t ??n tr?/hoàn
+215,fact_vaccine_returned_order_detail,return_order_code,Mã ??n tr?/hoàn
+216,fact_vaccine_returned_order_detail,return_date,Th?i ?i?m th?c hi?n tr?/hoàn
+217,fact_vaccine_returned_order_detail,order_code,Mã ??n mua
+218,fact_vaccine_returned_order_detail,order_status,Tr?ng thái ??n (mã)
+219,fact_vaccine_returned_order_detail,package_type,Lo?i ??n l? hay gói
+220,fact_vaccine_returned_order_detail,order_code_refer,Mã ??n tham chi?u (n?u có)
+221,fact_vaccine_returned_order_detail,order_attribute,Thu?c tính ??n (mã phân lo?i b? sung)
+222,fact_vaccine_returned_order_detail,order_channel,Kênh phát sinh tr?/hoàn (mã)
+223,fact_vaccine_returned_order_detail,is_partial_payment,Flag ?ánh d?u thanh toán m?t ph?n
+224,fact_vaccine_returned_order_detail,shop_code,Mã c? s?/shop x? lý tr?/hoàn
+225,fact_vaccine_returned_order_detail,shop_name,Tên c? s?/shop x? lý tr?/hoàn
+226,fact_vaccine_returned_order_detail,shop_order_code,Mã c? s?/shop phát sinh ??n bán
+227,fact_vaccine_returned_order_detail,lcv_id,ID khách hàng trên h? LC/Vaccine
+228,fact_vaccine_returned_order_detail,customer_id,ID khách hàng
+229,fact_vaccine_returned_order_detail,customer_name,Tên khách hàng
+230,fact_vaccine_returned_order_detail,customer_phone,S?T khách hàng
+231,fact_vaccine_returned_order_detail,shop_employee_id,Mã nhân viên x? lý tr?/hoàn
+232,fact_vaccine_returned_order_detail,shop_employee_name,Tên nhân viên x? lý tr?/hoàn
+233,fact_vaccine_returned_order_detail,shop_order_employee_id,Mã nhân viên c?a ??n g?c (ng??i bán/ghi nh?n ??n)
+234,fact_vaccine_returned_order_detail,warehouse_code,Mã kho nh?p tr?
+235,fact_vaccine_returned_order_detail,warehouse_name,Tên kho nh?p tr?
+236,fact_vaccine_returned_order_detail,service_code,Mã d?ch v? liên quan (n?u có)
+237,fact_vaccine_returned_order_detail,service_name,Tên d?ch v? liên quan
+238,fact_vaccine_returned_order_detail,sku,SKU hàng hóa/vaccine ???c tr?
+239,fact_vaccine_returned_order_detail,return_line_item_name,Tên dòng hàng/d?ch v? tr?
+240,fact_vaccine_returned_order_detail,return_line_item_quantity,S? l??ng tr?
+241,fact_vaccine_returned_order_detail,return_line_item_price,??n giá tr?
+242,fact_vaccine_returned_order_detail,return_line_item_servicefee_percent,% phí d?ch v? c?a dòng tr?
+243,fact_vaccine_returned_order_detail,return_line_item_servicefee,Phí d?ch v? c?a dòng tr?
+244,fact_vaccine_returned_order_detail,return_line_item_amount,Thành ti?n dòng tr? tr??c gi?m
+245,fact_vaccine_returned_order_detail,return_line_item_discount_promotion,Gi?m giá CTKM phân b? cho dòng tr? (ti?n)
+246,fact_vaccine_returned_order_detail,return_line_item_discount,Gi?m giá khác/chi?t kh?u b? sung (ti?n)
+247,fact_vaccine_returned_order_detail,return_line_item_amount_after_discount,Thành ti?n dòng tr? sau gi?m
+248,fact_vaccine_returned_order_detail,attachment_code_base,Mã ?ính kèm g?c/base (n?u có)
+249,fact_vaccine_returned_order_detail,created_at,Th?i ?i?m t?o b?n ghi
+250,fact_vaccine_returned_order_detail,modified_at,Th?i ?i?m c?p nh?t b?n ghi
+251,fact_vaccine_returned_order_detail,is_test,Flag ?ánh d?u d? li?u test
+252,fact_vaccine_returned_order_detail,etl_date,Th?i ?i?m ETL/load d? li?u
+253,fact_vaccine_returned_order_detail,etl_by,H? th?ng/ti?n trình ETL (ví d?: Databricks)
+254,fact_vaccine_returned_order_detail,primary_checksum,Checksum theo khóa chính (??i soát/CDC)
+255,fact_vaccine_returned_order_detail,record_checksum,Checksum toàn b?n ghi (phát hi?n thay ??i n?i dung)
+256,fact_vaccine_returned_order_detail,order_injection,S? th? t? m?i tiêm (n?u vaccine có nhi?u m?i)
+257,fact_vaccine_record,attachment_code,Mã m?i tiêm
+258,fact_vaccine_record,indication_id,ID ch? ??nh tiêm (indication)
+259,fact_vaccine_record,indication_note,Ghi chú ch? ??nh
+260,fact_vaccine_record,indication_status,Mã tr?ng thái ch? ??nh
+261,fact_vaccine_record,sku,SKU s?n ph?m vaccine
+262,fact_vaccine_record,product_item_code,Mã hàng/mã s?n ph?m theo h? bán hàng/ERP
+263,fact_vaccine_record,vaccine_name,Tên vaccine
+264,fact_vaccine_record,disease_name,Tên b?nh/??i t??ng phòng b?nh
+265,fact_vaccine_record,disease_group_id,ID nhóm b?nh
+266,fact_vaccine_record,disease_group_name,Tên nhóm b?nh
+267,fact_vaccine_record,regimen_id,ID phác ?? tiêm áp d?ng
+268,fact_vaccine_record,regimen_name,Tên phác ?? tiêm
+269,fact_vaccine_record,dose_number,S? m?i (m?i th? m?y trong phác ??)
+270,fact_vaccine_record,dosage,Li?u dùng (kèm ??n v?)
+271,fact_vaccine_record,uom,??n v? tính (unit of measure)
+272,fact_vaccine_record,injection_route,???ng dùng/???ng tiêm (u?ng/tiêm b?p/tiêm d??i da…)
+273,fact_vaccine_record,position,V? trí tiêm (n?u là tiêm)
+274,fact_vaccine_record,lot_date,H?n dùng/lô date c?a vaccine (th??ng là expiry date)
+275,fact_vaccine_record,lot_number,S? lô vaccine
+276,fact_vaccine_record,created_at,Th?i ?i?m t?o b?n ghi
+277,fact_vaccine_record,modified_at,Th?i ?i?m c?p nh?t b?n ghi
+278,fact_vaccine_record,lcv_id,ID khách hàng/b?nh nhân trên h? LC/Vaccine (??nh danh liên thông)
+279,fact_vaccine_record,person_id,ID ng??i tiêm/khách hàng
+280,fact_vaccine_record,person_name,Tên ng??i tiêm/khách hàng
+281,fact_vaccine_record,gender,Gi?i tính
+282,fact_vaccine_record,ticket_id,ID phi?u tiêm/phi?u d?ch v?
+283,fact_vaccine_record,ticket_code,Mã phi?u tiêm
+284,fact_vaccine_record,completed_ticket_date,Ngày hoàn t?t phi?u tiêm
+285,fact_vaccine_record,ticket_status,Mã tr?ng thái phi?u tiêm
+286,fact_vaccine_record,ticket_note,Ghi chú phi?u tiêm
+287,fact_vaccine_record,ticket_created_by,Mã ng??i t?o phi?u
+288,fact_vaccine_record,ticket_created_by_name,Tên ng??i t?o phi?u
+289,fact_vaccine_record,conclusion,K?t lu?n tr??c tiêm (ví d?: ?? ?i?u ki?n tiêm)
+290,fact_vaccine_record,injection_time,Th?i ?i?m th?c hi?n tiêm/u?ng vaccine
+291,fact_vaccine_record,completed_tracking_time,Th?i ?i?m hoàn t?t theo dõi sau tiêm
+292,fact_vaccine_record,is_leave_early,Flag r?i ?i s?m khi ch?a theo dõi ??
+293,fact_vaccine_record,monitor_detail,Chi ti?t theo dõi sau tiêm (tri?u ch?ng/di?n bi?n)
+294,fact_vaccine_record,health_monitor_note,Ghi chú theo dõi s?c kh?e
+295,fact_vaccine_record,shop_code,Mã c? s?/?i?m tiêm (shop)
+296,fact_vaccine_record,shop_name,Tên c? s?/?i?m tiêm
+297,fact_vaccine_record,injection_clinic_id,ID phòng tiêm/phòng khám trong c? s?
+298,fact_vaccine_record,injection_clinic_name,Tên phòng tiêm/phòng khám
+299,fact_vaccine_record,order_code_counter,Mã ??n hàng t?i qu?y (POS/counter order)
+300,fact_vaccine_record,order_return_code,Mã ??n tr?/hoàn (n?u có)
+301,fact_vaccine_record,doctor_code,Mã bác s? ch? ??nh/khám sàng l?c
+302,fact_vaccine_record,doctor_name,Tên bác s?
+303,fact_vaccine_record,injection_nursing_code,Mã ?i?u d??ng th?c hi?n tiêm
+304,fact_vaccine_record,injection_nursing_name,Tên ?i?u d??ng
+305,fact_vaccine_record,declaration_id,ID t? khai/khai báo (y t?/??ng ý tiêm…)
+306,fact_vaccine_record,is_returned,Flag ?ã hoàn tr?/hoàn ??n liên quan m?i tiêm
+307,fact_vaccine_record,is_test,Flag d? li?u test
+308,fact_vaccine_record,etl_date,Th?i ?i?m ETL/load d? li?u
+309,fact_vaccine_record,etl_by,H? th?ng/ti?n trình ETL (ví d?: Databricks)
+310,fact_vaccine_record,primary_checksum,Checksum theo khóa chính (??i soát/CDC)
+311,fact_vaccine_record,record_checksum,Checksum toàn b?n ghi (phát hi?n thay ??i n?i dung)
+312,dim_person,id,id
+313,dim_person,lcv_id,Mã khách hàng vaccine
+314,dim_person,person_id,Id trong b?ng ngu?n Person
+315,dim_person,customer_id,Mã khách hàng
+316,dim_person,person_name,Tên khách hàng
+317,dim_person,person_status,Tr?ng thái thái khách hàng
+318,dim_person,guardian_name,Tên ng??i giám h?
+319,dim_person,guardian_phone,S? ?i?n tho?i ng??i giám h?
+320,dim_person,nation_immunization_id,Mã tiêm ch?ng theo ngu?n X
+321,dim_person,nationality_code,Mã qu?c t?ch
+322,dim_person,nationality_name,Tên qu?c t?ch
+323,dim_person,identity_card,CCCD
+324,dim_person,year_of_birth,N?m sinh
+325,dim_person,month_of_birth,Tháng sinh
+326,dim_person,day_of_birth,Ngày sinh
+327,dim_person,date_of_birth,"Ngày, tháng, n?m sinh"
+328,dim_person,gender,Gi?i tính
+329,dim_person,phone_number,S? ?i?n tho?i chính th?
+330,dim_person,job_title,Ngh? nghi?p
+331,dim_person,email,??a ch? mail
+332,dim_person,ethnic_code,Mã dân t?c
+333,dim_person,ethnic_name,Tên dân t?c
+334,dim_person,note,Ghi chú thêm v? khách hàng
+335,dim_person,last_sync_tcqg,Th?i gian ??ng b? l?n cu?i v?i c?ng
+336,dim_person,created_at,Ngày t?o
+337,dim_person,modified_at,Ngày ch?nh s?a
+338,dim_person,is_test,?ánh d?u record test (TRUE/FALSE)
+339,dim_person,start_date,Th?i ?i?m b?t ??u hi?u l?c c?a record
+340,dim_person,end_date,Th?i ?i?m k?t thúc hi?u l?c c?a record
+341,dim_person,current_flag,?ánh d?u thông tin ?ang s? d?ng (Y/N)
+342,dim_person,etl_date,Ngày etl
+343,dim_person,etl_by,Ng??i th?c hi?n etl
+344,dim_person,scd_checksum,Mã b?m dùng ?? so sánh s? thay ??i d? li?u cho logic SCD
+345,dim_person,record_checksum,Mã b?m toàn b? b?n ghi ?? ki?m tra tính toàn v?n
+346,dim_person,primary_checksum,Mã b?m c?a các khóa chính ?? xác ??nh duy nh?t dòng d? li?u
+347,dim_person,age_unit,??n v? tu?i (Tu?n/Tháng/Tu?i)
+348,dim_person,age_unit_code,Mã ??n v? tu?i
+349,dim_person,age_from,Thu?c tu?i b?t ??u t?
+350,dim_person,age_to,??n tu?i k?t thúc
+351,dim_person_address,Id,Id
+352,dim_person_address,PersonId,Id trong b?ng ngu?n Person
+353,dim_person_address,LCVId,Mã khách hàng vaccine
+354,dim_person_address,ProvinceCode,Mã code t?nh
+355,dim_person_address,ProvinceName,Tên t?nh
+356,dim_person_address,DistrictCode,Mã code qu?n
+357,dim_person_address,DistrictName,Tên qu?n
+358,dim_person_address,WardCode,Mã code ph??ng
+359,dim_person_address,WardName,Tên ph??ng
+360,dim_person_address,Address,??a ch?
+361,dim_person_address,Type,Phân bi?t lo?i ??a ch?
+362,dim_person_address,Status,Tr?ng thái còn ?ang s? d?ng (TRUE/FALSE)
+363,dim_person_address,IsNew,?ánh d?u ??a ch? tr??c sáp nh?p v?i sau khi sáp nh?p (TRUE/FALSE)
+364,dim_person_address,CreatedBy,Ng??i t?o
+365,dim_person_address,ModifiedBy,Ng??i ch?nh s?a
+366,dim_person_address,CreationTime,Ngày t?o
+367,dim_person_address,ModifiedTime,Ngày ch?nh s?a
+368,dim_person_address,etl_date,Ngày etl
+369,dim_person_address,PrimaryChecksum,Mã b?m c?a các khóa chính ?? xác ??nh duy nh?t dòng d? li?u
+370,dim_person_address,RecordChecksum,Mã b?m toàn b? b?n ghi ?? ki?m tra tính toàn v?n
+371,dim_family_member,lcv_id,Mã khách hàng vaccine
+372,dim_family_member,person_id,Id trong b?ng ngu?n Person
+373,dim_family_member,person_name,Tên khách hàng
+374,dim_family_member,customer_id,Mã khách hàng
+375,dim_family_member,family_person_title,Vai trò trong gia ?ình
+376,dim_family_member,family_profile_id,Mã h? s? gia ?ình
+377,dim_family_member,family_name,Tên gia ?ình
+378,dim_family_member,guaridan_person_id,Mã ng??i giám h?
+379,dim_family_member,is_guardian,?ánh d?u là ng??i giám h? (TRUE/FALSE)
+380,dim_family_member,created_at,Th?i gian t?o
+381,dim_family_member,modified_at,Th?i gian c?p nh?t
+382,dim_family_member,is_test,?ánh d?u record test (TRUE/FALSE)
+383,dim_family_member,start_date,Ngày b?t ??u hi?u l?c
+384,dim_family_member,end_date,Ngày k?t thúc hi?u l?c
+385,dim_family_member,current_flag,?ánh d?u còn hi?u l?c (Y/N)
+386,dim_family_member,etl_date,Ngày etl
+387,dim_family_member,etl_by,Ng??i th?c hi?n etl
+388,dim_family_member,scd_checksum,Mã b?m dùng ?? so sánh s? thay ??i d? li?u cho logic SCD
+389,dim_family_member,primary_checksum,Mã b?m toàn b? b?n ghi ?? ki?m tra tính toàn v?n
+390,dim_family_member,record_checksum,Mã b?m c?a các khóa chính ?? xác ??nh duy nh?t dòng d? li?u
+391,dim_family_member,is_deleted,?ánh d?u gia ?ình ?ã b? xóa (TRUE/FALSE)

@@ -181,11 +181,11 @@ def show_db_info(db_path: str):
     
     for (table_name,) in tables:
         # Đếm số dòng
-        cursor.execute(f"SELECT COUNT(*) FROM {table_name}")
+        cursor.execute(f'SELECT COUNT(*) FROM "{table_name}"')
         row_count = cursor.fetchone()[0]
         
         # Lấy thông tin cột
-        cursor.execute(f"PRAGMA table_info({table_name})")
+        cursor.execute(f'PRAGMA table_info("{table_name}")')
         columns = cursor.fetchall()
         
         print(f"\n📋 Bảng: {table_name}")

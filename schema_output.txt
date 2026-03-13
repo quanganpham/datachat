@@ -1,0 +1,823 @@
+============================================================
+DATABASE ANALYSIS FOR PROMPT OPTIMIZATION
+============================================================
+
+============================================================
+TABLE: [CADS-DD] Dữ liệu mẫu Vaccine V2_1dim_person_address
+============================================================
+Total rows: 100
+
+Columns (20):
+  - Id (TEXT)
+  - PersonId (TEXT)
+  - LCVId (TEXT)
+  - ProvinceCode (REAL)
+  - ProvinceName (TEXT)
+  - DistrictCode (REAL)
+  - DistrictName (TEXT)
+  - WardCode (REAL)
+  - WardName (TEXT)
+  - Address (TEXT)
+  - Type (INTEGER)
+  - Status (INTEGER)
+  - IsNew (INTEGER)
+  - CreatedBy (TEXT)
+  - ModifiedBy (REAL)
+  - CreationTime (TEXT)
+  - ModifiedTime (TEXT)
+  - etl_date (TEXT)
+  - PrimaryChecksum (TEXT)
+  - RecordChecksum (TEXT)
+
+Sample data (3 rows):
+  {'Id': '3a1ec3cb-10fc-121f-9c15-f7b83a1dcc59', 'PersonId': '57878d2b-c76e-42f5-8f06-b4801a58119d', 'LCVId': 'LP806701762747350417', 'ProvinceCode': 1.0, 'ProvinceName': 'Hà N?i', 'DistrictCode': None, 'DistrictName': None, 'WardCode': 8995.0, 'WardName': 'Xã Ti?n Th?ng', 'Address': 'thôn v?n lôi', 'Type': 4, 'Status': 1, 'IsNew': 1, 'CreatedBy': '64750', 'ModifiedBy': None, 'CreationTime': '51:35.2', 'ModifiedTime': '51:35.2', 'etl_date': '42:30.8', 'PrimaryChecksum': '1de1ef27527030ce56b9948ee96a4e65', 'RecordChecksum': '88a3345ae87707e3570deb2c50d2cca2'}
+  {'Id': '3a1ec23a-5f42-d0b1-1688-7fca35c93e07', 'PersonId': '86841045-1372-494c-8031-23f4e5b89a6f', 'LCVId': 'LP581611768185235036', 'ProvinceCode': 1.0, 'ProvinceName': 'Hà N?i', 'DistrictCode': None, 'DistrictName': None, 'WardCode': 8974.0, 'WardName': 'Xã Quang Minh', 'Address': 'Phù Trì', 'Type': 2, 'Status': 1, 'IsNew': 1, 'CreatedBy': '62299', 'ModifiedBy': 62299.0, 'CreationTime': '33:55.3', 'ModifiedTime': '21:14.6', 'etl_date': '42:30.8', 'PrimaryChecksum': 'ef8c8badcd5a1e50782935ada569285d', 'RecordChecksum': '4ebe1c4094dff26f3a9ab401d14a7f71'}
+  {'Id': '3a1ec229-5151-2d48-f69f-004e99539f3a', 'PersonId': '3eb789f4-5f5b-48f4-98c6-779ffa9f2a66', 'LCVId': 'LP801451766484617663', 'ProvinceCode': 23.0, 'ProvinceName': 'H? Chí Minh', 'DistrictCode': 247.0, 'DistrictName': 'Thành ph? Th? ??c', 'WardCode': 90107.0, 'WardName': 'Ph??ng Ph??c Long B', 'Address': '105 ???NG S? 3', 'Type': 5, 'Status': 1, 'IsNew': 0, 'CreatedBy': '57919', 'ModifiedBy': None, 'CreationTime': '15:17.6', 'ModifiedTime': '15:17.6', 'etl_date': '42:30.8', 'PrimaryChecksum': '84259364004bc2ba64eed00866b76593', 'RecordChecksum': '15264c978dc09e375aa0fc2445451131'}
+
+Distinct values (TEXT columns):
+  Id: ['3a1ec3cb-10fc-121f-9c15-f7b83a1dcc59', '3a1ec23a-5f42-d0b1-1688-7fca35c93e07', '3a1ec229-5151-2d48-f69f-004e99539f3a', '3a1ec315-9fbe-2bd0-2e3b-59733fbadf0d', '3a1ec274-ec7d-cb8a-e03b-08a15fe276a1']...
+  PersonId: ['57878d2b-c76e-42f5-8f06-b4801a58119d', '86841045-1372-494c-8031-23f4e5b89a6f', '3eb789f4-5f5b-48f4-98c6-779ffa9f2a66', '175e2a30-6498-4ccf-9d8f-24bc3ab89662', '69aaad4b-3564-40c1-9f23-ca65952e1b05']...
+  LCVId: ['LP806701762747350417', 'LP581611768185235036', 'LP801451766484617663', 'LP500011768011843941', 'LP580831768188989163']...
+  ProvinceName: ['Hà N?i', 'H? Chí Minh', 'T?nh ??ng Nai', 'T?nh Cà Mau', 'T?nh ??k Nông']...
+  DistrictName: ['Thành ph? Th? ??c', 'Huy?n Tr?ng Bom', 'Qu?n Ba ?ình', 'Thành ph? Gia Ngh?a', 'Thành ph? Lai Châu']...
+  WardName: ['Xã Ti?n Th?ng', 'Xã Quang Minh', 'Ph??ng Ph??c Long B', 'Th? tr?n Tr?ng Bom', 'Ph??ng Lý V?n Lâm']...
+  Address: ['thôn v?n lôi', 'Phù Trì', '105 ???NG S? 3', ',', '.']...
+  CreatedBy: ['64750', '62299', '57919', '61670', '54927']...
+  CreationTime: ['51:35.2', '33:55.3', '15:17.6', '33:24.2', '37:52.5']...
+  ModifiedTime: ['51:35.2', '21:14.6', '15:17.6', '33:35.0', '37:52.5']...
+  etl_date: ['42:30.8']
+  PrimaryChecksum: ['1de1ef27527030ce56b9948ee96a4e65', 'ef8c8badcd5a1e50782935ada569285d', '84259364004bc2ba64eed00866b76593', '6544a4fcf57dc883f84fcd391bfca1f1', 'bde53ada0578e67a6e4ac2e37dc70103']...
+  RecordChecksum: ['88a3345ae87707e3570deb2c50d2cca2', '4ebe1c4094dff26f3a9ab401d14a7f71', '15264c978dc09e375aa0fc2445451131', 'be6f110c046bf0d06a25fa53aa90ec1f', 'd8820836d70292f5e2a6e6e39b5be926']...
+
+============================================================
+TABLE: [CADS-DD] Dữ liệu mẫu Vaccine V2_dim_family_member
+============================================================
+Total rows: 500
+
+Columns (21):
+  - lcv_id (TEXT)
+  - person_id (TEXT)
+  - person_name (TEXT)
+  - customer_id (TEXT)
+  - family_person_title (TEXT)
+  - family_profile_id (TEXT)
+  - family_name (TEXT)
+  - guaridan_person_id (TEXT)
+  - is_guardian (INTEGER)
+  - created_at (TEXT)
+  - modified_at (TEXT)
+  - is_test (INTEGER)
+  - start_date (TEXT)
+  - end_date (TEXT)
+  - current_flag (TEXT)
+  - etl_date (TEXT)
+  - etl_by (TEXT)
+  - scd_checksum (TEXT)
+  - primary_checksum (TEXT)
+  - record_checksum (TEXT)
+  - is_deleted (INTEGER)
+
+Sample data (3 rows):
+  {'lcv_id': 'LP809011752300334549', 'person_id': '3a1b0f6a-07ef-2a53-e872-581072cfa7d8', 'person_name': 'Nguy?n Th? Ánh H?ng', 'customer_id': '2ee1d8f5-1431-1737-67ef-3a1021c5568d', 'family_person_title': 'M?', 'family_profile_id': '3a1b0f6a-0809-11c2-a94d-4d8d26df741b', 'family_name': 'Gia ?ình anh/ch? Nguy?n Th? Ánh H?ng', 'guaridan_person_id': '3a1b0f6a-07ef-2a53-e872-581072cfa7d8', 'is_guardian': 1, 'created_at': '05:35.2', 'modified_at': '14:15.2', 'is_test': 0, 'start_date': '05:35.2', 'end_date': '12/31/9999 23:59', 'current_flag': 'Y', 'etl_date': '42:59.2', 'etl_by': '02c92e10-acde-4ab9-8c7b-047bbaf9fd8a', 'scd_checksum': '8195eef2bef4fc5d84a0e2d20ffb6451', 'primary_checksum': 'a6e9a797a2f19b3be276b50ab4151869', 'record_checksum': 'aadaba52458e39ec5e0c683d2759b975', 'is_deleted': 0}
+  {'lcv_id': 'LP582251768636672367', 'person_id': '49e0a6eb-9a15-40c7-90f0-8649be34d928', 'person_name': 'PH?M VI?T KHANG', 'customer_id': '788b2b21-9cee-dfaa-da76-3a02c9feac12', 'family_person_title': 'Khác', 'family_profile_id': '87644b06-57fc-47b8-9790-881ba7298299', 'family_name': 'Gia ?ình anh/ch? PH?M VI?T KHANG', 'guaridan_person_id': '49e0a6eb-9a15-40c7-90f0-8649be34d928', 'is_guardian': 1, 'created_at': '57:52.5', 'modified_at': '57:52.5', 'is_test': 0, 'start_date': '57:52.5', 'end_date': '12/31/9999 23:59', 'current_flag': 'Y', 'etl_date': '42:59.2', 'etl_by': '02c92e10-acde-4ab9-8c7b-047bbaf9fd8a', 'scd_checksum': '2bf1b2e366154200d7022051818a9df5', 'primary_checksum': '59adfe74219a54d9312efbbca4d41fd3', 'record_checksum': 'b35a15e8fb8bb490b34fe45ee669cdd3', 'is_deleted': 0}
+  {'lcv_id': 'LP581721768609547095', 'person_id': '1f9d5b32-d54a-4bdf-9e42-97b28c45e7ff', 'person_name': 'Lê B?o Ng?c', 'customer_id': None, 'family_person_title': 'Khác', 'family_profile_id': 'd6e733d3-711b-45f9-81a7-4c635b69267f', 'family_name': 'Gia ?ình anh/ch? NGÔ TH? NG?C N?', 'guaridan_person_id': 'c680a1dd-565e-4b93-8f2e-c39244980d43', 'is_guardian': 0, 'created_at': '25:47.4', 'modified_at': '25:47.4', 'is_test': 0, 'start_date': '25:47.4', 'end_date': '12/31/9999 23:59', 'current_flag': 'Y', 'etl_date': '42:59.2', 'etl_by': '02c92e10-acde-4ab9-8c7b-047bbaf9fd8a', 'scd_checksum': '180c2a71bb0515efcfc64ddbab85a21d', 'primary_checksum': 'eb0d71b593d42c2432ec1c7231e95424', 'record_checksum': '4290fbfd024ec2d00d80094cb4a3ccc9', 'is_deleted': 0}
+
+Distinct values (TEXT columns):
+  lcv_id: ['LP809011752300334549', 'LP582251768636672367', 'LP581721768609547095', 'LP805511768641052434', 'LP803451768636763921']...
+  person_id: ['3a1b0f6a-07ef-2a53-e872-581072cfa7d8', '49e0a6eb-9a15-40c7-90f0-8649be34d928', '1f9d5b32-d54a-4bdf-9e42-97b28c45e7ff', 'abac56ad-38d5-4a29-930d-34ff84ef469d', '7071d045-0cb2-4d69-877c-01fe1338b6f1']...
+  person_name: ['Nguy?n Th? Ánh H?ng', 'PH?M VI?T KHANG', 'Lê B?o Ng?c', 'con 16 tu?i', 'Tr?n ??c Anh']...
+  customer_id: ['2ee1d8f5-1431-1737-67ef-3a1021c5568d', '788b2b21-9cee-dfaa-da76-3a02c9feac12', '44de04db-6a54-aa40-ffd0-3a0e74635420', 'd2bc8afa-4284-989b-621d-3a096c8128b0', '5fe39c3d-cf66-bafa-f299-3a02c9f3f6a1']...
+  family_person_title: ['M?', 'Khác', 'B?', 'Con trai', 'Con gái']...
+  family_profile_id: ['3a1b0f6a-0809-11c2-a94d-4d8d26df741b', '87644b06-57fc-47b8-9790-881ba7298299', 'd6e733d3-711b-45f9-81a7-4c635b69267f', '85a3ced9-a0d7-4393-a3a8-bf36669c352e', '4b104ce1-0de3-4a30-8724-1eb1e5c34235']...
+  family_name: ['Gia ?ình anh/ch? Nguy?n Th? Ánh H?ng', 'Gia ?ình anh/ch? PH?M VI?T KHANG', 'Gia ?ình anh/ch? NGÔ TH? NG?C N?', 'Gia ?ình anh/ch? ch? Hà', 'Gia ?ình anh/ch? Nguy?n Th? Kim']...
+  guaridan_person_id: ['3a1b0f6a-07ef-2a53-e872-581072cfa7d8', '49e0a6eb-9a15-40c7-90f0-8649be34d928', 'c680a1dd-565e-4b93-8f2e-c39244980d43', 'eb9de948-c0c2-4ee9-a05e-f501e73aa83d', '8ee905ba-8f42-45d1-9491-d81730c131c6']...
+  created_at: ['05:35.2', '57:52.5', '25:47.4', '10:52.6', '59:24.1']...
+  modified_at: ['14:15.2', '57:52.5', '25:47.4', '10:52.6', '59:24.1']...
+  start_date: ['05:35.2', '57:52.5', '25:47.4', '10:52.6', '59:24.1']...
+  end_date: ['12/31/9999 23:59']
+  current_flag: ['Y']
+  etl_date: ['42:59.2', '12:21.5']
+  etl_by: ['02c92e10-acde-4ab9-8c7b-047bbaf9fd8a']
+  scd_checksum: ['8195eef2bef4fc5d84a0e2d20ffb6451', '2bf1b2e366154200d7022051818a9df5', '180c2a71bb0515efcfc64ddbab85a21d', 'b15e4984e3403e78c832fe453e75fe7a', '9ecf41d70a44abe2a1738f20557346dc']...
+  primary_checksum: ['a6e9a797a2f19b3be276b50ab4151869', '59adfe74219a54d9312efbbca4d41fd3', 'eb0d71b593d42c2432ec1c7231e95424', '250abaf4a1b9587e6f31fda58940f50d', '9d8f8ea814239e19e829f10227a79037']...
+  record_checksum: ['aadaba52458e39ec5e0c683d2759b975', 'b35a15e8fb8bb490b34fe45ee669cdd3', '4290fbfd024ec2d00d80094cb4a3ccc9', 'd022e290dfc0a05c1f6ef1d512736ebe', 'd10688d459ae95e6aa11f0c229c2b826']...
+
+============================================================
+TABLE: [CADS-DD] Dữ liệu mẫu Vaccine V2_dim_person
+============================================================
+Total rows: 500
+
+Columns (39):
+  - id (INTEGER)
+  - lcv_id (TEXT)
+  - person_id (TEXT)
+  - customer_id (TEXT)
+  - person_name (TEXT)
+  - person_status (INTEGER)
+  - guardian_name (TEXT)
+  - guardian_phone (REAL)
+  - nation_immunization_id (TEXT)
+  - nationality_code (REAL)
+  - nationality_name (TEXT)
+  - identity_card (TEXT)
+  - year_of_birth (REAL)
+  - month_of_birth (REAL)
+  - day_of_birth (REAL)
+  - date_of_birth (TEXT)
+  - gender (INTEGER)
+  - phone_number (TEXT)
+  - job_title (REAL)
+  - email (TEXT)
+  - ethnic_code (REAL)
+  - ethnic_name (TEXT)
+  - note (TEXT)
+  - last_sync_tcqg (TEXT)
+  - created_at (TEXT)
+  - modified_at (TEXT)
+  - is_test (INTEGER)
+  - start_date (TEXT)
+  - end_date (TEXT)
+  - current_flag (TEXT)
+  - etl_date (TEXT)
+  - etl_by (TEXT)
+  - scd_checksum (TEXT)
+  - record_checksum (TEXT)
+  - primary_checksum (TEXT)
+  - age_unit (TEXT)
+  - age_unit_code (INTEGER)
+  - age_from (INTEGER)
+  - age_to (INTEGER)
+
+Sample data (3 rows):
+  {'id': 18074995, 'lcv_id': 'LCV004411586', 'person_id': 'a0447511-255c-42b7-9af0-9de0c5cbf766', 'customer_id': None, 'person_name': 'i2m2FnI2D2mkZ5NN+bXk2/6t71fAvteYh0JKdQlR5H22PPEzknVboMtSP1uEEjxcc8s8VsT7bnWtNpbM8lEetI5lRpoijVcm6XmWXlEGfWOgyB5tdazn+BBeI6MufOQg', 'person_status': 0, 'guardian_name': 'i2m2FnI2D2mkZ5NN+bXk2/6t71fAvteYh0JKdQlR5H22PPEzknVboMtSP1uEEjxcc8s8VsT7bnWtNpbM8lEetI5lRpoijVcm6XmWXlEGfWOgyB5tdazn+BBeI6MufOQg', 'guardian_phone': 362253474.0, 'nation_immunization_id': 'i2m2FnI2D2mkZ5NN+bXk2/6t71fAvteYh0JKdQlR5H22PPEzknVboMtSP1uEEjxcc8s8VsT7bnWtNpbM8lEetI5lRpoijVcm6XmWXlEGfWOgyB5tdazn+BBeI6MufOQg', 'nationality_code': None, 'nationality_name': None, 'identity_card': 'i2m2FnI2D2mkZ5NN+bXk2/6t71fAvteYh0JKdQlR5H22PPEzknVboMtSP1uEEjxcc8s8VsT7bnWtNpbM8lEetI5lRpoijVcm6XmWXlEGfWOgyB5tdazn+BBeI6MufOQg', 'year_of_birth': 2023.0, 'month_of_birth': 5.0, 'day_of_birth': 17.0, 'date_of_birth': 'i2m2FnI2D2mkZ5NN+bXk2/6t71fAvteYh0JKdQlR5H22PPEzknVboMtSP1uEEjxcc8s8VsT7bnWtNpbM8lEetI5lRpoijVcm6XmWXlEGfWOgyB5tdazn+BBeI6MufOQg', 'gender': 1, 'phone_number': 'aacOFGYVisasOOlvg7xV6/0nsbitjDIwvEBa7bcsKiGR5N4LQmvjcG2O/T59bNJzif/iDslpscjfDlUdPg87K9Cw+bIV1qzhBUrqCPSAlSR0/CjhuNGicOBwvZQamTpTCcgfVTPN4t56xL5JB4FuSUbIhBZVPfD/4CCC6yTFkCgPf+MFNbM9nX0uY30yYf3tEpR6qjXG/V6emY7bPgW0Tw==', 'job_title': None, 'email': 'i2m2FnI2D2mkZ5NN+bXk2/6t71fAvteYh0JKdQlR5H22PPEzknVboMtSP1uEEjxcc8s8VsT7bnWtNpbM8lEetI5lRpoijVcm6XmWXlEGfWOgyB5tdazn+BBeI6MufOQg', 'ethnic_code': 1.0, 'ethnic_name': 'Kinh', 'note': None, 'last_sync_tcqg': '12/31/9999 23:59', 'created_at': '20:05.0', 'modified_at': '13:51.5', 'is_test': 0, 'start_date': '20:38.9', 'end_date': '12/31/9999 23:59', 'current_flag': 'Y', 'etl_date': '02:49.2', 'etl_by': '02c92e10-acde-4ab9-8c7b-047bbaf9fd8a', 'scd_checksum': '1d68786211a5efcd4608517569012317', 'record_checksum': '1efb9cee76a84fd87195dd40c4e8f699', 'primary_checksum': '5d910a6b041e9eacab69f7d1e62bd5b1', 'age_unit': None, 'age_unit_code': 0, 'age_from': 0, 'age_to': 0}
+  {'id': 14526580, 'lcv_id': 'LCV004544047', 'person_id': '20ab6bfb-05af-4880-ad1e-ace847e3d96b', 'customer_id': 'a7c3fb6f-de15-6249-2d90-3a02ca036738', 'person_name': 'Dj83PFJ0n49RuvAEMUmoT/s96wIIikdfNI6SVHao+Kp56CE3F/ljTBHbcMHzK69iRPmyD1UI7fezCBnicAsNqGnjEXFose09cklKCWyvzi7l5dEybZwb2/v8EPiCawr8', 'person_status': 0, 'guardian_name': 'Dj83PFJ0n49RuvAEMUmoT/s96wIIikdfNI6SVHao+Kp56CE3F/ljTBHbcMHzK69iRPmyD1UI7fezCBnicAsNqGnjEXFose09cklKCWyvzi7l5dEybZwb2/v8EPiCawr8', 'guardian_phone': 909090670.0, 'nation_immunization_id': 'Dj83PFJ0n49RuvAEMUmoT/s96wIIikdfNI6SVHao+Kp56CE3F/ljTBHbcMHzK69iRPmyD1UI7fezCBnicAsNqGnjEXFose09cklKCWyvzi7l5dEybZwb2/v8EPiCawr8', 'nationality_code': None, 'nationality_name': None, 'identity_card': 'Dj83PFJ0n49RuvAEMUmoT/s96wIIikdfNI6SVHao+Kp56CE3F/ljTBHbcMHzK69iRPmyD1UI7fezCBnicAsNqGnjEXFose09cklKCWyvzi7l5dEybZwb2/v8EPiCawr8', 'year_of_birth': 1991.0, 'month_of_birth': 10.0, 'day_of_birth': 13.0, 'date_of_birth': 'Dj83PFJ0n49RuvAEMUmoT/s96wIIikdfNI6SVHao+Kp56CE3F/ljTBHbcMHzK69iRPmyD1UI7fezCBnicAsNqGnjEXFose09cklKCWyvzi7l5dEybZwb2/v8EPiCawr8', 'gender': 0, 'phone_number': '9dhCpfaLnFsg329NllgFGbn/dOfa6mUDaEnEH179pMnv6wcRHAC6R0Iu483woCua1P0spk3q+zVy8e5w9MJomCehFM6ksgHDezcPpWCO9vsnmQ+AZdTHmZ3rTuhoDLTE5r6QbAcWsdf3rdUBn/3b/AaOdvOXt66hJFZj9YepiRQO9ti03g5+YUDk9ED5JdsAaUpiWuWHJLLQHq13NoNxJg==', 'job_title': None, 'email': 'Dj83PFJ0n49RuvAEMUmoT/s96wIIikdfNI6SVHao+Kp56CE3F/ljTBHbcMHzK69iRPmyD1UI7fezCBnicAsNqGnjEXFose09cklKCWyvzi7l5dEybZwb2/v8EPiCawr8', 'ethnic_code': 1.0, 'ethnic_name': 'Kinh', 'note': 'N?i b? FPT Long Châu - mail VuLP5@fpt.com - Inside 48744', 'last_sync_tcqg': '12/31/9999 23:59', 'created_at': '38:43.0', 'modified_at': '29:01.7', 'is_test': 0, 'start_date': '46:11.0', 'end_date': '12/31/9999 23:59', 'current_flag': 'Y', 'etl_date': '33:06.7', 'etl_by': '02c92e10-acde-4ab9-8c7b-047bbaf9fd8a', 'scd_checksum': '2579f75111152ffa8c761588f3f05155', 'record_checksum': '12ef560d3d6968e89f6bd80f3c1b3aed', 'primary_checksum': 'c8da2a57e706ed5dcec5e0b01815fcdb', 'age_unit': None, 'age_unit_code': 0, 'age_from': 0, 'age_to': 0}
+  {'id': 14251868, 'lcv_id': 'LCV0046758688', 'person_id': '3a0e17fc-2601-cb33-a8bd-4a7c8938f87c', 'customer_id': '95983408-cca6-5de5-c0bf-3a02c9f47310', 'person_name': '2U18ppe5WhwfPfIRpPNApebuGs8Qrw6LHj4/oPNN/5FGp9UQZoiaTYYpRNYy8K59YjA3f/VVLr0b/rKyADzQfEQ9/F1xBD11UBxZ18I2KSR9/JEjNUSqFJEr7pUFgdZd', 'person_status': 0, 'guardian_name': '2U18ppe5WhwfPfIRpPNApebuGs8Qrw6LHj4/oPNN/5FGp9UQZoiaTYYpRNYy8K59YjA3f/VVLr0b/rKyADzQfEQ9/F1xBD11UBxZ18I2KSR9/JEjNUSqFJEr7pUFgdZd', 'guardian_phone': 388151757.0, 'nation_immunization_id': '2U18ppe5WhwfPfIRpPNApebuGs8Qrw6LHj4/oPNN/5FGp9UQZoiaTYYpRNYy8K59YjA3f/VVLr0b/rKyADzQfEQ9/F1xBD11UBxZ18I2KSR9/JEjNUSqFJEr7pUFgdZd', 'nationality_code': 192.0, 'nationality_name': 'Vi?t Nam', 'identity_card': '2U18ppe5WhwfPfIRpPNApebuGs8Qrw6LHj4/oPNN/5FGp9UQZoiaTYYpRNYy8K59YjA3f/VVLr0b/rKyADzQfEQ9/F1xBD11UBxZ18I2KSR9/JEjNUSqFJEr7pUFgdZd', 'year_of_birth': 1998.0, 'month_of_birth': 1.0, 'day_of_birth': 4.0, 'date_of_birth': '2U18ppe5WhwfPfIRpPNApebuGs8Qrw6LHj4/oPNN/5FGp9UQZoiaTYYpRNYy8K59YjA3f/VVLr0b/rKyADzQfEQ9/F1xBD11UBxZ18I2KSR9/JEjNUSqFJEr7pUFgdZd', 'gender': 1, 'phone_number': 'oREqr+Dbni9B46xpZANYcNJWRYcSSVzRtut5n2nGezl4D8HKBq+IzNN7xET6VXfuDQweUQUzMC6xrGfyKdFH3t7q9onRfM3uAhMnWSGZkasuqA/yZEMZmw+/yEYAXsA9seNGxM92OA02GifbaqSfXva0hc4sRJKdmbcOIL5ddHZ4ZkoLQYeMeAM/mFv2G18OgSVBOulztj28rgfHziHg0A==', 'job_title': None, 'email': '2U18ppe5WhwfPfIRpPNApebuGs8Qrw6LHj4/oPNN/5FGp9UQZoiaTYYpRNYy8K59YjA3f/VVLr0b/rKyADzQfEQ9/F1xBD11UBxZ18I2KSR9/JEjNUSqFJEr7pUFgdZd', 'ethnic_code': 1.0, 'ethnic_name': None, 'note': None, 'last_sync_tcqg': '12/31/9999 23:59', 'created_at': '25:53.9', 'modified_at': '23:19.3', 'is_test': 0, 'start_date': '00:29.2', 'end_date': '12/31/9999 23:59', 'current_flag': 'Y', 'etl_date': '33:06.7', 'etl_by': '02c92e10-acde-4ab9-8c7b-047bbaf9fd8a', 'scd_checksum': '8ead5f07a0b859c3e44ae103a1b5f048', 'record_checksum': 'e3b56834d2a5b6dd8441b2194d1f525f', 'primary_checksum': 'ff6ff1450bd00060b21c98a222ca006f', 'age_unit': None, 'age_unit_code': 0, 'age_from': 0, 'age_to': 0}
+
+Distinct values (TEXT columns):
+  lcv_id: ['LCV004411586', 'LCV004544047', 'LCV0046758688', 'LCV0046759399', 'LCV004677224']...
+  person_id: ['a0447511-255c-42b7-9af0-9de0c5cbf766', '20ab6bfb-05af-4880-ad1e-ace847e3d96b', '3a0e17fc-2601-cb33-a8bd-4a7c8938f87c', '3a0e25cd-097b-0e25-0958-97af4fcce21c', '3a0e4e60-484a-6d09-2245-55e2dab78221']...
+  customer_id: ['a7c3fb6f-de15-6249-2d90-3a02ca036738', '95983408-cca6-5de5-c0bf-3a02c9f47310', '14e4936d-ed85-911a-8e25-3a02c9f28ec8', '1397eccf-fcb7-9971-762f-3a02c9f7b4f1', '09058ceb-0c3c-6a90-08f3-3a034057dcac']...
+  person_name: ['i2m2FnI2D2mkZ5NN+bXk2/6t71fAvteYh0JKdQlR5H22PPEzknVboMtSP1uEEjxcc8s8VsT7bnWtNpbM8lEetI5lRpoijVcm6XmWXlEGfWOgyB5tdazn+BBeI6MufOQg', 'Dj83PFJ0n49RuvAEMUmoT/s96wIIikdfNI6SVHao+Kp56CE3F/ljTBHbcMHzK69iRPmyD1UI7fezCBnicAsNqGnjEXFose09cklKCWyvzi7l5dEybZwb2/v8EPiCawr8', '2U18ppe5WhwfPfIRpPNApebuGs8Qrw6LHj4/oPNN/5FGp9UQZoiaTYYpRNYy8K59YjA3f/VVLr0b/rKyADzQfEQ9/F1xBD11UBxZ18I2KSR9/JEjNUSqFJEr7pUFgdZd', 'ltUvkdwtzcW0f3YatYlA8e+dI+b2DySubAhNI3AQY81igbDKfoZUmsvDikpntGAZ+PUv9/pZu9WijTw5ITKd8zblQ0loNZznjOaJPUfo5Gpm5AYJI7HjOf9M8PWXHw3F', '5vCFJEKPtGFBtHOg7z3Qp7Piotn0xvadeWFVICwr1eUad4CNLth9FtI3aVv3FZyAx7NrGGDNSTsM+mtefXjDE4+RstCPPtNGU1iLvmQxmw1GVxDnh+ZJRcRnJ1yn7ITI']...
+  guardian_name: ['i2m2FnI2D2mkZ5NN+bXk2/6t71fAvteYh0JKdQlR5H22PPEzknVboMtSP1uEEjxcc8s8VsT7bnWtNpbM8lEetI5lRpoijVcm6XmWXlEGfWOgyB5tdazn+BBeI6MufOQg', 'Dj83PFJ0n49RuvAEMUmoT/s96wIIikdfNI6SVHao+Kp56CE3F/ljTBHbcMHzK69iRPmyD1UI7fezCBnicAsNqGnjEXFose09cklKCWyvzi7l5dEybZwb2/v8EPiCawr8', '2U18ppe5WhwfPfIRpPNApebuGs8Qrw6LHj4/oPNN/5FGp9UQZoiaTYYpRNYy8K59YjA3f/VVLr0b/rKyADzQfEQ9/F1xBD11UBxZ18I2KSR9/JEjNUSqFJEr7pUFgdZd', 'ltUvkdwtzcW0f3YatYlA8e+dI+b2DySubAhNI3AQY81igbDKfoZUmsvDikpntGAZ+PUv9/pZu9WijTw5ITKd8zblQ0loNZznjOaJPUfo5Gpm5AYJI7HjOf9M8PWXHw3F', '5vCFJEKPtGFBtHOg7z3Qp7Piotn0xvadeWFVICwr1eUad4CNLth9FtI3aVv3FZyAx7NrGGDNSTsM+mtefXjDE4+RstCPPtNGU1iLvmQxmw1GVxDnh+ZJRcRnJ1yn7ITI']...
+  nation_immunization_id: ['i2m2FnI2D2mkZ5NN+bXk2/6t71fAvteYh0JKdQlR5H22PPEzknVboMtSP1uEEjxcc8s8VsT7bnWtNpbM8lEetI5lRpoijVcm6XmWXlEGfWOgyB5tdazn+BBeI6MufOQg', 'Dj83PFJ0n49RuvAEMUmoT/s96wIIikdfNI6SVHao+Kp56CE3F/ljTBHbcMHzK69iRPmyD1UI7fezCBnicAsNqGnjEXFose09cklKCWyvzi7l5dEybZwb2/v8EPiCawr8', '2U18ppe5WhwfPfIRpPNApebuGs8Qrw6LHj4/oPNN/5FGp9UQZoiaTYYpRNYy8K59YjA3f/VVLr0b/rKyADzQfEQ9/F1xBD11UBxZ18I2KSR9/JEjNUSqFJEr7pUFgdZd', 'ltUvkdwtzcW0f3YatYlA8e+dI+b2DySubAhNI3AQY81igbDKfoZUmsvDikpntGAZ+PUv9/pZu9WijTw5ITKd8zblQ0loNZznjOaJPUfo5Gpm5AYJI7HjOf9M8PWXHw3F', '5vCFJEKPtGFBtHOg7z3Qp7Piotn0xvadeWFVICwr1eUad4CNLth9FtI3aVv3FZyAx7NrGGDNSTsM+mtefXjDE4+RstCPPtNGU1iLvmQxmw1GVxDnh+ZJRcRnJ1yn7ITI']...
+  nationality_name: ['Vi?t Nam']
+  identity_card: ['i2m2FnI2D2mkZ5NN+bXk2/6t71fAvteYh0JKdQlR5H22PPEzknVboMtSP1uEEjxcc8s8VsT7bnWtNpbM8lEetI5lRpoijVcm6XmWXlEGfWOgyB5tdazn+BBeI6MufOQg', 'Dj83PFJ0n49RuvAEMUmoT/s96wIIikdfNI6SVHao+Kp56CE3F/ljTBHbcMHzK69iRPmyD1UI7fezCBnicAsNqGnjEXFose09cklKCWyvzi7l5dEybZwb2/v8EPiCawr8', '2U18ppe5WhwfPfIRpPNApebuGs8Qrw6LHj4/oPNN/5FGp9UQZoiaTYYpRNYy8K59YjA3f/VVLr0b/rKyADzQfEQ9/F1xBD11UBxZ18I2KSR9/JEjNUSqFJEr7pUFgdZd', 'ltUvkdwtzcW0f3YatYlA8e+dI+b2DySubAhNI3AQY81igbDKfoZUmsvDikpntGAZ+PUv9/pZu9WijTw5ITKd8zblQ0loNZznjOaJPUfo5Gpm5AYJI7HjOf9M8PWXHw3F', '5vCFJEKPtGFBtHOg7z3Qp7Piotn0xvadeWFVICwr1eUad4CNLth9FtI3aVv3FZyAx7NrGGDNSTsM+mtefXjDE4+RstCPPtNGU1iLvmQxmw1GVxDnh+ZJRcRnJ1yn7ITI']...
+  date_of_birth: ['i2m2FnI2D2mkZ5NN+bXk2/6t71fAvteYh0JKdQlR5H22PPEzknVboMtSP1uEEjxcc8s8VsT7bnWtNpbM8lEetI5lRpoijVcm6XmWXlEGfWOgyB5tdazn+BBeI6MufOQg', 'Dj83PFJ0n49RuvAEMUmoT/s96wIIikdfNI6SVHao+Kp56CE3F/ljTBHbcMHzK69iRPmyD1UI7fezCBnicAsNqGnjEXFose09cklKCWyvzi7l5dEybZwb2/v8EPiCawr8', '2U18ppe5WhwfPfIRpPNApebuGs8Qrw6LHj4/oPNN/5FGp9UQZoiaTYYpRNYy8K59YjA3f/VVLr0b/rKyADzQfEQ9/F1xBD11UBxZ18I2KSR9/JEjNUSqFJEr7pUFgdZd', 'ltUvkdwtzcW0f3YatYlA8e+dI+b2DySubAhNI3AQY81igbDKfoZUmsvDikpntGAZ+PUv9/pZu9WijTw5ITKd8zblQ0loNZznjOaJPUfo5Gpm5AYJI7HjOf9M8PWXHw3F', '5vCFJEKPtGFBtHOg7z3Qp7Piotn0xvadeWFVICwr1eUad4CNLth9FtI3aVv3FZyAx7NrGGDNSTsM+mtefXjDE4+RstCPPtNGU1iLvmQxmw1GVxDnh+ZJRcRnJ1yn7ITI']...
+  phone_number: ['aacOFGYVisasOOlvg7xV6/0nsbitjDIwvEBa7bcsKiGR5N4LQmvjcG2O/T59bNJzif/iDslpscjfDlUdPg87K9Cw+bIV1qzhBUrqCPSAlSR0/CjhuNGicOBwvZQamTpTCcgfVTPN4t56xL5JB4FuSUbIhBZVPfD/4CCC6yTFkCgPf+MFNbM9nX0uY30yYf3tEpR6qjXG/V6emY7bPgW0Tw==', '9dhCpfaLnFsg329NllgFGbn/dOfa6mUDaEnEH179pMnv6wcRHAC6R0Iu483woCua1P0spk3q+zVy8e5w9MJomCehFM6ksgHDezcPpWCO9vsnmQ+AZdTHmZ3rTuhoDLTE5r6QbAcWsdf3rdUBn/3b/AaOdvOXt66hJFZj9YepiRQO9ti03g5+YUDk9ED5JdsAaUpiWuWHJLLQHq13NoNxJg==', 'oREqr+Dbni9B46xpZANYcNJWRYcSSVzRtut5n2nGezl4D8HKBq+IzNN7xET6VXfuDQweUQUzMC6xrGfyKdFH3t7q9onRfM3uAhMnWSGZkasuqA/yZEMZmw+/yEYAXsA9seNGxM92OA02GifbaqSfXva0hc4sRJKdmbcOIL5ddHZ4ZkoLQYeMeAM/mFv2G18OgSVBOulztj28rgfHziHg0A==', '54octStsDMTOv2ds8wgoZ/rIqmnPRRyrgrdh1L5o7bWwN/Pz3ucWhi8P5p+xQfqAXz6Uk2X1HBk9BAaKZJ41e0RJcb0Y3HyJWhXfFdpb2XtQp7K/rKM3105oiZPZlq3rIEclIJSUqnfRI0zRucMbRgDs5l+Azimh0LuIv14TqG7Sul49C76bz55tKJt1ky3USsDDQe//Amxl4pTYZFfxZw==', '/BOyXnVZwgkkZOLAusytJBjTaVkIIIPS4Qlti5lAD0OMeG8WhX3onsqYqzAXSiFK4Ij5cWWGi0MH03ym/3Bwn4kAIAdo/lZ1ZZhHfMn8I23878dwZE0vuUq4FTqb9TaMmmGABp2Xwqsvn1OISUGvg0gvnWWDQe0u1IawjEYaRfOFDr8gRzatrXFnWwD2qiPHTr5BfpmMpkIqHLAOZ0LK8A==']...
+  email: ['i2m2FnI2D2mkZ5NN+bXk2/6t71fAvteYh0JKdQlR5H22PPEzknVboMtSP1uEEjxcc8s8VsT7bnWtNpbM8lEetI5lRpoijVcm6XmWXlEGfWOgyB5tdazn+BBeI6MufOQg', 'Dj83PFJ0n49RuvAEMUmoT/s96wIIikdfNI6SVHao+Kp56CE3F/ljTBHbcMHzK69iRPmyD1UI7fezCBnicAsNqGnjEXFose09cklKCWyvzi7l5dEybZwb2/v8EPiCawr8', '2U18ppe5WhwfPfIRpPNApebuGs8Qrw6LHj4/oPNN/5FGp9UQZoiaTYYpRNYy8K59YjA3f/VVLr0b/rKyADzQfEQ9/F1xBD11UBxZ18I2KSR9/JEjNUSqFJEr7pUFgdZd', 'ltUvkdwtzcW0f3YatYlA8e+dI+b2DySubAhNI3AQY81igbDKfoZUmsvDikpntGAZ+PUv9/pZu9WijTw5ITKd8zblQ0loNZznjOaJPUfo5Gpm5AYJI7HjOf9M8PWXHw3F', '5vCFJEKPtGFBtHOg7z3Qp7Piotn0xvadeWFVICwr1eUad4CNLth9FtI3aVv3FZyAx7NrGGDNSTsM+mtefXjDE4+RstCPPtNGU1iLvmQxmw1GVxDnh+ZJRcRnJ1yn7ITI']...
+  ethnic_name: ['Kinh', 'Thái', 'Nùng', 'Tày']
+  note: ['N?i b? FPT Long Châu - mail VuLP5@fpt.com - Inside 48744', 'Ng??i nhà FPT', 'KHÔNG C?N NH?C L?CH H?N TIÊM', 'KH b? chó c?n b?p chân (T), chó ngoài ???ng, v?t th??ng ?? III, KH ?ã r?a VT', 'KHÁCH MUA GÓI TRONG TH?I GIAN MANG THAI, C?N S?A L?I NGÀY SINH CHO E BÉ KHI BÉ ??N TIÊM']...
+  last_sync_tcqg: ['12/31/9999 23:59']
+  created_at: ['20:05.0', '38:43.0', '25:53.9', '49:07.5', '54:46.0']...
+  modified_at: ['13:51.5', '29:01.7', '23:19.3', '34:59.7', '48:15.5']...
+  start_date: ['20:38.9', '46:11.0', '00:29.2', '10:06.4', '48:15.5']...
+  end_date: ['12/31/9999 23:59']
+  current_flag: ['Y']
+  etl_date: ['02:49.2', '33:06.7']
+  etl_by: ['02c92e10-acde-4ab9-8c7b-047bbaf9fd8a']
+  scd_checksum: ['1d68786211a5efcd4608517569012317', '2579f75111152ffa8c761588f3f05155', '8ead5f07a0b859c3e44ae103a1b5f048', '32354b930e16f3f8c6d80513ab62caff', '0fc6b4aed8be6adeb38e70be4622228c']...
+  record_checksum: ['1efb9cee76a84fd87195dd40c4e8f699', '12ef560d3d6968e89f6bd80f3c1b3aed', 'e3b56834d2a5b6dd8441b2194d1f525f', '7e02c6a177d401f39afbc710167dbef3', '417948d4ba26b7e85410803705458254']...
+  primary_checksum: ['5d910a6b041e9eacab69f7d1e62bd5b1', 'c8da2a57e706ed5dcec5e0b01815fcdb', 'ff6ff1450bd00060b21c98a222ca006f', '69caab72e7a115a91212c7aaf4f94f8f', '328bb866f9eb5846fb4d0e6070e2c0ed']...
+  age_unit: ['Tu?n', 'Tu?i', 'Tháng']
+
+============================================================
+TABLE: [CADS-DD] Dữ liệu mẫu Vaccine V2_dim_product
+============================================================
+Total rows: 170
+
+Columns (47):
+  - 
+product_unit_id (INTEGER)
+  - product_id (INTEGER)
+  - product_name (TEXT)
+  - confirm_status (TEXT)
+  - is_active (INTEGER)
+  - item_code (INTEGER)
+  - product_upc (REAL)
+  - product_industry_code (INTEGER)
+  - product_industry_name (TEXT)
+  - product_group_code (INTEGER)
+  - product_group_name (TEXT)
+  - pm (TEXT)
+  - is_hot (INTEGER)
+  - is_po (INTEGER)
+  - vat_output (INTEGER)
+  - vat_output_name (TEXT)
+  - vat_output_rate (INTEGER)
+  - vat_input (INTEGER)
+  - vat_input_name (TEXT)
+  - vat_input_rate (INTEGER)
+  - supplier_code (REAL)
+  - supplier_name (TEXT)
+  - brand_name (TEXT)
+  - unit_code_level1 (INTEGER)
+  - unit_name_level1 (TEXT)
+  - ratio_level1 (INTEGER)
+  - unit_code_level2 (REAL)
+  - unit_name_level2 (TEXT)
+  - ratio_level2 (REAL)
+  - unit_code_level3 (REAL)
+  - unit_name_level3 (TEXT)
+  - ratio_level3 (REAL)
+  - smallest_unit_name (TEXT)
+  - smallest_unit_code (INTEGER)
+  - created_date (TEXT)
+  - updated_date (TEXT)
+  - etl_date (TEXT)
+  - product_industry_code_pos (INTEGER)
+  - product_group_code_pos (REAL)
+  - is_inventory_item (INTEGER)
+  - is_combo (TEXT)
+  - is_dose (TEXT)
+  - is_reasonname_shop (TEXT)
+  - is_chronic_disease (TEXT)
+  - productCategory_hcm_class (REAL)
+  - productCategory_hni_class (REAL)
+  - productCategory_nwc_class (REAL)
+
+Sample data (3 rows):
+  {'\nproduct_unit_id': 40646, 'product_id': 40606, 'product_name': 'BCG-TCDV', 'confirm_status': 'Approved', 'is_active': 1, 'item_code': 45659, 'product_upc': 865916000000.0, 'product_industry_code': 34, 'product_industry_name': 'VACCINE', 'product_group_code': 3885, 'product_group_name': 'LAO', 'pm': '44577-Lê Thái Quyên', 'is_hot': 0, 'is_po': 0, 'vat_output': 0, 'vat_output_name': 'VAT ??u ra không ch?u thu?', 'vat_output_rate': 0, 'vat_input': 0, 'vat_input_name': 'Thu? GTGT HHDV mua vào không ?? ?i?u ki?n kh?u tr?', 'vat_input_rate': 0, 'supplier_code': None, 'supplier_name': 'Ch?a xác ??nh', 'brand_name': 'Ch?a xác ??nh', 'unit_code_level1': 1, 'unit_name_level1': 'H?p', 'ratio_level1': 1, 'unit_code_level2': None, 'unit_name_level2': None, 'ratio_level2': None, 'unit_code_level3': 7.0, 'unit_name_level3': 'L?', 'ratio_level3': 1.0, 'smallest_unit_name': 'L?', 'smallest_unit_code': 7, 'created_date': '5/23/2024', 'updated_date': '5/27/2025', 'etl_date': '3/9/2026', 'product_industry_code_pos': 34, 'product_group_code_pos': 699.0, 'is_inventory_item': 1, 'is_combo': 'N', 'is_dose': 'N', 'is_reasonname_shop': 'Ng?ng ??t hàng', 'is_chronic_disease': 'N', 'productCategory_hcm_class': None, 'productCategory_hni_class': None, 'productCategory_nwc_class': None}
+  {'\nproduct_unit_id': 40663, 'product_id': 40624, 'product_name': 'V?c xin th??ng hàn vi Polysaccharide (L? 0.5ml)', 'confirm_status': 'Approved', 'is_active': 1, 'item_code': 45676, 'product_upc': 114081000000.0, 'product_industry_code': 34, 'product_industry_name': 'VACCINE', 'product_group_code': 3890, 'product_group_name': 'TH??NG HÀN', 'pm': '44577-Lê Thái Quyên', 'is_hot': 0, 'is_po': 0, 'vat_output': 0, 'vat_output_name': 'VAT ??u ra không ch?u thu?', 'vat_output_rate': 0, 'vat_input': 0, 'vat_input_name': 'Thu? GTGT HHDV mua vào không ?? ?i?u ki?n kh?u tr?', 'vat_input_rate': 0, 'supplier_code': None, 'supplier_name': 'Ch?a xác ??nh', 'brand_name': 'Ch?a xác ??nh', 'unit_code_level1': 1, 'unit_name_level1': 'H?p', 'ratio_level1': 1, 'unit_code_level2': None, 'unit_name_level2': None, 'ratio_level2': None, 'unit_code_level3': 7.0, 'unit_name_level3': 'L?', 'ratio_level3': 1.0, 'smallest_unit_name': 'L?', 'smallest_unit_code': 7, 'created_date': '5/23/2024', 'updated_date': '5/27/2025', 'etl_date': '3/9/2026', 'product_industry_code_pos': 34, 'product_group_code_pos': 704.0, 'is_inventory_item': 1, 'is_combo': 'N', 'is_dose': 'N', 'is_reasonname_shop': 'Ng?ng ??t hàng', 'is_chronic_disease': 'N', 'productCategory_hcm_class': None, 'productCategory_hni_class': None, 'productCategory_nwc_class': None}
+  {'\nproduct_unit_id': 40637, 'product_id': 40598, 'product_name': 'Imovax Polio (L? 1 li?u)- TCDV', 'confirm_status': 'Approved', 'is_active': 1, 'item_code': 45650, 'product_upc': 835846000000.0, 'product_industry_code': 34, 'product_industry_name': 'VACCINE', 'product_group_code': 3877, 'product_group_name': 'B?CH H?U – HO GÀ – U?N VÁN – B?I LI?T', 'pm': '44577-Lê Thái Quyên', 'is_hot': 0, 'is_po': 0, 'vat_output': 0, 'vat_output_name': 'VAT ??u ra không ch?u thu?', 'vat_output_rate': 0, 'vat_input': 0, 'vat_input_name': 'Thu? GTGT HHDV mua vào không ?? ?i?u ki?n kh?u tr?', 'vat_input_rate': 0, 'supplier_code': None, 'supplier_name': 'Ch?a xác ??nh', 'brand_name': 'Ch?a xác ??nh', 'unit_code_level1': 1, 'unit_name_level1': 'H?p', 'ratio_level1': 1, 'unit_code_level2': None, 'unit_name_level2': None, 'ratio_level2': None, 'unit_code_level3': 7.0, 'unit_name_level3': 'L?', 'ratio_level3': 1.0, 'smallest_unit_name': 'L?', 'smallest_unit_code': 7, 'created_date': '5/23/2024', 'updated_date': '5/26/2025', 'etl_date': '3/9/2026', 'product_industry_code_pos': 34, 'product_group_code_pos': 693.0, 'is_inventory_item': 1, 'is_combo': 'N', 'is_dose': 'N', 'is_reasonname_shop': 'Ng?ng ??t hàng', 'is_chronic_disease': 'N', 'productCategory_hcm_class': None, 'productCategory_hni_class': None, 'productCategory_nwc_class': None}
+
+Distinct values (TEXT columns):
+  product_name: ['BCG-TCDV', 'V?c xin th??ng hàn vi Polysaccharide (L? 0.5ml)', 'Imovax Polio (L? 1 li?u)- TCDV', 'V?c xin th??ng hàn vi Polysaccharide (L? 10ml)', 'BOOSTRIX 0.5ML 1DOSE']...
+  confirm_status: ['Approved']
+  product_industry_name: ['VACCINE']
+  product_group_name: ['LAO', 'TH??NG HÀN', 'B?CH H?U – HO GÀ – U?N VÁN – B?I LI?T', 'B?CH H?U, HO GÀ, U?N VÁN', 'CÚM']...
+  pm: ['44577-Lê Thái Quyên']
+  vat_output_name: ['VAT ??u ra không ch?u thu?']
+  vat_input_name: ['Thu? GTGT HHDV mua vào không ?? ?i?u ki?n kh?u tr?', 'Thu? giá tr? ??u vào: IP-KHONG CHIU THUE']
+  supplier_name: ['Ch?a xác ??nh', 'CÔNG TY TNHH TH??NG M?I VÀ D??C PH?M SANG (SANG PHARMA)', 'H? KINH DOANH - NHÀ THU?C HCM', 'CÔNG TY C? PH?N Y T? ??C MINH', 'KHÁCH VÃNG LAI-BÁN L?']...
+  brand_name: ['Ch?a xác ??nh', 'Gsk', 'Sanofi', 'Vabiotech', 'Merck Sharp & Dohme']...
+  unit_name_level1: ['H?p', 'Gói']
+  unit_name_level2: ['L?', 'Li?u']
+  unit_name_level3: ['L?', '?ng', 'Li?u']
+  smallest_unit_name: ['L?', '?ng', 'Gói', 'H?p', 'Li?u']
+  created_date: ['5/23/2024', '5/23/2023', '3/12/2024', '2/21/2024', '12/2/2023']...
+  updated_date: ['5/27/2025', '5/26/2025', '9/25/2025', '1/19/2026', '1/16/2026']...
+  etl_date: ['3/9/2026']
+  is_combo: ['N', 'Y']
+  is_dose: ['N', 'Y']
+  is_reasonname_shop: ['Ng?ng ??t hàng', 'Unspecified', 'Khách ??t m?i l?y', 'Date c?n', 'H?t hàng']...
+  is_chronic_disease: ['N']
+
+============================================================
+TABLE: [CADS-DD] Dữ liệu mẫu Vaccine V2_dim_shop
+============================================================
+Total rows: 500
+
+Columns (58):
+  - code (INTEGER)
+  - shop_type (TEXT)
+  - region_insurance (INTEGER)
+  - legal_entity (INTEGER)
+  - regulated_ward (INTEGER)
+  - regulated_province (INTEGER)
+  - district (INTEGER)
+  - ward (INTEGER)
+  - region (INTEGER)
+  - area (INTEGER)
+  - province (INTEGER)
+  - name (TEXT)
+  - pw_dqg (TEXT)
+  - acc_dqg (TEXT)
+  - status (INTEGER)
+  - address (TEXT)
+  - code_dqg (TEXT)
+  - ip_phone (TEXT)
+  - shop_scope (INTEGER)
+  - short_name (TEXT)
+  - name_on_bill (TEXT)
+  - cash_account (REAL)
+  - shop_code_hub (REAL)
+  - ware_house_ho (INTEGER)
+  - region_inside (INTEGER)
+  - short_address (TEXT)
+  - province_inside (INTEGER)
+  - warehouse_ho_mrp (INTEGER)
+  - cash_account_name (TEXT)
+  - grand_opening_date (TEXT)
+  - opening_date (TEXT)
+  - regulated_address (TEXT)
+  - regulated_short_address (TEXT)
+  - closing_date (TEXT)
+  - ware_house_ho_vac (REAL)
+  - province_name (TEXT)
+  - area_name (TEXT)
+  - region_name (TEXT)
+  - ward_name (TEXT)
+  - district_name (TEXT)
+  - longitude (REAL)
+  - latitude (REAL)
+  - coordinate (TEXT)
+  - region_type_code (INTEGER)
+  - region_type_name (TEXT)
+  - regulated_province_name (TEXT)
+  - regulated_ward_name (TEXT)
+  - legal_entity_name (TEXT)
+  - tax_code (INTEGER)
+  - region_insurance_name (TEXT)
+  - shop_type_name (TEXT)
+  - asm_code (REAL)
+  - rsm_code (INTEGER)
+  - rsm_name (TEXT)
+  - asm_name (TEXT)
+  - asm_email (TEXT)
+  - etl_date (TEXT)
+  - tenant (TEXT)
+
+Sample data (3 rows):
+  {'code': 80258, 'shop_type': '["F"]', 'region_insurance': 2, 'legal_entity': 90800, 'regulated_ward': 22945, 'regulated_province': 68, 'district': 90, 'ward': 22930, 'region': 523, 'area': 694, 'province': 11, 'name': 'LC L?G 29 Nguy?n H?i, P. Phan Thi?t', 'pw_dqg': '123456a', 'acc_dqg': 'gpp_60_000721_1407', 'status': 1, 'address': '29 Nguy?n H?i, P. Phú Trinh, TP. Phan Thi?t, T?nh Bình Thu?n', 'code_dqg': '60-000721', 'ip_phone': '82258', 'shop_scope': 1, 'short_name': 'LC258-L?G-29NH,PT', 'name_on_bill': 'NHATHUOCLONGCHAU', 'cash_account': 11110012581.0, 'shop_code_hub': 80574.0, 'ware_house_ho': 80001, 'region_inside': 7, 'short_address': '29 Nguy?n H?i, TP. Phan Thi?t, Bình Thu?n', 'province_inside': 1662, 'warehouse_ho_mrp': 80001, 'cash_account_name': 'Ti?n Vi?t Nam_LC258-BTN-29NH_FPT', 'grand_opening_date': '2025-05-08T00:00:00', 'opening_date': '6/23/2021', 'regulated_address': '29 Nguy?n H?i, Ph??ng Phan Thi?t, T?nh Lâm ??ng', 'regulated_short_address': '29 Nguy?n H?i, P. Phan Thi?t, T?nh Lâm ??ng', 'closing_date': None, 'ware_house_ho_vac': None, 'province_name': 'T?nh Bình Thu?n', 'area_name': 'Mi?n ?ông - KV6', 'region_name': 'Mi?n ?ông', 'ward_name': 'Ph??ng Phú Trinh', 'district_name': 'Thành ph? Phan Thi?t', 'longitude': 108.097306, 'latitude': 10.936083, 'coordinate': '108.097306, 10.936083', 'region_type_code': 512, 'region_type_name': 'Chu?i Thu?c', 'regulated_province_name': 'T?nh Lâm ??ng', 'regulated_ward_name': 'Ph??ng Phan Thi?t', 'legal_entity_name': 'CÔNG TY C? PH?N D??C PH?M FPT LONG CHÂU', 'tax_code': 315275368, 'region_insurance_name': 'Vùng b?o hi?m 2', 'shop_type_name': 'Long Châu', 'asm_code': 6838.0, 'rsm_code': 1034, 'rsm_name': 'QcStPTQAJuAg6Jf/yPntVM2XNHrisjoOP32a8PR2QQEDV4nx7rZ4TOnWeqEpm79z', 'asm_name': 'F6IuawIodURG5LKIQ9GQsToPkV3Wjktv6BowB76yIVtHqccDF808xSBJUvvk+iRLPSUOwCtjsIR5OJZZYfi6ITjx31+3/e1LVj+u9NU400He0ZH42SEUhktQs6iF7r1C', 'asm_email': 'GmGlXVCtKS84czSSysxk6P9CHCkqAmFly1EfZO13whVmfFfTSZ4ghTLyMUkzxmtK', 'etl_date': '3/10/2026', 'tenant': 'FLC'}
+  {'code': 80422, 'shop_type': '["F"]', 'region_insurance': 1, 'legal_entity': 90800, 'regulated_ward': 27427, 'regulated_province': 79, 'district': 232, 'ward': 27412, 'region': 513, 'area': 517, 'province': 23, 'name': 'LC HCM 75 L??ng Ng?c Quy?n, P. Phú ??nh', 'pw_dqg': '123456a', 'acc_dqg': 'gpp_79_011979_', 'status': 1, 'address': '75 L??ng Ng?c Quy?n, P. 13, Q. 8, TP. H? Chí Minh', 'code_dqg': '79-011979', 'ip_phone': '82422', 'shop_scope': 1, 'short_name': 'LC422-HCM-75LNQ,P?', 'name_on_bill': 'NHATHUOCLONGCHAU', 'cash_account': 11110014221.0, 'shop_code_hub': 80326.0, 'ware_house_ho': 80001, 'region_inside': 5, 'short_address': '75 L??ng Ng?c Quy?n, Q. 8, TP. HCM', 'province_inside': 515, 'warehouse_ho_mrp': 80001, 'cash_account_name': 'Ti?n Vi?t Nam_LC422-HCM-75LNQ_FPT', 'grand_opening_date': '2021-10-21T00:00:00', 'opening_date': '11/28/2021', 'regulated_address': '75 L??ng Ng?c Quy?n, Ph??ng Phú ??nh, TP. H? Chí Minh', 'regulated_short_address': '75 L??ng Ng?c Quy?n, P. Phú ??nh, TP. H? Chí Minh', 'closing_date': None, 'ware_house_ho_vac': None, 'province_name': 'H? Chí Minh', 'area_name': 'H? Chí Minh 1 - KV2', 'region_name': 'H? Chí Minh 1', 'ward_name': 'Ph??ng 13', 'district_name': 'Qu?n 8', 'longitude': 106.659245, 'latitude': 10.746073, 'coordinate': '106.659245, 10.746073', 'region_type_code': 512, 'region_type_name': 'Chu?i Thu?c', 'regulated_province_name': 'H? Chí Minh', 'regulated_ward_name': 'Ph??ng Phú ??nh', 'legal_entity_name': 'CÔNG TY C? PH?N D??C PH?M FPT LONG CHÂU', 'tax_code': 315275368, 'region_insurance_name': 'Vùng b?o hi?m 1', 'shop_type_name': 'Long Châu', 'asm_code': 28.0, 'rsm_code': 3007, 'rsm_name': 'G/c2Lj+D6x5yVcpJYqrmqo/voxYBXbCenvyuIMlG5AFQcsnPC5kmxEClPnL5kw5e', 'asm_name': 'U/wJqzijHUkVwMPHndezBUNRVZbO8U4Kfgres6z1AU9N7BXoJ/wg+ke2Z1Z2W1qfmef+rmkWKzQow/kW/wxWv8PkBmta2lsr6ase6ruToO42obubi17VzAuwO8iMrO75', 'asm_email': 'UzzXHVABpQdM5Zt6NtfYQv0/i5CLbPo+B0gfuI8sDLFew0oGnjpdVBUeQHUZjci2', 'etl_date': '3/10/2026', 'tenant': 'FLC'}
+  {'code': 58197, 'shop_type': '["VACCINE"]', 'region_insurance': 4, 'legal_entity': 90800, 'regulated_ward': 18115, 'regulated_province': 42, 'district': 325, 'ward': 18115, 'region': 570, 'area': 912, 'province': 29, 'name': 'VX HTH 189 Tr?n Phú, P. B?c H?ng L?nh', 'pw_dqg': None, 'acc_dqg': None, 'status': 1, 'address': '189 Tr?n Phú, P. B?c H?ng, TX. H?ng L?nh, T?nh Hà T?nh', 'code_dqg': None, 'ip_phone': '60400 , 60401', 'shop_scope': 1, 'short_name': 'VX197-HTH-189TP,BHL', 'name_on_bill': 'NHATHUOCLONGCHAU', 'cash_account': 111100000000.0, 'shop_code_hub': 57025.0, 'ware_house_ho': 80002, 'region_inside': 3, 'short_address': '189 Tr?n Phú, TX. H?ng L?nh, Hà T?nh', 'province_inside': 1496, 'warehouse_ho_mrp': 80002, 'cash_account_name': 'Ti?n Vi?t Nam_VX197-HTH-189TP', 'grand_opening_date': '2025-07-18T00:00:00', 'opening_date': '7/15/2025', 'regulated_address': '189 Tr?n Phú, Ph??ng B?c H?ng L?nh, T?nh Hà T?nh', 'regulated_short_address': '189 Tr?n Phú, P. B?c H?ng L?nh, T?nh Hà T?nh', 'closing_date': None, 'ware_house_ho_vac': 57002.0, 'province_name': 'T?nh Hà T?nh', 'area_name': 'Mi?n Trung - KV13', 'region_name': 'Mi?n Trung', 'ward_name': 'Ph??ng B?c H?ng', 'district_name': 'Th? xã H?ng L?nh', 'longitude': 105.696361, 'latitude': 18.52943, 'coordinate': '105.696361, 18.52943', 'region_type_code': 512, 'region_type_name': 'Chu?i Thu?c', 'regulated_province_name': 'T?nh Hà T?nh', 'regulated_ward_name': 'Ph??ng B?c H?ng L?nh', 'legal_entity_name': 'CÔNG TY C? PH?N D??C PH?M FPT LONG CHÂU', 'tax_code': 315275368, 'region_insurance_name': 'Vùng b?o hi?m 4', 'shop_type_name': 'Vaccine', 'asm_code': 47001.0, 'rsm_code': 2921, 'rsm_name': 'Fr+7NTIhMFo1njqPv1Yozjwkum2qieJaQXWHGl6YZgE91pr9ox0Tf1fo3ESFnzQL', 'asm_name': 'o+HStR2j+XJaILRziQO/EWqE0lZxHHY30zNAOv88jX5JBzHNDiufBCZDqdj3uoCF1Vdnr/fWjBK7Lgd2qtLF9jzASNlWVmtJHewS4QeOx6WiUjvtW1eBVEtqmF10CCKi', 'asm_email': '2yZI8+Gla4kOHzTVuCXKf16ly8nYV9XzRqU9jfU9HMU=', 'etl_date': '3/10/2026', 'tenant': 'VAC'}
+
+Distinct values (TEXT columns):
+  shop_type: ['["F"]', '["VACCINE"]', '["HOPE"]', '["DA"]', '["HUB"]']...
+  name: ['LC L?G 29 Nguy?n H?i, P. Phan Thi?t', 'LC HCM 75 L??ng Ng?c Quy?n, P. Phú ??nh', 'VX HTH 189 Tr?n Phú, P. B?c H?ng L?nh', 'LC DAG 385 Kinh D??ng V??ng, P. Hòa Khánh', 'LC DLK 43 Tr?n H?ng ??o, X. Sông Hinh']...
+  pw_dqg: ['123456a', 'Ntlc2023', 'Abc123456', 'Qu@ngninh2023', 'Longchau@123']...
+  acc_dqg: ['gpp_60_000721_1407', 'gpp_79_011979_', 'gpp_48_001070_1530', 'gpp_54_000765_1332', 'gpp_24_002103_2144']...
+  address: ['29 Nguy?n H?i, P. Phú Trinh, TP. Phan Thi?t, T?nh Bình Thu?n', '75 L??ng Ng?c Quy?n, P. 13, Q. 8, TP. H? Chí Minh', '189 Tr?n Phú, P. B?c H?ng, TX. H?ng L?nh, T?nh Hà T?nh', '385 Kinh D??ng V??ng, P. Hoà Mình, Q. Liên Chi?u, TP. ?à N?ng', '43 Tr?n H?ng ??o, TT. Hai Riêng, H. Sông Hinh, T?nh Phú Yên']...
+  code_dqg: ['60-000721', '79-011979', '48-001070', '54-000765', '24-002103']...
+  ip_phone: ['82258', '82422', '60400 , 60401', '821093', '82833']...
+  short_name: ['LC258-L?G-29NH,PT', 'LC422-HCM-75LNQ,P?', 'VX197-HTH-189TP,BHL', 'LC1093-DAG-385KDV,HK', 'LC1355-DLK-43TH?,SH']...
+  name_on_bill: ['NHATHUOCLONGCHAU', 'NHATHUOCHOPE']
+  short_address: ['29 Nguy?n H?i, TP. Phan Thi?t, Bình Thu?n', '75 L??ng Ng?c Quy?n, Q. 8, TP. HCM', '189 Tr?n Phú, TX. H?ng L?nh, Hà T?nh', '385 Kinh D??ng V??ng, Q. Liên Chi?u, TP. ?à N?ng', '43 Tr?n H?ng ??o, H. Sông Hinh, Phú Yên']...
+  cash_account_name: ['Ti?n Vi?t Nam_LC258-BTN-29NH_FPT', 'Ti?n Vi?t Nam_LC422-HCM-75LNQ_FPT', 'Ti?n Vi?t Nam_VX197-HTH-189TP', 'Ti?n Vi?t Nam_LC1093-DAG-385KDV_FPT', 'Ti?n Vi?t Nam_LC1355-PYN-43TH?']...
+  grand_opening_date: ['2025-05-08T00:00:00', '2021-10-21T00:00:00', '2025-07-18T00:00:00', '2023-07-14T00:00:00', '2023-11-02T00:00:00']...
+  opening_date: ['6/23/2021', '11/28/2021', '7/15/2025', '5/4/2023', '10/8/2023']...
+  regulated_address: ['29 Nguy?n H?i, Ph??ng Phan Thi?t, T?nh Lâm ??ng', '75 L??ng Ng?c Quy?n, Ph??ng Phú ??nh, TP. H? Chí Minh', '189 Tr?n Phú, Ph??ng B?c H?ng L?nh, T?nh Hà T?nh', '385 Kinh D??ng V??ng, Ph??ng Hòa Khánh, TP. ?à N?ng', '43 Tr?n H?ng ??o, Xã Sông Hinh, T?nh ??k L?k']...
+  regulated_short_address: ['29 Nguy?n H?i, P. Phan Thi?t, T?nh Lâm ??ng', '75 L??ng Ng?c Quy?n, P. Phú ??nh, TP. H? Chí Minh', '189 Tr?n Phú, P. B?c H?ng L?nh, T?nh Hà T?nh', '385 Kinh D??ng V??ng, P. Hòa Khánh, TP. ?à N?ng', '43 Tr?n H?ng ??o, X. Sông Hinh, T?nh ??k L?k']...
+  closing_date: ['2025-12-20T00:00:00', '2025-11-01T00:00:00', '2025-11-18T00:00:00', '2025-01-01T00:00:00', '2024-09-25T00:00:00']...
+  province_name: ['T?nh Bình Thu?n', 'H? Chí Minh', 'T?nh Hà T?nh', '?à N?ng', 'T?nh Phú Yên']...
+  area_name: ['Mi?n ?ông - KV6', 'H? Chí Minh 1 - KV2', 'Mi?n Trung - KV13', 'Mi?n Trung - KV1', 'Mi?n ?ông - KV2']...
+  region_name: ['Mi?n ?ông', 'H? Chí Minh 1', 'Mi?n Trung', 'Hà N?i', 'Mi?n B?c 2']...
+  ward_name: ['Ph??ng Phú Trinh', 'Ph??ng 13', 'Ph??ng B?c H?ng', 'Ph??ng Hòa Minh', 'Th? tr?n Hai Riêng']...
+  district_name: ['Thành ph? Phan Thi?t', 'Qu?n 8', 'Th? xã H?ng L?nh', 'Qu?n Liên Chi?u', 'Huy?n Sông Hinh']...
+  coordinate: ['108.097306, 10.936083', '106.659245, 10.746073', '105.696361, 18.52943', '108.161756, 16.079619', '108.898287, 12.979851']...
+  region_type_name: ['Chu?i Thu?c']
+  regulated_province_name: ['T?nh Lâm ??ng', 'H? Chí Minh', 'T?nh Hà T?nh', '?à N?ng', 'T?nh ??k L?k']...
+  regulated_ward_name: ['Ph??ng Phan Thi?t', 'Ph??ng Phú ??nh', 'Ph??ng B?c H?ng L?nh', 'Ph??ng Hòa Khánh', 'Xã Sông Hinh']...
+  legal_entity_name: ['CÔNG TY C? PH?N D??C PH?M FPT LONG CHÂU']
+  region_insurance_name: ['Vùng b?o hi?m 2', 'Vùng b?o hi?m 1', 'Vùng b?o hi?m 4', 'Vùng b?o hi?m 3']
+  shop_type_name: ['Long Châu', 'Vaccine', 'D???c hi vo?ng', 'D? án', 'Hub Long Châu']...
+  rsm_name: ['QcStPTQAJuAg6Jf/yPntVM2XNHrisjoOP32a8PR2QQEDV4nx7rZ4TOnWeqEpm79z', 'G/c2Lj+D6x5yVcpJYqrmqo/voxYBXbCenvyuIMlG5AFQcsnPC5kmxEClPnL5kw5e', 'Fr+7NTIhMFo1njqPv1Yozjwkum2qieJaQXWHGl6YZgE91pr9ox0Tf1fo3ESFnzQL', '73gIxKfxTJdAtQtyJsYnX68qTS2wNbjlFNkXfXj6dQlbfqDjyRWqPJ638ocpEadq', 'X5KtFwPvGNDd4RXi6Oi44hsUxs+cKHB4bSLhD/tFgEoa//cjaSFohMA+CYUbaDVy']...
+  asm_name: ['F6IuawIodURG5LKIQ9GQsToPkV3Wjktv6BowB76yIVtHqccDF808xSBJUvvk+iRLPSUOwCtjsIR5OJZZYfi6ITjx31+3/e1LVj+u9NU400He0ZH42SEUhktQs6iF7r1C', 'U/wJqzijHUkVwMPHndezBUNRVZbO8U4Kfgres6z1AU9N7BXoJ/wg+ke2Z1Z2W1qfmef+rmkWKzQow/kW/wxWv8PkBmta2lsr6ase6ruToO42obubi17VzAuwO8iMrO75', 'o+HStR2j+XJaILRziQO/EWqE0lZxHHY30zNAOv88jX5JBzHNDiufBCZDqdj3uoCF1Vdnr/fWjBK7Lgd2qtLF9jzASNlWVmtJHewS4QeOx6WiUjvtW1eBVEtqmF10CCKi', 'K/o2YFPVByb7g3f8j8AJybvkOJFLlJLXJNJcm+mKGE/0B+ojV9Q4tK5cXbHwloGCtd7WXWrKlBWfRoP4DrOTpFIktBkOK/QihltThUb7CkYiCDgai5SrXTSixsytXVnG', 'v4wpX9eShPniVqhLRm2HROGzVGbmFTgffrf+7p4UKZRfHosQHvB2wdU+SFSvl6zpm03cBn0EsEXqWby19PCUBPH3sBWjRLk4AzjvNtahcUiAE4IjX1V3tHki4/WVOBEl']...
+  asm_email: ['GmGlXVCtKS84czSSysxk6P9CHCkqAmFly1EfZO13whVmfFfTSZ4ghTLyMUkzxmtK', 'UzzXHVABpQdM5Zt6NtfYQv0/i5CLbPo+B0gfuI8sDLFew0oGnjpdVBUeQHUZjci2', '2yZI8+Gla4kOHzTVuCXKf16ly8nYV9XzRqU9jfU9HMU=', 'VfDcryXgBxmqyqthzFTsBfoNDweYlVGd/tlgaP13eIgiFxdtDjcH1rNkg6Lpq/cf', 'WSKpIUuMJ4YT/yZT7fj4yJ8i7rn4Vjd4QB62tw8Onf3Sv3IDQwjh7kmPge28InSr']...
+  etl_date: ['3/10/2026']
+  tenant: ['FLC', 'VAC']
+
+============================================================
+TABLE: [CADS-DD] Dữ liệu mẫu Vaccine V2_dim_statellite_shop
+============================================================
+Total rows: 500
+
+Columns (14):
+  - id (REAL)
+  - shop_code_vaccine (INTEGER)
+  - shop_name_vaccine (TEXT)
+  - shop_code_lc (INTEGER)
+  - shop_name_lc (TEXT)
+  - shop_type (TEXT)
+  - status (INTEGER)
+  - effective_from_date (TEXT)
+  - effective_to_date (TEXT)
+  - is_deleted (INTEGER)
+  - etl_date (TEXT)
+  - etl_by (TEXT)
+  - primary_checksum (TEXT)
+  - record_checksum (TEXT)
+
+Sample data (3 rows):
+  {'id': None, 'shop_code_vaccine': 58002, 'shop_name_vaccine': 'VX HCM 224A Lê V?n L??ng', 'shop_code_lc': 80046, 'shop_name_lc': 'LC HCM 224A Lê V?n L??ng', 'shop_type': 'VTTTTC', 'status': 1, 'effective_from_date': '6/1/2024', 'effective_to_date': '1/1/2051', 'is_deleted': 0, 'etl_date': '5/30/2025', 'etl_by': 'DataBricks', 'primary_checksum': '6afde17212ab01b0686796ed221ebf0a', 'record_checksum': '4ac4307e1ce0616242ba813843928242'}
+  {'id': None, 'shop_code_vaccine': 58155, 'shop_name_vaccine': 'VX BTE ??i L? ??ng Kh?i, Phú Kh??ng', 'shop_code_lc': 80409, 'shop_name_lc': 'LC BTE 19F-20 Nguy?n Th? ??nh', 'shop_type': 'VT', 'status': 1, 'effective_from_date': '5/1/2025', 'effective_to_date': '5/2/2050', 'is_deleted': 0, 'etl_date': '5/30/2025', 'etl_by': 'DataBricks', 'primary_checksum': 'c9007957400dcbe3ed70938ba9af8efc', 'record_checksum': 'ddf5de38e201fee9be2c86ac9f7281c2'}
+  {'id': None, 'shop_code_vaccine': 58009, 'shop_name_vaccine': 'VX TNH 218 Qu?c L? 22B', 'shop_code_lc': 81037, 'shop_name_lc': 'LC TNH ?p B?n ?ình, Th?nh ??c', 'shop_type': 'VT', 'status': 1, 'effective_from_date': '3/1/2025', 'effective_to_date': '3/2/2050', 'is_deleted': 0, 'etl_date': '5/30/2025', 'etl_by': 'DataBricks', 'primary_checksum': 'dc5424436a1f21b22faeaf6db02d48e3', 'record_checksum': 'a7f017cb0504f819a309d6ec91c37cbb'}
+
+Distinct values (TEXT columns):
+  shop_name_vaccine: ['VX HCM 224A Lê V?n L??ng', 'VX BTE ??i L? ??ng Kh?i, Phú Kh??ng', 'VX TNH 218 Qu?c L? 22B', 'VX HNI 244 Minh Khai', 'VX HCM 580 Nguy?n Duy Trinh']...
+  shop_name_lc: ['LC HCM 224A Lê V?n L??ng', 'LC BTE 19F-20 Nguy?n Th? ??nh', 'LC TNH ?p B?n ?ình, Th?nh ??c', 'LC HNI 297 Hoàng Mai', 'LC HCM 320 Nguy?n Duy Trinh']...
+  shop_type: ['VTTTTC', 'VT']
+  effective_from_date: ['6/1/2024', '5/1/2025', '3/1/2025', '12/18/2024', '6/7/2024']...
+  effective_to_date: ['1/1/2051', '5/2/2050', '3/2/2050', '12/19/2050', '11/2/2035']...
+  etl_date: ['5/30/2025', '6/11/2025', '6/29/2025', '7/2/2025', '7/3/2025']...
+  etl_by: ['DataBricks']
+  primary_checksum: ['6afde17212ab01b0686796ed221ebf0a', 'c9007957400dcbe3ed70938ba9af8efc', 'dc5424436a1f21b22faeaf6db02d48e3', '75aa2d1e93eeafda6f657bef88b4fa34', '7647c80e1ab95e23036fa2bde1ef04c6']...
+  record_checksum: ['4ac4307e1ce0616242ba813843928242', 'ddf5de38e201fee9be2c86ac9f7281c2', 'a7f017cb0504f819a309d6ec91c37cbb', '3426fc2033a2115670d70546953b70b0', '11963d07bbbd65cac419b57654b3a6b5']...
+
+============================================================
+TABLE: [CADS-DD] Dữ liệu mẫu Vaccine V2_dim_vaccine_disease_group
+============================================================
+Total rows: 60
+
+Columns (17):
+  - 
+id (INTEGER)
+  - sku (INTEGER)
+  - vaccine_id (TEXT)
+  - vaccine_name (TEXT)
+  - note (TEXT)
+  - disease_group_id (TEXT)
+  - disease_group_name (TEXT)
+  - created_at (TEXT)
+  - modified_at (TEXT)
+  - start_date (TEXT)
+  - end_date (TEXT)
+  - current_flag (TEXT)
+  - etl_date (TEXT)
+  - etl_by (TEXT)
+  - scd_checksum (TEXT)
+  - primary_checksum (TEXT)
+  - record_checksum (TEXT)
+
+Sample data (3 rows):
+  {'\nid': 1, 'sku': 38265, 'vaccine_id': '0ce0bdfd-1bf6-41af-a8e8-2b9c817d6c46', 'vaccine_name': 'MORCVAX', 'note': None, 'disease_group_id': '0e458bfb-24ce-4410-885e-1cbb5f0894ae', 'disease_group_name': 'T?', 'created_at': '12/3/2023', 'modified_at': '1/3/2025', 'start_date': '12/3/2023', 'end_date': '12/31/9999', 'current_flag': 'Y', 'etl_date': '4/2/2025', 'etl_by': 'Databricks', 'scd_checksum': '2b868e8fd6b040239fdb3e76c663a611', 'primary_checksum': '7ba4cbf66ee0f21928db8377a645926a', 'record_checksum': '565675c07787b6f1a34554b11ea3820b'}
+  {'\nid': 2, 'sku': 46876, 'vaccine_id': 'e428b854-cd7e-40da-b10f-58ed7ab66a67', 'vaccine_name': 'U?N VÁN B?CH H?U H?P PH? (Td) L? 10 LI?U', 'note': None, 'disease_group_id': 'b935d421-dfca-44ca-a457-603a014b08fb', 'disease_group_name': 'B?CH H?U, U?N VÁN', 'created_at': '12/25/2023', 'modified_at': '12/25/2023', 'start_date': '12/25/2023', 'end_date': '12/31/9999', 'current_flag': 'Y', 'etl_date': '4/2/2025', 'etl_by': 'Databricks', 'scd_checksum': 'c78d3a9c402bac615212506647cc2f0c', 'primary_checksum': '28d54858782580b01baa9d16af52e67b', 'record_checksum': '399c29c7e6ce559012d9402edbd4d3ab'}
+  {'\nid': 3, 'sku': 38263, 'vaccine_id': '14db8357-1a27-42f9-8b60-c5b6ccd7e78b', 'vaccine_name': 'MVVAC', 'note': None, 'disease_group_id': 'f92433dd-3af9-42b8-9c3a-06999fb4b055', 'disease_group_name': 'S?I', 'created_at': '12/3/2023', 'modified_at': '1/3/2025', 'start_date': '12/3/2023', 'end_date': '12/31/9999', 'current_flag': 'Y', 'etl_date': '4/2/2025', 'etl_by': 'Databricks', 'scd_checksum': '7051de16a04a1a6e0a7860ab0ef09a43', 'primary_checksum': 'e266851eca8cf1ccea9754e72ba74645', 'record_checksum': 'fbd30250c4fc2ae0b142c7a607f73f51'}
+
+Distinct values (TEXT columns):
+  vaccine_id: ['0ce0bdfd-1bf6-41af-a8e8-2b9c817d6c46', 'e428b854-cd7e-40da-b10f-58ed7ab66a67', '14db8357-1a27-42f9-8b60-c5b6ccd7e78b', 'cd542041-0791-4943-bef1-47fc343e388b', 'e1206ca5-58ba-4e04-b27a-47a80db573ef']...
+  vaccine_name: ['MORCVAX', 'U?N VÁN B?CH H?U H?P PH? (Td) L? 10 LI?U', 'MVVAC', 'GENE HBVAX 0.5ML', 'QDENGA']...
+  note: ['- Update VaccineName from PIM at 2025-04-15, Old Data: VAXNEUVANCE (PCV15), New Data: VAXNEUVANCE (PCV15). - Update VaccineName from PIM at 2025-04-16, Old Data: VAXNEUVANCE (PCV15), New Data: VAXNEUVANCE (PCV15). - Update VaccineName from PIM at 2025-04-16, Old Data: VAXNEUVANCE (PCV15), New Data: VAXNEUVANCE (PCV15). - Update VaccineName from PIM at 2025-04-16, Old Data: VAXNEUVANCE (PCV15), New Data: VAXNEUVANCE (PCV15). - Update VaccineName from PIM at 2025-04-16, Old Data: VAXNEUVANCE (PCV15), New Data: VAXNEUVANCE (PCV15).']
+  disease_group_id: ['0e458bfb-24ce-4410-885e-1cbb5f0894ae', 'b935d421-dfca-44ca-a457-603a014b08fb', 'f92433dd-3af9-42b8-9c3a-06999fb4b055', '9600f173-51f4-43ca-8295-f1b1a157dd29', '5799fb22-f243-4bfc-bc2c-7f3aac544cc4']...
+  disease_group_name: ['T?', 'B?CH H?U, U?N VÁN', 'S?I', 'VIÊM GAN B', 'S?T XU?T HUY?T']...
+  created_at: ['12/3/2023', '12/25/2023', '8/24/2024', '10/4/2024', '5/13/2024']...
+  modified_at: ['1/3/2025', '12/25/2023', '12/3/2023', '10/28/2024', 'NaT']...
+  start_date: ['12/3/2023', '12/25/2023', '8/24/2024', '10/4/2024', '5/13/2024']...
+  end_date: ['12/31/9999']
+  current_flag: ['Y', 'N']
+  etl_date: ['4/2/2025', '5/29/2025', '7/7/2025', '12/5/2025', '5/26/2025']...
+  etl_by: ['Databricks']
+  scd_checksum: ['2b868e8fd6b040239fdb3e76c663a611', 'c78d3a9c402bac615212506647cc2f0c', '7051de16a04a1a6e0a7860ab0ef09a43', 'f6146313cb5287d92a872925bb391dbb', 'dcf866ac87b6fe963383673226ceb76c']...
+  primary_checksum: ['7ba4cbf66ee0f21928db8377a645926a', '28d54858782580b01baa9d16af52e67b', 'e266851eca8cf1ccea9754e72ba74645', '6624538cf4b68216711bf6f656ffcbb5', 'a954db6d4ce61baa2ad4487195716852']...
+  record_checksum: ['565675c07787b6f1a34554b11ea3820b', '399c29c7e6ce559012d9402edbd4d3ab', 'fbd30250c4fc2ae0b142c7a607f73f51', '045757d1245cc4e2441c81f263122ea3', '2c4aa9c73a30da18650280a252991543']...
+
+============================================================
+TABLE: [CADS-DD] Dữ liệu mẫu Vaccine V2_dim_vaccine_regimen
+============================================================
+Total rows: 500
+
+Columns (27):
+  - regimen_detail_id (TEXT)
+  - regimen_id (TEXT)
+  - vaccine_id (TEXT)
+  - from_age (TEXT)
+  - to_age (TEXT)
+  - age_unit_code (INTEGER)
+  - age_unit (TEXT)
+  - from_age_number (INTEGER)
+  - to_age_number (INTEGER)
+  - schedule_type (TEXT)
+  - required_injections (INTEGER)
+  - max_injections (REAL)
+  - unit (TEXT)
+  - regimen_detail_note (TEXT)
+  - dosage (REAL)
+  - nearest_injection_distance (REAL)
+  - max_distance (INTEGER)
+  - min_distance (INTEGER)
+  - is_pregnant_regimen (INTEGER)
+  - is_required (INTEGER)
+  - note (REAL)
+  - created_at (TEXT)
+  - modified_at (TEXT)
+  - etl_date (TEXT)
+  - etl_by (TEXT)
+  - record_checksum (TEXT)
+  - primary_checksum (TEXT)
+
+Sample data (3 rows):
+  {'regimen_detail_id': '012caa80-b3ed-4641-9925-73a14db51beb', 'regimen_id': '10fecf80-ec12-4177-93e0-d78125a10086', 'vaccine_id': 'ad980c82-0ed4-4793-a7e6-3b74ab3d3db7', 'from_age': '50 tu?i', 'to_age': None, 'age_unit_code': 3, 'age_unit': 'Age', 'from_age_number': 50, 'to_age_number': 1000, 'schedule_type': 'T? 50 tu?i tr? lên', 'required_injections': 2, 'max_injections': 2.0, 'unit': 'ml', 'regimen_detail_note': None, 'dosage': 0.5, 'nearest_injection_distance': 0.0, 'max_distance': 0, 'min_distance': 0, 'is_pregnant_regimen': 0, 'is_required': 1, 'note': None, 'created_at': '10/4/2024', 'modified_at': '11/7/2024', 'etl_date': '3/10/2026', 'etl_by': '02c92e10-acde-4ab9-8c7b-047bbaf9fd8a', 'record_checksum': '269907bec23f2e6c2ae946e9da68610c', 'primary_checksum': '40cba1a81e5fe0341e69e750fb6d7457'}
+  {'regimen_detail_id': '045c2da6-64ae-4d89-b906-741d36ca5158', 'regimen_id': 'dd06f3cc-ec1d-41c5-bb7b-484a9bf091db', 'vaccine_id': 'b046a06e-cfc1-4327-9bfe-8efd07372dbd', 'from_age': '12 tháng tu?i', 'to_age': '< 24 tháng tu?i', 'age_unit_code': 2, 'age_unit': 'Month', 'from_age_number': 12, 'to_age_number': 24, 'schedule_type': 'T? 12 tháng - d??i 24 tháng', 'required_injections': 3, 'max_injections': 3.0, 'unit': 'ml', 'regimen_detail_note': None, 'dosage': 0.5, 'nearest_injection_distance': None, 'max_distance': 60, 'min_distance': 58, 'is_pregnant_regimen': 0, 'is_required': 1, 'note': None, 'created_at': '6/1/2024', 'modified_at': 'NaT', 'etl_date': '3/10/2026', 'etl_by': '02c92e10-acde-4ab9-8c7b-047bbaf9fd8a', 'record_checksum': 'b610ed6e9de197599b50bc5e99558fa6', 'primary_checksum': '9f343026b8822e39bba3fa3e2e4155f1'}
+  {'regimen_detail_id': '05375986-8da3-4655-b7e5-daa193b9e266', 'regimen_id': 'cd0750c3-137d-44d1-ace9-636b0d85585b', 'vaccine_id': 'f4b7e4be-1758-4d3c-9244-8564c6680e23', 'from_age': '3 tu?i 1 NGÀY', 'to_age': '49 tu?i', 'age_unit_code': 3, 'age_unit': 'Age', 'from_age_number': 3, 'to_age_number': 49, 'schedule_type': 'Trên 3 tu?i - 49 tu?i', 'required_injections': 2, 'max_injections': 3.0, 'unit': 'ml', 'regimen_detail_note': None, 'dosage': 0.5, 'nearest_injection_distance': 0.0, 'max_distance': 0, 'min_distance': 0, 'is_pregnant_regimen': 0, 'is_required': 1, 'note': None, 'created_at': '8/17/2023', 'modified_at': '12/9/2023', 'etl_date': '3/10/2026', 'etl_by': '02c92e10-acde-4ab9-8c7b-047bbaf9fd8a', 'record_checksum': '24c16b5c89a9d8a35a407bf2cb950edc', 'primary_checksum': '68667620e3c018bf5144a8a94fc8c63a'}
+
+Distinct values (TEXT columns):
+  regimen_detail_id: ['012caa80-b3ed-4641-9925-73a14db51beb', '045c2da6-64ae-4d89-b906-741d36ca5158', '05375986-8da3-4655-b7e5-daa193b9e266', '0676ae12-5456-4833-ad79-455cd3b428a7', '07a3a0a2-2b3e-4a6c-a0b1-2353de35a127']...
+  regimen_id: ['10fecf80-ec12-4177-93e0-d78125a10086', 'dd06f3cc-ec1d-41c5-bb7b-484a9bf091db', 'cd0750c3-137d-44d1-ace9-636b0d85585b', 'f3a62982-e429-48a7-88e6-01447b8cf8ee', '37079732-7363-4a6b-b045-14274035f5db']...
+  vaccine_id: ['ad980c82-0ed4-4793-a7e6-3b74ab3d3db7', 'b046a06e-cfc1-4327-9bfe-8efd07372dbd', 'f4b7e4be-1758-4d3c-9244-8564c6680e23', '1bd6264a-cef7-4a86-a70e-98df51204905', '6adcce41-9314-4491-a5bf-032e6e039664']...
+  from_age: ['50 tu?i', '12 tháng tu?i', '3 tu?i 1 NGÀY', '2 tháng tu?i', '6 tháng tu?i']...
+  to_age: ['< 24 tháng tu?i', '49 tu?i', '< 12 tháng tu?i', '< 46 tu?i', '< 9 tu?i']...
+  age_unit: ['Age', 'Month', 'Week']
+  schedule_type: ['T? 50 tu?i tr? lên', 'T? 12 tháng - d??i 24 tháng', 'Trên 3 tu?i - 49 tu?i', 'T? 2 tháng - d??i 1 tu?i', 'Tiêm b?p 0.5ml - Sau ph?i nhi?m - Ch?a d? phòng']...
+  unit: ['ml']
+  regimen_detail_note: ['ngày', 'C?n xét nghi?m lao t? tr??c tiêm cho ??i t??ng >12 tháng', 'TRÊN 13 TU?I', 'Ph?i ??m b?o tr? tròn ?? 18 tháng', 'C? nh?c l?i M?i 4,5,6,.. -> cách nhau 3 N?M']...
+  created_at: ['10/4/2024', '6/1/2024', '8/17/2023', '4/11/2025', '7/31/2024']...
+  modified_at: ['11/7/2024', 'NaT', '12/9/2023', '8/22/2024', '6/17/2025']...
+  etl_date: ['3/10/2026']
+  etl_by: ['02c92e10-acde-4ab9-8c7b-047bbaf9fd8a']
+  record_checksum: ['269907bec23f2e6c2ae946e9da68610c', 'b610ed6e9de197599b50bc5e99558fa6', '24c16b5c89a9d8a35a407bf2cb950edc', '863ad83f63837cc47ca6e452e802a7d7', '3fb187dad6b62c41684165c293c62e27']...
+  primary_checksum: ['40cba1a81e5fe0341e69e750fb6d7457', '9f343026b8822e39bba3fa3e2e4155f1', '68667620e3c018bf5144a8a94fc8c63a', 'e5c2502ff0d14bd43a23c797b816fffa', '06eca6f9edad824dea8683fe7d1bf70d']...
+
+============================================================
+TABLE: [CADS-DD] Dữ liệu mẫu Vaccine V2_Docs
+============================================================
+Total rows: 391
+
+Columns (4):
+  - No (INTEGER)
+  - TableName (TEXT)
+  - ColumnName (TEXT)
+  - ColumnDescription (TEXT)
+
+Sample data (3 rows):
+  {'No': 1, 'TableName': 'dim_shop', 'ColumnName': 'code', 'ColumnDescription': 'Mã shop/c?a hàng (??nh danh n?i b?)'}
+  {'No': 2, 'TableName': 'dim_shop', 'ColumnName': 'shop_type', 'ColumnDescription': 'Nhóm/lo?i shop (ví d?: VACCINE)'}
+  {'No': 3, 'TableName': 'dim_shop', 'ColumnName': 'region_insurance', 'ColumnDescription': 'Mã vùng b?o hi?m'}
+
+Distinct values (TEXT columns):
+  TableName: ['dim_shop', 'dim_satellite_shop', 'dim_vaccine_regimen', 'dim_vaccine_disease_group', 'dim_product']...
+  ColumnName: ['code', 'shop_type', 'region_insurance', 'legal_entity', 'regulated_ward']...
+  ColumnDescription: ['Mã shop/c?a hàng (??nh danh n?i b?)', 'Nhóm/lo?i shop (ví d?: VACCINE)', 'Mã vùng b?o hi?m', 'Mã pháp nhân', 'Mã ph??ng/xã sau sát nh?p']...
+
+============================================================
+TABLE: [CADS-DD] Dữ liệu mẫu Vaccine V2_sample_tables
+============================================================
+Total rows: 11
+
+Columns (6):
+  - STT (INTEGER)
+  - Nhóm (TEXT)
+  - Tên d? li?u (TEXT)
+  - Di?n gi?i (TEXT)
+  - Unnamed: 4 (REAL)
+  - Unnamed: 5 (REAL)
+
+Sample data (3 rows):
+  {'STT': 1, 'Nhóm': 'Master data', 'Tên d? li?u': 'dim_shop', 'Di?n gi?i': 'L?u tr? thông tin các thu?c tính c?a c?a hàng Tiêm Ch?ng Long Châu', 'Unnamed: 4': None, 'Unnamed: 5': None}
+  {'STT': 2, 'Nhóm': None, 'Tên d? li?u': 'dim_satellite_shop', 'Di?n gi?i': 'L?u tr? thông tin c?a các c?a hàng v? tinh Tiêm Ch?ng Long Châu', 'Unnamed: 4': None, 'Unnamed: 5': None}
+  {'STT': 3, 'Nhóm': None, 'Tên d? li?u': 'dim_vaccine_regimen', 'Di?n gi?i': 'L?u tr? thông tin phác ?? ?i?u tr? c?a t?ng lo?i vaccine', 'Unnamed: 4': None, 'Unnamed: 5': None}
+
+Distinct values (TEXT columns):
+  Nhóm: ['Master data', 'Sale transaction', 'Customer profile']
+  Tên d? li?u: ['dim_shop', 'dim_satellite_shop', 'dim_vaccine_regimen', 'dim_vaccine_disease_group', 'dim_product']...
+  Di?n gi?i: ['L?u tr? thông tin các thu?c tính c?a c?a hàng Tiêm Ch?ng Long Châu', 'L?u tr? thông tin c?a các c?a hàng v? tinh Tiêm Ch?ng Long Châu', 'L?u tr? thông tin phác ?? ?i?u tr? c?a t?ng lo?i vaccine', 'L?u tr? thông tin vaccine và các nhóm b?nh t??ng ?ng', 'L?u tr? thông tin các thu?c tính c?a t?ng lo?i vaccine']...
+
+============================================================
+TABLE: [CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_record
+============================================================
+Total rows: 500
+
+Columns (55):
+  - attachment_code (TEXT)
+  - indication_id (TEXT)
+  - indication_note (REAL)
+  - indication_status (INTEGER)
+  - sku (INTEGER)
+  - product_item_code (TEXT)
+  - vaccine_name (TEXT)
+  - disease_name (TEXT)
+  - disease_group_id (TEXT)
+  - disease_group_name (TEXT)
+  - regimen_id (TEXT)
+  - regimen_name (REAL)
+  - dose_number (INTEGER)
+  - dosage (TEXT)
+  - uom (TEXT)
+  - injection_route (TEXT)
+  - position (TEXT)
+  - lot_date (TEXT)
+  - lot_number (TEXT)
+  - created_at (TEXT)
+  - modified_at (TEXT)
+  - lcv_id (TEXT)
+  - person_id (TEXT)
+  - person_name (TEXT)
+  - gender (INTEGER)
+  - ticket_id (TEXT)
+  - ticket_code (TEXT)
+  - completed_ticket_date (TEXT)
+  - ticket_status (INTEGER)
+  - ticket_note (REAL)
+  - ticket_created_by (INTEGER)
+  - ticket_created_by_name (TEXT)
+  - conclusion (TEXT)
+  - injection_time (TEXT)
+  - completed_tracking_time (TEXT)
+  - is_leave_early (INTEGER)
+  - monitor_detail (REAL)
+  - health_monitor_note (TEXT)
+  - shop_code (INTEGER)
+  - shop_name (TEXT)
+  - injection_clinic_id (REAL)
+  - injection_clinic_name (TEXT)
+  - order_code_counter (REAL)
+  - order_return_code (REAL)
+  - doctor_code (INTEGER)
+  - doctor_name (TEXT)
+  - injection_nursing_code (INTEGER)
+  - injection_nursing_name (TEXT)
+  - declaration_id (TEXT)
+  - is_returned (INTEGER)
+  - is_test (INTEGER)
+  - etl_date (TEXT)
+  - etl_by (TEXT)
+  - primary_checksum (TEXT)
+  - record_checksum (TEXT)
+
+Sample data (3 rows):
+  {'attachment_code': 'MxqWtcfCJu8HKd3A', 'indication_id': 'daea22cf-0269-4400-a172-47262852e866', 'indication_note': None, 'indication_status': 3, 'sku': 43977, 'product_item_code': '057d0hefa0200100', 'vaccine_name': 'VAXNEUVANCE (PCV15)', 'disease_name': 'B?NH DO PH? C?U', 'disease_group_id': '699971e5-e228-4e00-adf2-04638ee1b414', 'disease_group_name': 'B?NH DO PH? C?U', 'regimen_id': '6bb523c9-7ce5-4ac1-805c-ab24a9eedf2f', 'regimen_name': None, 'dose_number': 1, 'dosage': '0.5 ml', 'uom': 'L?', 'injection_route': 'Tiêm b?p', 'position': '?ùi ph?i', 'lot_date': '9/27/2027', 'lot_number': 'Z004730', 'created_at': '20:37.4', 'modified_at': '02:45.8', 'lcv_id': 'LP803141768570783820', 'person_id': '2adbac53-2f9b-42b0-8062-09c4e5e8c52e', 'person_name': '3t9ypb7ZaEqd9g+Ej+ILDTNBro5+jpryfWxMFz3Cg9A1cjfzND9BiHQm2ijZCYAU', 'gender': 0, 'ticket_id': '3a1edbf7-ddd2-e5e5-72d2-bc18cfee95fc', 'ticket_code': 'TK58040525211768616437445', 'completed_ticket_date': '1/17/2026', 'ticket_status': 8, 'ticket_note': None, 'ticket_created_by': 52521, 'ticket_created_by_name': 'Yp51Z/Nces68aK2zPFDvOtqGX5zJBVwlS/pASSwPvdf5gvnyGeRDyFpmfjUfHf7+', 'conclusion': 'ENOUGHT_CONDITIONS', 'injection_time': '34:43.2', 'completed_tracking_time': '02:45.8', 'is_leave_early': 1, 'monitor_detail': None, 'health_monitor_note': None, 'shop_code': 58040, 'shop_name': 'VX NBH 76 Tu? T?nh, P. Hoa L?', 'injection_clinic_id': 43.0, 'injection_clinic_name': 'Phòng Khám 1', 'order_code_counter': 5.80403e+22, 'order_return_code': None, 'doctor_code': 58160, 'doctor_name': 'PLBxx2iHEiItx2pjNkuqpkZ9MUvLz0PHzJu6TM8hy4EPciRh1qoNU7OvBDxhoY4x', 'injection_nursing_code': 53231, 'injection_nursing_name': 'IxTG6vzIbICBDQvz9xioiQ6OoZqfDj/h5j0RLgfdk9R0CtGPOVKbBZbiPhlvBcN6', 'declaration_id': None, 'is_returned': 0, 'is_test': 0, 'etl_date': '49:41.5', 'etl_by': 'Databricks', 'primary_checksum': '0570cc90a49588c6420575f82a8e35f3', 'record_checksum': '9d812590e3d73da9e9b5c2dfc137467d'}
+  {'attachment_code': 'cJDUWJdTefc4vFhQ', 'indication_id': 'f83884b3-81cc-494d-a721-af1907aae439', 'indication_note': None, 'indication_status': 3, 'sku': 38233, 'product_item_code': '06893d7060200100', 'vaccine_name': 'VA-MENGOC BC', 'disease_name': 'NÃO MÔ C?U BC', 'disease_group_id': '53cd2896-73a5-493a-aa73-0e2378210165', 'disease_group_name': 'NÃO MÔ C?U BC', 'regimen_id': '71afd061-5076-497c-b5f6-c70eec21938f', 'regimen_name': None, 'dose_number': 1, 'dosage': '0.5 ml', 'uom': 'L?', 'injection_route': 'Tiêm b?p', 'position': '?ùi trái', 'lot_date': '4/13/2028', 'lot_number': '514M', 'created_at': '50:47.3', 'modified_at': '29:29.8', 'lcv_id': 'LP1757747809686', 'person_id': 'c57807b8-da5b-498c-b54b-1bc903f9bdd0', 'person_name': '34wI6CFKdZjgklA7eiPG87v2mHXGpxXY6uGQ9QjtTYyJ5D4gUdoQzCkUToStCqZ7', 'gender': 0, 'ticket_id': '3a1edbd7-77cd-5e4a-5c89-b5e34e7cb3a6', 'ticket_code': 'TK58119618061768614647287', 'completed_ticket_date': '1/17/2026', 'ticket_status': 8, 'ticket_note': None, 'ticket_created_by': 61806, 'ticket_created_by_name': 'AOuiHieRSDwRB8QdfZBykzUhXBVwSqk8ytgxCN+eQZdGo3KtNUs/sM9Id4/XtHF1', 'conclusion': 'ENOUGHT_CONDITIONS', 'injection_time': '04:06.2', 'completed_tracking_time': '29:29.8', 'is_leave_early': 1, 'monitor_detail': None, 'health_monitor_note': None, 'shop_code': 58119, 'shop_name': 'VX NBH 74 Biên Hòa, P. Ph? Lý', 'injection_clinic_id': 139.0, 'injection_clinic_name': 'Phòng Khám 1', 'order_code_counter': 5.81198e+22, 'order_return_code': None, 'doctor_code': 53408, 'doctor_name': 'MawwHIVVqtNYcE6Skcr8KLjqyxhtwTZN25x/EXGa8VvvGfqMbp4yGLEFqQxS+GVc', 'injection_nursing_code': 56833, 'injection_nursing_name': 'FY4Arz/cxT6rVrcsATneXLuQh1s5D2DVhbCGHVIH8Kg=', 'declaration_id': None, 'is_returned': 0, 'is_test': 0, 'etl_date': '49:41.5', 'etl_by': 'Databricks', 'primary_checksum': 'f6132e7d55ef67ebd9268d7fb315917f', 'record_checksum': '80a890ddbd80604f028b475f72bf8106'}
+  {'attachment_code': '56lVLY8hhVURxGUg', 'indication_id': '95d4fd2e-5cce-40f4-bd19-d31d0938bb98', 'indication_note': None, 'indication_status': 3, 'sku': 38220, 'product_item_code': '05a017ed94400100', 'vaccine_name': 'BOOSTRIX 0.5ML 1DOSE', 'disease_name': 'B?CH H?U, HO GÀ, U?N VÁN', 'disease_group_id': '4a377356-8c11-4071-ab8d-7f7b4add2bd0', 'disease_group_name': 'B?CH H?U, HO GÀ, U?N VÁN', 'regimen_id': '0daec851-8987-4c0d-9c69-3740848d4b6c', 'regimen_name': None, 'dose_number': 2, 'dosage': '0.5 ml', 'uom': '?ng', 'injection_route': 'Tiêm b?p', 'position': 'Tay trái', 'lot_date': '3/28/2027', 'lot_number': 'AC37B497AP', 'created_at': '55:41.5', 'modified_at': '39:53.2', 'lcv_id': 'LP581201768621824026', 'person_id': 'bd6bc799-b651-4914-a925-9609b83d8f98', 'person_name': 'aIwOJ7mEv11JaW0vOqkEik7DiQF9bpTochgQLnrjjBL5NJ9OEar+4AxYJ1W2HKZs', 'gender': 1, 'ticket_id': '3a1edc49-cb1f-8ca8-975a-0b3ed24acb72', 'ticket_code': 'TK58120576801768622141501', 'completed_ticket_date': '1/17/2026', 'ticket_status': 8, 'ticket_note': None, 'ticket_created_by': 57680, 'ticket_created_by_name': 'YmDnzB4Oez+P5mR6nLpaANerniMKEONy2AIhot993DCgTt1LMZRDHaOS+h+e0p31', 'conclusion': 'ENOUGHT_CONDITIONS', 'injection_time': '05:16.5', 'completed_tracking_time': '39:53.2', 'is_leave_early': 0, 'monitor_detail': None, 'health_monitor_note': None, 'shop_code': 58120, 'shop_name': 'VX BNH Lô LK3-08 KDA Nhà ? Phía B?c, P. Thu?n Thành', 'injection_clinic_id': 140.0, 'injection_clinic_name': 'Phòng Khám 1', 'order_code_counter': 5.81208e+22, 'order_return_code': None, 'doctor_code': 59652, 'doctor_name': 'Y6MRfxnMgs03cibo59olYetSBdkZKwT22mQtEvQJZF/n3sBKSJhP3OlR7h7apJ3A', 'injection_nursing_code': 57497, 'injection_nursing_name': 'mbK+98FIdUH33j+p/bg1VwaxMHgHubCkyzBf7dm0VKBwcsZ7eLHHYanJdqUiqFH9', 'declaration_id': None, 'is_returned': 0, 'is_test': 0, 'etl_date': '49:41.5', 'etl_by': 'Databricks', 'primary_checksum': '1f434afd8aaed672cbadcd4e55b0ab09', 'record_checksum': 'b0e8403f701f8e803aeb97d5b7618e78'}
+
+Distinct values (TEXT columns):
+  attachment_code: ['MxqWtcfCJu8HKd3A', 'cJDUWJdTefc4vFhQ', '56lVLY8hhVURxGUg', 'hu04YH73G4XWDmgQ', 'KrubbeUj3vWZQSsQ']...
+  indication_id: ['daea22cf-0269-4400-a172-47262852e866', 'f83884b3-81cc-494d-a721-af1907aae439', '95d4fd2e-5cce-40f4-bd19-d31d0938bb98', '4e400f57-407e-4bbf-8682-7e64f3729a60', 'd242dc91-cf2e-4a16-be91-d5149392d849']...
+  product_item_code: ['057d0hefa0200100', '06893d7060200100', '05a017ed94400100', '060ha737d4500100', '05c53e30c8500100']...
+  vaccine_name: ['VAXNEUVANCE (PCV15)', 'VA-MENGOC BC', 'BOOSTRIX 0.5ML 1DOSE', 'MENQUADFI', 'PREVENAR 20 (PCV20)']...
+  disease_name: ['B?NH DO PH? C?U', 'NÃO MÔ C?U BC', 'B?CH H?U, HO GÀ, U?N VÁN', 'NÃO MÔ C?U ACYW', 'CÚM']...
+  disease_group_id: ['699971e5-e228-4e00-adf2-04638ee1b414', '53cd2896-73a5-493a-aa73-0e2378210165', '4a377356-8c11-4071-ab8d-7f7b4add2bd0', '5c93a943-e28e-4989-ae65-a13c23f80572', '9b513cb2-016d-426b-a5fb-786166da7751']...
+  disease_group_name: ['B?NH DO PH? C?U', 'NÃO MÔ C?U BC', 'B?CH H?U, HO GÀ, U?N VÁN', 'NÃO MÔ C?U ACYW', 'CÚM']...
+  regimen_id: ['6bb523c9-7ce5-4ac1-805c-ab24a9eedf2f', '71afd061-5076-497c-b5f6-c70eec21938f', '0daec851-8987-4c0d-9c69-3740848d4b6c', '2c1407b8-03e8-47ee-92ea-f3f5877faaf0', 'b8901acd-867d-4b64-a3bc-42a6961b1722']...
+  dosage: ['0.5 ml', '1.5 ml', '1 ml', '2 ml', '0.1 ml']
+  uom: ['L?', '?ng', 'Li?u']
+  injection_route: ['Tiêm b?p', 'Tiêm d??i da', 'U?ng', 'Tiêm trong da']
+  position: ['?ùi ph?i', '?ùi trái', 'Tay trái', 'Tay ph?i']
+  lot_date: ['9/27/2027', '4/13/2028', '3/28/2027', '6/27/2028', '12/4/2026']...
+  lot_number: ['Z004730', '514M', 'AC37B497AP', 'U8464AD', 'MF8920']...
+  created_at: ['20:37.4', '50:47.3', '55:41.5', '23:43.5', '35:47.3']...
+  modified_at: ['02:45.8', '29:29.8', '39:53.2', '50:04.2', '23:55.9']...
+  lcv_id: ['LP803141768570783820', 'LP1757747809686', 'LP581201768621824026', 'LP580341721447831261', 'LP582301765677966211']...
+  person_id: ['2adbac53-2f9b-42b0-8062-09c4e5e8c52e', 'c57807b8-da5b-498c-b54b-1bc903f9bdd0', 'bd6bc799-b651-4914-a925-9609b83d8f98', '3a13e076-2edd-ecd8-9277-ee383e0a4ad3', '9b4afcbb-af57-41f8-b504-14d07714163c']...
+  person_name: ['3t9ypb7ZaEqd9g+Ej+ILDTNBro5+jpryfWxMFz3Cg9A1cjfzND9BiHQm2ijZCYAU', '34wI6CFKdZjgklA7eiPG87v2mHXGpxXY6uGQ9QjtTYyJ5D4gUdoQzCkUToStCqZ7', 'aIwOJ7mEv11JaW0vOqkEik7DiQF9bpTochgQLnrjjBL5NJ9OEar+4AxYJ1W2HKZs', 'p39Bthgv71ons71fnYaynqi2a4odrLHhaJEmf0X+WgoxXvF5sd4ajUExG9A215Mc', 'VRlnT5ayrmmROnbkQOybYWhFYrTQ9AxDfOIB69gjRAZJoYMbM7YoSlnwZuiO95xb']...
+  ticket_id: ['3a1edbf7-ddd2-e5e5-72d2-bc18cfee95fc', '3a1edbd7-77cd-5e4a-5c89-b5e34e7cb3a6', '3a1edc49-cb1f-8ca8-975a-0b3ed24acb72', '3a1edc39-30f8-6b8b-2772-6f096ec46d5e', '3a1edc09-660c-486c-99ba-37d16561cb2b']...
+  ticket_code: ['TK58040525211768616437445', 'TK58119618061768614647287', 'TK58120576801768622141501', 'TK58034539841768620223520', 'TK58230565521768134947261']...
+  completed_ticket_date: ['1/17/2026', '1/18/2026']
+  ticket_created_by_name: ['Yp51Z/Nces68aK2zPFDvOtqGX5zJBVwlS/pASSwPvdf5gvnyGeRDyFpmfjUfHf7+', 'AOuiHieRSDwRB8QdfZBykzUhXBVwSqk8ytgxCN+eQZdGo3KtNUs/sM9Id4/XtHF1', 'YmDnzB4Oez+P5mR6nLpaANerniMKEONy2AIhot993DCgTt1LMZRDHaOS+h+e0p31', 'BWOZYm7IBRt9B9YPmAuU3ws8GasE7uNVcpxVT1STWKoT9A4KxQCKsHECUJeP6WJ3', 's+tfRMBUYLSzRzdkRh8RZejzyM+7eVR0uPXW2wSciH48f+C5nLUEqqStKNW+8PqQ']...
+  conclusion: ['ENOUGHT_CONDITIONS']
+  injection_time: ['34:43.2', '04:06.2', '05:16.5', '21:21.0', '59:38.5']...
+  completed_tracking_time: ['02:45.8', '29:29.8', '39:53.2', '50:04.2', '23:55.9']...
+  health_monitor_note: ['37 ??', '36.7', '36.4', 'phi?u ch? ??nh tay, kh ?ã theo dõi ?? t?i trung tâm', '36,1']...
+  shop_name: ['VX NBH 76 Tu? T?nh, P. Hoa L?', 'VX NBH 74 Biên Hòa, P. Ph? Lý', 'VX BNH Lô LK3-08 KDA Nhà ? Phía B?c, P. Thu?n Thành', 'VX LCI 32 Nh?c S?n, P. Lào Cai', 'VX HCM 372A Hà Huy Giáp, P. An Phú ?ông']...
+  injection_clinic_name: ['Phòng Khám 1', 'Phòng Khám 2', 'Phòng Khám']
+  doctor_name: ['PLBxx2iHEiItx2pjNkuqpkZ9MUvLz0PHzJu6TM8hy4EPciRh1qoNU7OvBDxhoY4x', 'MawwHIVVqtNYcE6Skcr8KLjqyxhtwTZN25x/EXGa8VvvGfqMbp4yGLEFqQxS+GVc', 'Y6MRfxnMgs03cibo59olYetSBdkZKwT22mQtEvQJZF/n3sBKSJhP3OlR7h7apJ3A', 'gRTcX7j5AHQS7g/voxBOIs0ETXBMWfjJDihRuY3O8ydY0fuNqZRN3PB0zzbK6lTh', 'pIudDbmbXsj3b6mBDANHf5EJBiIjiAiMF11czdBgCoE=']...
+  injection_nursing_name: ['IxTG6vzIbICBDQvz9xioiQ6OoZqfDj/h5j0RLgfdk9R0CtGPOVKbBZbiPhlvBcN6', 'FY4Arz/cxT6rVrcsATneXLuQh1s5D2DVhbCGHVIH8Kg=', 'mbK+98FIdUH33j+p/bg1VwaxMHgHubCkyzBf7dm0VKBwcsZ7eLHHYanJdqUiqFH9', '4KM/I9IEiEsUgrEUTbmYdg9zcKszlHvLdb/EDDapXrbIvGgFjE4/vP5glEh/G3hu', '1pN+Ck7d8CC9vDESxFcegxjaDEdxtEw5fIJoq44q2YkOyIwwqVVOqI9j/2AX5afF']...
+  declaration_id: ['3a1e5223-d797-8f4d-b7a8-346397983613', '3a1edc04-dcc7-0592-4021-9df30b90ce91', '3a1ee0bc-3680-51c6-040d-ed8eff4385a7', '3a1edc2d-1741-3aae-0bf9-9321ff71384f', '3a1ecd75-eb84-1257-171b-ddb34c67e5ac']...
+  etl_date: ['49:41.5', '50:37.1']
+  etl_by: ['Databricks']
+  primary_checksum: ['0570cc90a49588c6420575f82a8e35f3', 'f6132e7d55ef67ebd9268d7fb315917f', '1f434afd8aaed672cbadcd4e55b0ab09', 'a6e5014f7cd263cf3939e2323a811cfd', 'f8347a96424f48e2701a80e3e556b1a6']...
+  record_checksum: ['9d812590e3d73da9e9b5c2dfc137467d', '80a890ddbd80604f028b475f72bf8106', 'b0e8403f701f8e803aeb97d5b7618e78', '6f85be0ad630bc7bb729430f4f70c77c', '840ecaa499ad4063fe75b094024af544']...
+
+============================================================
+TABLE: [CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_returned_order_detail
+============================================================
+Total rows: 500
+
+Columns (44):
+  - attachment_code (TEXT)
+  - return_order_detail_id (TEXT)
+  - return_order_code (TEXT)
+  - return_date (TEXT)
+  - order_code (TEXT)
+  - order_status (INTEGER)
+  - package_type (TEXT)
+  - order_code_refer (REAL)
+  - order_attribute (INTEGER)
+  - order_channel (INTEGER)
+  - is_partial_payment (INTEGER)
+  - shop_code (INTEGER)
+  - shop_name (TEXT)
+  - shop_order_code (INTEGER)
+  - lcv_id (TEXT)
+  - customer_id (TEXT)
+  - customer_name (TEXT)
+  - customer_phone (INTEGER)
+  - shop_employee_id (INTEGER)
+  - shop_employee_name (TEXT)
+  - shop_order_employee_id (INTEGER)
+  - warehouse_code (INTEGER)
+  - warehouse_name (TEXT)
+  - service_code (INTEGER)
+  - service_name (TEXT)
+  - sku (INTEGER)
+  - return_line_item_name (TEXT)
+  - return_line_item_quantity (INTEGER)
+  - return_line_item_price (INTEGER)
+  - return_line_item_servicefee_percent (INTEGER)
+  - return_line_item_servicefee (INTEGER)
+  - return_line_item_amount (INTEGER)
+  - return_line_item_discount_promotion (INTEGER)
+  - return_line_item_discount (INTEGER)
+  - return_line_item_amount_after_discount (INTEGER)
+  - attachment_code_base (TEXT)
+  - created_at (TEXT)
+  - modified_at (TEXT)
+  - is_test (INTEGER)
+  - etl_date (TEXT)
+  - etl_by (TEXT)
+  - primary_checksum (TEXT)
+  - record_checksum (TEXT)
+  - order_injection (REAL)
+
+Sample data (3 rows):
+  {'attachment_code': 'nPEtrI3jLIhqI88A', 'return_order_detail_id': 'cd49c8ee-b5d3-43aa-9553-3261e4953e14', 'return_order_code': '58028191591773051400922', 'return_date': '3/10/2026', 'order_code': "'58028191591773051400922", 'order_status': 5, 'package_type': 'GOI', 'order_code_refer': None, 'order_attribute': 0, 'order_channel': 2, 'is_partial_payment': 0, 'shop_code': 58028, 'shop_name': 'VX DLK 255 Ph?m V?n ??ng, P. Sông C?u', 'shop_order_code': 58028, 'lcv_id': 'LP580281714271346274', 'customer_id': 'e3a1add1-7323-5798-2c64-3a1234967b72', 'customer_name': 'Võ Thiên Phúc', 'customer_phone': 336175900, 'shop_employee_id': 51464, 'shop_employee_name': 'Tr?n Di?m Huy?n', 'shop_order_employee_id': 52036, 'warehouse_code': 58028010, 'warehouse_name': 'VX028 - Kho hàng th??ng', 'service_code': 40035, 'service_name': 'D?ch v? tiêm ch?ng V?c-xin', 'sku': 38251, 'return_line_item_name': 'TYPHIM VI 25MCG', 'return_line_item_quantity': 1, 'return_line_item_price': 380000, 'return_line_item_servicefee_percent': 10, 'return_line_item_servicefee': 38000, 'return_line_item_amount': 418000, 'return_line_item_discount_promotion': 11400, 'return_line_item_discount': 0, 'return_line_item_amount_after_discount': 406600, 'attachment_code_base': None, 'created_at': '3/10/2026', 'modified_at': '3/10/2026', 'is_test': 0, 'etl_date': '3/10/2026', 'etl_by': 'Databricks', 'primary_checksum': '12e56629aaa5c1d681b72cbf359584e9', 'record_checksum': '7b09ec5572b1ad0ade4d0e023141d601', 'order_injection': 1.0}
+  {'attachment_code': 'sib82Bh6uUVH8UqA', 'return_order_detail_id': 'b7b3ebd1-5976-49a6-961f-ae539122fd5e', 'return_order_code': '58129816221773017438979', 'return_date': '3/9/2026', 'order_code': "'58129816221773017438979", 'order_status': 3, 'package_type': 'LE', 'order_code_refer': None, 'order_attribute': 0, 'order_channel': 2, 'is_partial_payment': 0, 'shop_code': 58129, 'shop_name': 'VX THA 116-118 Nguy?n Hu?, P. Quang Trung', 'shop_order_code': 58129, 'lcv_id': 'LP581291772412079614', 'customer_id': '45ce3cc4-ba4b-db85-e76f-3a1fbe2ae62b', 'customer_name': 'Ph?m Minh Th?ng', 'customer_phone': 339740559, 'shop_employee_id': 59826, 'shop_employee_name': 'Nguy?n Hà Trang', 'shop_order_employee_id': 59826, 'warehouse_code': 58129010, 'warehouse_name': 'VX129 - Kho hàng th??ng', 'service_code': 40035, 'service_name': 'D?ch v? tiêm ch?ng V?c-xin', 'sku': 38255, 'return_line_item_name': 'VAXIGRIP TETRA', 'return_line_item_quantity': 1, 'return_line_item_price': 333000, 'return_line_item_servicefee_percent': 0, 'return_line_item_servicefee': 0, 'return_line_item_amount': 333000, 'return_line_item_discount_promotion': 0, 'return_line_item_discount': 0, 'return_line_item_amount_after_discount': 333000, 'attachment_code_base': None, 'created_at': '3/9/2026', 'modified_at': '3/9/2026', 'is_test': 0, 'etl_date': '3/10/2026', 'etl_by': 'Databricks', 'primary_checksum': '7d07779d215a0e263417582912184a28', 'record_checksum': '809aed9f42fe12d7d5ab44bd662ca63c', 'order_injection': 1.0}
+  {'attachment_code': 'fjR13A7NCcbnM8WQ', 'return_order_detail_id': '6de290ca-f051-43f5-99a4-1d2dbce79791', 'return_order_code': '58042433101773024351367', 'return_date': '3/9/2026', 'order_code': "'58042433101773024351367", 'order_status': 3, 'package_type': 'GOI', 'order_code_refer': None, 'order_attribute': 8, 'order_channel': 2, 'is_partial_payment': 0, 'shop_code': 58042, 'shop_name': 'VX NBH 18A Phát Di?m ?ông, X. Phát Di?m', 'shop_order_code': 58042, 'lcv_id': 'LP500011769049737882', 'customer_id': 'bcb2717e-7c4c-ee1d-850b-3a1c865cacb4', 'customer_name': 'Ngô V?n Quy?n', 'customer_phone': 337355852, 'shop_employee_id': 63893, 'shop_employee_name': 'Mai Th? Th?o', 'shop_order_employee_id': 53770, 'warehouse_code': 58042010, 'warehouse_name': 'VX042 - Kho hàng th??ng', 'service_code': 40035, 'service_name': 'D?ch v? tiêm ch?ng V?c-xin', 'sku': 45857, 'return_line_item_name': 'SHINGRIX', 'return_line_item_quantity': 1, 'return_line_item_price': 3880000, 'return_line_item_servicefee_percent': 0, 'return_line_item_servicefee': 0, 'return_line_item_amount': 3880000, 'return_line_item_discount_promotion': 116400, 'return_line_item_discount': 0, 'return_line_item_amount_after_discount': 3763600, 'attachment_code_base': None, 'created_at': '3/9/2026', 'modified_at': '3/9/2026', 'is_test': 0, 'etl_date': '3/10/2026', 'etl_by': 'Databricks', 'primary_checksum': '3e2a28155836b96d999dff517c0c4547', 'record_checksum': '6d4ee9be6c4c5fe17a7100a1e4f1581e', 'order_injection': 1.0}
+
+Distinct values (TEXT columns):
+  attachment_code: ['nPEtrI3jLIhqI88A', 'sib82Bh6uUVH8UqA', 'fjR13A7NCcbnM8WQ', 'i1zDrvTqSqG0DqXg', '4Rm8nAB29ASW56iQ']...
+  return_order_detail_id: ['cd49c8ee-b5d3-43aa-9553-3261e4953e14', 'b7b3ebd1-5976-49a6-961f-ae539122fd5e', '6de290ca-f051-43f5-99a4-1d2dbce79791', 'bfb272cd-e69c-4da1-b65f-19a379b0255c', 'a1d5d5ed-48d2-48d8-a85e-b0414b89328b']...
+  return_order_code: ['58028191591773051400922', '58129816221773017438979', '58042433101773024351367', '58218352491773018660981', '58139678431773050483152']...
+  return_date: ['3/10/2026', '3/9/2026', '3/8/2026']
+  order_code: ["'58028191591773051400922", "'58129816221773017438979", "'58042433101773024351367", "'58218352491773018660981", "'58139678431773050483152"]...
+  package_type: ['GOI', 'LE']
+  shop_name: ['VX DLK 255 Ph?m V?n ??ng, P. Sông C?u', 'VX THA 116-118 Nguy?n Hu?, P. Quang Trung', 'VX NBH 18A Phát Di?m ?ông, X. Phát Di?m', 'VX HCM 40 ???ng DT 746, P. Tân Khánh', 'VX HNI 39 Tây Cao T?c, X. Thiên L?c']...
+  lcv_id: ['LP580281714271346274', 'LP581291772412079614', 'LP500011769049737882', 'LP582181771809156059', 'LP810281770365092380']...
+  customer_id: ['e3a1add1-7323-5798-2c64-3a1234967b72', '45ce3cc4-ba4b-db85-e76f-3a1fbe2ae62b', 'bcb2717e-7c4c-ee1d-850b-3a1c865cacb4', '08bf254e-a975-3fa0-af53-3a1439142c5d', '4c10bd08-f396-6a32-5729-3a13ec5ba4d4']...
+  customer_name: ['Võ Thiên Phúc', 'Ph?m Minh Th?ng', 'Ngô V?n Quy?n', 'Nguy?n Cát T??ng Vy', 'V??ng V?n D?ng']...
+  shop_employee_name: ['Tr?n Di?m Huy?n', 'Nguy?n Hà Trang', 'Mai Th? Th?o', 'Lê Th? C?m Tiên', 'Nguy?n Th? Lý']...
+  warehouse_name: ['VX028 - Kho hàng th??ng', 'VX129 - Kho hàng th??ng', 'VX042 - Kho hàng th??ng', 'VX218 - Kho hàng th??ng', 'VX139 - Kho hàng th??ng']...
+  service_name: ['D?ch v? tiêm ch?ng V?c-xin', 'Phí l?u tr? vacxin']
+  return_line_item_name: ['TYPHIM VI 25MCG', 'VAXIGRIP TETRA', 'SHINGRIX', 'PREVENAR 20 (PCV20)', 'MMR II']...
+  attachment_code_base: ['fzFy3NZMbWLp4bsQ']
+  created_at: ['3/10/2026', '3/9/2026', '3/8/2026']
+  modified_at: ['3/10/2026', '3/9/2026', '3/8/2026']
+  etl_date: ['3/10/2026', '3/9/2026']
+  etl_by: ['Databricks']
+  primary_checksum: ['12e56629aaa5c1d681b72cbf359584e9', '7d07779d215a0e263417582912184a28', '3e2a28155836b96d999dff517c0c4547', 'a8c6b2e4cd09f24490d43b94091125b6', '4fe5f9090104d5c1ec5f1c85c8d74944']...
+  record_checksum: ['7b09ec5572b1ad0ade4d0e023141d601', '809aed9f42fe12d7d5ab44bd662ca63c', '6d4ee9be6c4c5fe17a7100a1e4f1581e', 'c887a8c98b6d7ad4d7dd533ca5baddd7', '651eb7ed05ff05a51ccfd2b551198340']...
+
+============================================================
+TABLE: [CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail
+============================================================
+Total rows: 500
+
+Columns (49):
+  - attachment_code (TEXT)
+  - order_detail_id (TEXT)
+  - order_code (TEXT)
+  - order_status (INTEGER)
+  - order_creation_date (TEXT)
+  - order_completion_date (TEXT)
+  - order_completed_by (INTEGER)
+  - order_type (INTEGER)
+  - package_type (TEXT)
+  - order_code_refer (TEXT)
+  - order_attribute (INTEGER)
+  - order_channel (INTEGER)
+  - payment_method (REAL)
+  - shop_code (INTEGER)
+  - shop_name (TEXT)
+  - customer_id (TEXT)
+  - customer_phone (TEXT)
+  - lcv_id (TEXT)
+  - customer_name (TEXT)
+  - shop_employee_id (INTEGER)
+  - shop_employee_name (TEXT)
+  - warehouse_code (INTEGER)
+  - warehouse_name (TEXT)
+  - service_code (INTEGER)
+  - service_name (TEXT)
+  - sku (INTEGER)
+  - line_item_name (TEXT)
+  - line_item_quantity (INTEGER)
+  - line_item_price (INTEGER)
+  - line_item_servicefee (REAL)
+  - line_item_amount (INTEGER)
+  - line_item_servicefee_percent (REAL)
+  - line_item_discount_promotion (INTEGER)
+  - line_item_discount (INTEGER)
+  - line_item_amount_after_discount (INTEGER)
+  - line_item_unit_code (INTEGER)
+  - line_item_unit_name (TEXT)
+  - line_item_discount_reason_code (REAL)
+  - line_item_discount_reason_name (REAL)
+  - is_partial_payment (INTEGER)
+  - attachment_code_base (TEXT)
+  - created_at (TEXT)
+  - modified_at (TEXT)
+  - is_test (INTEGER)
+  - etl_date (TEXT)
+  - etl_by (TEXT)
+  - primary_checksum (TEXT)
+  - record_checksum (TEXT)
+  - order_injection (REAL)
+
+Sample data (3 rows):
+  {'attachment_code': None, 'order_detail_id': '3782a9cc-8dc8-4f42-a451-befe7e0fe8ad', 'order_code': '58027276911772867508970', 'order_status': 4, 'order_creation_date': '3/7/2026', 'order_completion_date': '3/7/2026', 'order_completed_by': 52287, 'order_type': 8, 'package_type': 'GOI', 'order_code_refer': '58028191591773051400922', 'order_attribute': 5, 'order_channel': 15, 'payment_method': None, 'shop_code': 58027, 'shop_name': 'VX DLK 64 Duy Tân, P. Tuy Hòa', 'customer_id': '2f5354fa-a5b9-ba99-79ad-3a1fd8df516f', 'customer_phone': '1ALSNFvXUbmxHY5J9QTCCSN5pj644s1iolso8I+/Hzo=', 'lcv_id': 'LP800951772860111061', 'customer_name': 'mCIBYbWnqgRY4uu0W04j65gemzKwtg/ggF2dgUzxHN+sGZVRSu3wyVSxihtUZc43', 'shop_employee_id': 52287, 'shop_employee_name': 'X8UsmJ7rRdQ9xR+1penEov+P1iIDBXmaxFcr6rPBhpWmxTST8q/wXJUeEQIq4bYN', 'warehouse_code': 58027010, 'warehouse_name': 'Kho hàng th??ng', 'service_code': 46378, 'service_name': 'Phí l?u tr? vacxin', 'sku': 46378, 'line_item_name': 'Phí l?u tr? vacxin', 'line_item_quantity': 1, 'line_item_price': 593000, 'line_item_servicefee': None, 'line_item_amount': 593000, 'line_item_servicefee_percent': None, 'line_item_discount_promotion': 0, 'line_item_discount': 0, 'line_item_amount_after_discount': 593000, 'line_item_unit_code': 1005, 'line_item_unit_name': 'DVT', 'line_item_discount_reason_code': None, 'line_item_discount_reason_name': None, 'is_partial_payment': 1, 'attachment_code_base': None, 'created_at': '3/7/2026', 'modified_at': '3/7/2026', 'is_test': 0, 'etl_date': '3/8/2026', 'etl_by': 'Databricks', 'primary_checksum': '04d689e832f74ba71e73cc526c5e4fc8', 'record_checksum': '1b8c2eb640bfb1a25e634ab30da56366', 'order_injection': None}
+  {'attachment_code': '0gs8zI2lBdlT3DGw', 'order_detail_id': 'd323f850-6350-4956-8bca-9934a919e981', 'order_code': '58126951721772850499072', 'order_status': 4, 'order_creation_date': '3/7/2026', 'order_completion_date': '3/7/2026', 'order_completed_by': 58766, 'order_type': 8, 'package_type': 'LE', 'order_code_refer': None, 'order_attribute': 9, 'order_channel': 14, 'payment_method': 0.0, 'shop_code': 58126, 'shop_name': 'VX DNI 626 Lê Du?n, X. Long Thành', 'customer_id': 'bb75e0b4-81c6-de6c-b389-3a02c9f08411', 'customer_phone': 'bVnUA/tvwUGCoRhO4dyhFTouQPkE7pCOIE7I2pSmoFA=', 'lcv_id': 'LP819211733712873694', 'customer_name': 'cJw9Hlb+JlkIT0l9G9b/yDdH/c9NJcQNdjb/SRlH6o4e97gJeAHH47WAgZp3cg3i', 'shop_employee_id': 58766, 'shop_employee_name': 'xg7BnDIykt1B/8cQdvXFh7KCkAqIxolSfal+55z+w0quFkGYI/FrXvBIz91AKDj7', 'warehouse_code': 58126010, 'warehouse_name': 'VX126-Kho hàng th??ng', 'service_code': 40035, 'service_name': 'D?ch v? tiêm ch?ng V?c-xin', 'sku': 38233, 'line_item_name': 'VA-MENGOC BC', 'line_item_quantity': 1, 'line_item_price': 360000, 'line_item_servicefee': 0.0, 'line_item_amount': 360000, 'line_item_servicefee_percent': 0.0, 'line_item_discount_promotion': 0, 'line_item_discount': 0, 'line_item_amount_after_discount': 360000, 'line_item_unit_code': 7, 'line_item_unit_name': 'L?', 'line_item_discount_reason_code': None, 'line_item_discount_reason_name': None, 'is_partial_payment': 0, 'attachment_code_base': None, 'created_at': '3/7/2026', 'modified_at': '3/7/2026', 'is_test': 0, 'etl_date': '3/8/2026', 'etl_by': 'Databricks', 'primary_checksum': '2336a92bba9f89c96402176bace6c03d', 'record_checksum': 'b7b422155156c092aba3b7baba025355', 'order_injection': 2.0}
+  {'attachment_code': 'PFMxj7PRaGe6A3Xw', 'order_detail_id': 'f895bb33-e1ff-40c6-8cf4-eaeaa742f9d8', 'order_code': '58076409061770540991838', 'order_status': 4, 'order_creation_date': '2/8/2026', 'order_completion_date': '3/7/2026', 'order_completed_by': 63893, 'order_type': 8, 'package_type': 'GOI', 'order_code_refer': None, 'order_attribute': 0, 'order_channel': 7, 'payment_method': 2.0, 'shop_code': 58042, 'shop_name': 'VX NBH 18A Phát Di?m ?ông, X. Phát Di?m', 'customer_id': 'aa52b672-b3d1-2cae-8a7a-3a0507eed6a0', 'customer_phone': 'xC8rkGcmIPgQiGc9FvJ3UlSN+IPFAbkehtr48kvGG/o=', 'lcv_id': 'LP580761767840139918', 'customer_name': 'N3Yt15mmNIn/KlKFSnInyV1IgMdI470+rfuhQb+LNaSMS1WwHqiQs/YKlGigeeLA', 'shop_employee_id': 64434, 'shop_employee_name': 'UcJSzXYhWT3r2M1Mso5ZUVujCjgDuyP8PzZMUkoRAr0=', 'warehouse_code': 58042010, 'warehouse_name': 'VX042-Kho hàng th??ng', 'service_code': 40035, 'service_name': 'D?ch v? tiêm ch?ng V?c-xin', 'sku': 43977, 'line_item_name': 'VAXNEUVANCE (PCV15)', 'line_item_quantity': 1, 'line_item_price': 1630000, 'line_item_servicefee': 0.0, 'line_item_amount': 1630000, 'line_item_servicefee_percent': 0.0, 'line_item_discount_promotion': 48900, 'line_item_discount': 0, 'line_item_amount_after_discount': 1581100, 'line_item_unit_code': 7, 'line_item_unit_name': 'L?', 'line_item_discount_reason_code': None, 'line_item_discount_reason_name': None, 'is_partial_payment': 0, 'attachment_code_base': None, 'created_at': '2/8/2026', 'modified_at': '3/7/2026', 'is_test': 0, 'etl_date': '3/8/2026', 'etl_by': 'Databricks', 'primary_checksum': '2a5c00af0d24c7e956c053ad8486f47f', 'record_checksum': '92da3d25fb6faaeb247dc59bb6ffb2c5', 'order_injection': 3.0}
+
+Distinct values (TEXT columns):
+  attachment_code: ['0gs8zI2lBdlT3DGw', 'PFMxj7PRaGe6A3Xw', 'XtoUT9BHkZsBki6w', 'P0ypU6jHUbBqGh6A', 'iY62LVe36d6YZnlg']...
+  order_detail_id: ['3782a9cc-8dc8-4f42-a451-befe7e0fe8ad', 'd323f850-6350-4956-8bca-9934a919e981', 'f895bb33-e1ff-40c6-8cf4-eaeaa742f9d8', '34cf2090-cae7-4e2b-ac76-a5b732d7806b', 'e7edb98b-23da-4c3b-a74e-a43f694c2ed8']...
+  order_code: ['58027276911772867508970', '58126951721772850499072', '58076409061770540991838', '58035458651772880790866', '58088326221771041731130']...
+  order_creation_date: ['3/7/2026', '2/8/2026', '2/14/2026', '3/5/2026', '3/4/2026']...
+  order_completion_date: ['3/7/2026', '3/6/2026', '2/10/2026', '1/20/2026']
+  package_type: ['GOI', 'LE']
+  order_code_refer: ['58028191591773051400922', '58228225091773024532856', '58231164241773019767364', '58004210021773032245637', '58109189621773028008739']...
+  shop_name: ['VX DLK 64 Duy Tân, P. Tuy Hòa', 'VX DNI 626 Lê Du?n, X. Long Thành', 'VX NBH 18A Phát Di?m ?ông, X. Phát Di?m', 'VX HCM 226-228 Yersin, P. Th? D?u M?t', 'VX PTO 285 Mê Linh, P. V?nh Phúc']...
+  customer_id: ['2f5354fa-a5b9-ba99-79ad-3a1fd8df516f', 'bb75e0b4-81c6-de6c-b389-3a02c9f08411', 'aa52b672-b3d1-2cae-8a7a-3a0507eed6a0', '25bc85db-e716-ed48-3fdf-3a0dee0f9425', 'ee39b6ab-0a52-51d8-f23d-3a0a5e0976ce']...
+  customer_phone: ['1ALSNFvXUbmxHY5J9QTCCSN5pj644s1iolso8I+/Hzo=', 'bVnUA/tvwUGCoRhO4dyhFTouQPkE7pCOIE7I2pSmoFA=', 'xC8rkGcmIPgQiGc9FvJ3UlSN+IPFAbkehtr48kvGG/o=', '0o6HUYmay4nm9M9pqFLwlrEHmr1h+giWhNHHBnKF1bM=', 'M4BQAubJlc6F2O1imU1gWxDyIJqC2CabR4HH+fYnllg=']...
+  lcv_id: ['LP800951772860111061', 'LP819211733712873694', 'LP580761767840139918', 'LP811141772453063685', 'LP580881760836789352']...
+  customer_name: ['mCIBYbWnqgRY4uu0W04j65gemzKwtg/ggF2dgUzxHN+sGZVRSu3wyVSxihtUZc43', 'cJw9Hlb+JlkIT0l9G9b/yDdH/c9NJcQNdjb/SRlH6o4e97gJeAHH47WAgZp3cg3i', 'N3Yt15mmNIn/KlKFSnInyV1IgMdI470+rfuhQb+LNaSMS1WwHqiQs/YKlGigeeLA', 'i0V4BH4pB2D+GvmK2WCnpFcCF1Din+30BBHAt/WeBrZYsb1USsHJUANZodnewZLE', '1GBhYzEjF89z0ojXp1AZ7mk1PZbvfIneOY+MU/gYkwaFfhLYgwuxkxbaubE0x1Wu']...
+  shop_employee_name: ['X8UsmJ7rRdQ9xR+1penEov+P1iIDBXmaxFcr6rPBhpWmxTST8q/wXJUeEQIq4bYN', 'xg7BnDIykt1B/8cQdvXFh7KCkAqIxolSfal+55z+w0quFkGYI/FrXvBIz91AKDj7', 'UcJSzXYhWT3r2M1Mso5ZUVujCjgDuyP8PzZMUkoRAr0=', '85MN/LjFZqeamWyBPiFIn6fH4ea+WuhN179JXHM/gkd+ZXb6zb2DU+jUHkydVFpV', 'xYGtMRj/kfFxd9RxkizM/5cpxTxLFJbyqfbSfT3Hvx4=']...
+  warehouse_name: ['Kho hàng th??ng', 'VX126-Kho hàng th??ng', 'VX042-Kho hàng th??ng', 'VX035-Kho hàng th??ng', 'VX088-Kho hàng th??ng']...
+  service_name: ['Phí l?u tr? vacxin', 'D?ch v? tiêm ch?ng V?c-xin']
+  line_item_name: ['Phí l?u tr? vacxin', 'VA-MENGOC BC', 'VAXNEUVANCE (PCV15)', 'GARDASIL 9 0.5ML', 'PREVENAR 20 (PCV20)']...
+  line_item_unit_name: ['DVT', 'L?', '?ng']
+  attachment_code_base: ['PRaGuy0uwX5Q4QrQ', 'YPVZ3RfSobFdXnYg', 'RziYcr4mdX2Suojg', '1hn4lHPDbOFCrl5w', 'c9AsdW8jlfFEA5fA']...
+  created_at: ['3/7/2026', '2/8/2026', '2/14/2026', '3/5/2026', '3/4/2026']...
+  modified_at: ['3/7/2026', '3/6/2026']
+  etl_date: ['3/8/2026', '3/7/2026']
+  etl_by: ['Databricks']
+  primary_checksum: ['04d689e832f74ba71e73cc526c5e4fc8', '2336a92bba9f89c96402176bace6c03d', '2a5c00af0d24c7e956c053ad8486f47f', '2b8410d8846aaea9142116fabe5f1044', '2e754fa68cbe57493e16a8ba930363cf']...
+  record_checksum: ['1b8c2eb640bfb1a25e634ab30da56366', 'b7b422155156c092aba3b7baba025355', '92da3d25fb6faaeb247dc59bb6ffb2c5', 'aeae1288a4346cf160c85b9dfd45e9b6', 'c1ad048041461a97161f02a7501bc628']...

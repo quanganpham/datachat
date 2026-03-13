@@ -4,25 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataChat - Trợ lý Phân tích Dữ liệu</title>
+    <title>Tiêm Chủng Long Châu - DataChat</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0a0a0f;
-            --bg-card: #12121a;
-            --bg-elevated: #1a1a24;
-            --bg-input: #0f0f15;
-            --bg-sidebar: #0e0e16;
-            --text-primary: #f0f0f5;
-            --text-secondary: #8888a0;
-            --text-muted: #5a5a70;
-            --accent: #6366f1;
-            --accent-glow: rgba(99, 102, 241, 0.3);
-            --accent-hover: #818cf8;
+            --bg-dark: #0a1a1a;
+            --bg-card: #0f2424;
+            --bg-elevated: #143030;
+            --bg-input: #0b1e1e;
+            --bg-sidebar: #091818;
+            --text-primary: #f0f5f5;
+            --text-secondary: #88a0a0;
+            --text-muted: #5a7070;
+            --accent: #01B5B4;
+            --accent-glow: rgba(1, 181, 180, 0.3);
+            --accent-hover: #02D4D3;
+            --accent-orange: #F16D23;
             --success: #22c55e;
             --error: #ef4444;
-            --border: rgba(255, 255, 255, 0.08);
-            --gradient-1: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            --border: rgba(1, 181, 180, 0.12);
+            --gradient-1: linear-gradient(135deg, #01B5B4 0%, #02A09F 50%, #018786 100%);
+            --gradient-cta: linear-gradient(135deg, #FFBD14 0%, #F16D23 100%);
             --sidebar-width: 280px;
         }
 
@@ -45,8 +47,8 @@
         .bg-effect::before {
             content: ''; position: absolute; top: -50%; left: -50%;
             width: 200%; height: 200%;
-            background: radial-gradient(circle at 30% 20%, rgba(99,102,241,0.08) 0%, transparent 40%),
-                        radial-gradient(circle at 70% 80%, rgba(168,85,247,0.06) 0%, transparent 40%);
+            background: radial-gradient(circle at 30% 20%, rgba(1,181,180,0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 70% 80%, rgba(241,109,35,0.05) 0%, transparent 40%);
             animation: bgPulse 15s ease-in-out infinite;
         }
         @keyframes bgPulse {
@@ -224,7 +226,7 @@
         }
         .sql-header {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0.6rem 0.85rem; background: rgba(99,102,241,0.1);
+            padding: 0.6rem 0.85rem; background: rgba(1,181,180,0.1);
             border-bottom: 1px solid var(--border);
         }
         .sql-header span {
@@ -299,7 +301,7 @@
         .input-wrapper input::placeholder { color: var(--text-muted); }
         .send-btn {
             padding: 0.65rem 1.25rem; border: none; border-radius: 10px;
-            background: var(--gradient-1); color: white;
+            background: var(--gradient-cta); color: white;
             font-size: 0.85rem; font-weight: 600; cursor: pointer;
             transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
         }
@@ -343,10 +345,10 @@
             <div style="display:flex;align-items:center;gap:0.75rem;">
                 <button class="btn-icon hamburger" onclick="toggleSidebar()">☰</button>
                 <div class="logo">
-                    <div class="logo-icon">💬</div>
+                    <div class="logo-icon" style="background: var(--gradient-1); font-size: 1.2rem;">💉</div>
                     <div class="logo-text">
-                        <h1>DataChat</h1>
-                        <p>Trợ lý phân tích dữ liệu thông minh</p>
+                        <h1>Tiêm Chủng Long Châu</h1>
+                        <p>DataChat - Phân tích dữ liệu vaccine</p>
                     </div>
                 </div>
             </div>
@@ -358,13 +360,13 @@
         <div class="chat-area">
             <div class="chat-container" id="chatContainer">
                 <div class="welcome" id="welcomeScreen">
-                    <div class="welcome-icon">🤖</div>
+                    <div class="welcome-icon">💉</div>
                     <h2>Xin chào!</h2>
-                    <p>Tôi là trợ lý phân tích dữ liệu. Hãy hỏi tôi bất kỳ điều gì về dữ liệu của bạn bằng tiếng Việt.</p>
+                    <p>Tôi là trợ lý phân tích dữ liệu Tiêm Chủng Long Châu. Hãy hỏi tôi bất kỳ điều gì về dữ liệu vaccine bằng tiếng Việt.</p>
                     <div class="examples">
-                        <button class="example-btn" onclick="askExample(this)">📊 Có bao nhiêu sự kiện trong database?</button>
-                        <button class="example-btn" onclick="askExample(this)">🏆 Top 5 sản phẩm bán chạy nhất</button>
-                        <button class="example-btn" onclick="askExample(this)">📱 Thống kê theo platform</button>
+                        <button class="example-btn" onclick="askExample(this)">💉 Top 5 vaccine bán chạy nhất</button>
+                        <button class="example-btn" onclick="askExample(this)">📊 Doanh thu theo khu vực</button>
+                        <button class="example-btn" onclick="askExample(this)">🏥 Số mũi tiêm theo trung tâm</button>
                     </div>
                 </div>
             </div>

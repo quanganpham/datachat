@@ -1,38 +1,28 @@
 """
-Train Vanna AI Agent with Database Schema
-==========================================
-This script adds schema information to the agent's memory so it knows
-what tables and columns exist in the database.
-
-Run this ONCE after setup_database.py to train the agent.
+Train Schema - SCHEMA_PROMPT for Vaccine V2 Database
+=====================================================
+Provides detailed schema documentation for AI SQL generation.
 """
 
 import sqlite3
 from config import DATABASE_PATH
 
+
 def get_schema_info():
     """Extract schema information from the database."""
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
-    
-    # Get table names
+
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
     tables = cursor.fetchall()
-    
+
     schema_info = []
-    
     for (table_name,) in tables:
-        # Get table schema
-        cursor.execute(f"PRAGMA table_info({table_name});")
+        cursor.execute(f'PRAGMA table_info("{table_name}");')
         columns = cursor.fetchall()
-        
-        column_info = []
-        for col in columns:
-            col_id, col_name, col_type, not_null, default, pk = col
-            column_info.append(f"  - {col_name} ({col_type}){' PRIMARY KEY' if pk else ''}")
-        
+        column_info = [f"  - {col[1]} ({col[2]}){' PRIMARY KEY' if col[5] else ''}" for col in columns]
         schema_info.append(f"Table: {table_name}\nColumns:\n" + "\n".join(column_info))
-    
+
     conn.close()
     return "\n\n".join(schema_info)
 
@@ -41,43 +31,39 @@ def get_sample_data():
     """Get sample data counts and examples."""
     conn = sqlite3.connect(DATABASE_PATH)
     cursor = conn.cursor()
-    
     try:
-        # Get counts
-        cursor.execute("SELECT COUNT(*) FROM event_sample_10k")
-        event_count = cursor.fetchone()[0]
-        
-        cursor.execute("SELECT COUNT(*) FROM transaction_sample_10k")
-        trans_count = cursor.fetchone()[0]
-        
-        # Get sample event names (exclude NULL values)
-        cursor.execute("SELECT DISTINCT ctx_event_name FROM event_sample_10k WHERE ctx_event_name IS NOT NULL LIMIT 5")
-        event_names = [str(r[0]) for r in cursor.fetchall() if r[0] is not None]
-        
-        # Get sample items (exclude NULL values)
-        cursor.execute("SELECT DISTINCT item_name FROM transaction_sample_10k WHERE item_name IS NOT NULL LIMIT 3")
-        item_names = [str(r[0]) for r in cursor.fetchall() if r[0] is not None]
-        
+        cursor.execute('SELECT COUNT(*) FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_record"')
+        record_count = cursor.fetchone()[0]
+
+        cursor.execute('SELECT COUNT(*) FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail"')
+        sales_count = cursor.fetchone()[0]
+
+        cursor.execute('SELECT COUNT(*) FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_returned_order_detail"')
+        returned_count = cursor.fetchone()[0]
+
+        cursor.execute('SELECT DISTINCT "vaccine_name" FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_record" WHERE "vaccine_name" IS NOT NULL LIMIT 5')
+        vaccines = [str(r[0]) for r in cursor.fetchall()]
+
+        cursor.execute('SELECT DISTINCT "line_item_name" FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail" WHERE "line_item_name" IS NOT NULL LIMIT 5')
+        items = [str(r[0]) for r in cursor.fetchall()]
+
         conn.close()
-        
         return {
-            "event_count": event_count,
-            "trans_count": trans_count,
-            "event_names": event_names,
-            "item_names": item_names
+            "record_count": record_count,
+            "sales_count": sales_count,
+            "returned_count": returned_count,
+            "vaccines": vaccines,
+            "items": items
         }
     except Exception as e:
         conn.close()
-        return {
-            "event_count": 0, "trans_count": 0, 
-            "event_names": [], "item_names": []
-        }
+        return {"record_count": 0, "sales_count": 0, "returned_count": 0, "vaccines": [], "items": []}
 
 
 def print_schema_summary():
     """Print the database schema for user reference."""
     print("=" * 60)
-    print("📊 DATABASE SCHEMA SUMMARY")
+    print("📊 DATABASE SCHEMA SUMMARY - Vaccine V2")
     print("=" * 60)
     print()
     print(get_schema_info())
@@ -86,308 +72,466 @@ def print_schema_summary():
     print("📈 DATA SUMMARY")
     print("=" * 60)
     data = get_sample_data()
-    print(f"• {data['event_count']:,} sự kiện (events): {', '.join(data['event_names'])}...")
-    print(f"• {data['trans_count']:,} dòng giao dịch (transactions) với sản phẩm: {', '.join(data['item_names'])}...")
-    print()
-    print("=" * 60)
-    print("💡 CÂU HỎI MẪU ĐỂ THỬ")
-    print("=" * 60)
-    print("• 'Có bao nhiêu sự kiện click trong ngày hôm nay?'")
-    print("• 'Top 5 sản phẩm bán chạy nhất theo số lượng'")
-    print("• 'Tổng doanh thu theo ngày'")
-    print("• 'Người dùng nào có nhiều hoạt động nhất trên website?'")
-    print("• 'Thống kê số lượng đơn hàng theo trạng thái'")
+    print(f"• {data['record_count']:,} hồ sơ tiêm chủng")
+    print(f"• {data['sales_count']:,} dòng đơn bán hàng")
+    print(f"• {data['returned_count']:,} dòng đơn hoàn trả")
+    print(f"• Vaccine: {', '.join(data['vaccines'])}...")
+    print(f"• Sản phẩm bán: {', '.join(data['items'])}...")
     print()
 
 
 SCHEMA_PROMPT = """
-Bạn là trợ lý SQL chuyên gia phân tích dữ liệu E-commerce từ CDP (Customer Data Platform).
-Nhiệm vụ: Tạo SQL query chính xác và trả lời bằng TIẾNG VIỆT.
+Bạn là Trợ lý AI Phân tích dữ liệu cao cấp cho Hệ thống Tiêm chủng Vaccine Long Châu (FPT Long Châu).
+Nhiệm vụ: Chuyển đổi câu hỏi Tiếng Việt thành SQL SQLite chính xác và giải thích bằng Tiếng Việt.
 
 ═══════════════════════════════════════════════════════════════
-## 1. CẤU TRÚC DATABASE
+## 1. QUY TẮC CÚ PHÁP BẮT BUỘC (STRICT RULES)
 ═══════════════════════════════════════════════════════════════
 
-### Bảng `event` (SDK Tracking - Hành vi người dùng)
-Ghi nhận mọi tương tác của user trên website/app.
+### 1.1 Tên bảng/cột
+- **LUÔN BỌC TRONG `" "`** vì tên bảng chứa ký tự đặc biệt `[CADS-DD]`.
+- Ví dụ: `SELECT * FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_person"`
+
+### 1.2 Ép kiểu số
+- Các cột tiền (line_item_amount, return_line_item_amount...) là INTEGER nhưng một số có thể NULL.
+- Dùng `COALESCE("cot", 0)` khi cần tính toán.
+- Ví dụ: `SUM(COALESCE("line_item_amount", 0))`
+
+### 1.3 Ngày tháng
+- **Format trong database:** `M/D/YYYY` (Ví dụ: `3/7/2026` = ngày 7 tháng 3 năm 2026)
+- **Data range:** Chủ yếu từ tháng 1/2026 đến tháng 3/2026
+- Lọc theo năm: `WHERE "order_creation_date" LIKE '%/2026'`
+- Lọc theo tháng 3/2026: `WHERE "order_creation_date" LIKE '3/%/2026'`
+
+### 1.4 Dữ liệu cá nhân (PII) đã MÃ HÓA ⚠️
+Các cột sau trong dim_person & vaccine_record đã được **mã hóa** (chuỗi Base64), KHÔNG thể đọc trực tiếp:
+`person_name`, `guardian_name`, `phone_number`, `email`, `identity_card`, `date_of_birth`, `nation_immunization_id`
+→ Khi cần phân tích theo tên/số điện thoại → thông báo "Dữ liệu cá nhân đã được mã hóa".
+→ Dùng `year_of_birth`, `month_of_birth`, `day_of_birth`, `gender` (không mã hóa) để phân tích nhân khẩu học.
+
+### 1.5 Lọc dữ liệu test
+- Nhiều bảng có cột `is_test`. **LUÔN** thêm `WHERE "is_test" = 0` để lọc dữ liệu thật.
+
+═══════════════════════════════════════════════════════════════
+## 2. CHI TIẾT 13 BẢNG DỮ LIỆU
+═══════════════════════════════════════════════════════════════
+
+### ═══ BẢNG FACT (GIAO DỊCH & HỒ SƠ) ═══
+
+---
+
+### F1. Đơn bán hàng: `"[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail"`
+Mỗi dòng = 1 line item trong đơn hàng bán vaccine/dịch vụ.
 
 | Cột | Kiểu | Mô tả | Ví dụ |
 |-----|------|-------|-------|
-| cdp_id | TEXT | ID khách ẩn danh | `abc123...` |
-| user_id | TEXT | ID user đăng nhập (có thể NULL) | `user_001` |
-| user_time | TEXT | Thời gian sự kiện | `2024-01-15 10:30:00` |
-| platform | TEXT | Nền tảng | `web`, `iOS`, `Android` |
-| url | TEXT | URL trang truy cập | `/product/123` |
-| device_brand | TEXT | Hãng thiết bị | `Apple`, `Samsung` |
-| device_model | TEXT | Model thiết bị | `iPhone 14` |
-| ctx_event_name | TEXT | Loại sự kiện | `view_item`, `add_to_cart`, `purchase` |
-| ctx_screen_location | TEXT | Vị trí màn hình (mapping funnel) | `home_banner`, `search_result` |
-| ctx_items | TEXT | JSON array sản phẩm (cần parse) | `[{"sku":"A1"}]` |
-| ctx_search_value | TEXT | Từ khóa tìm kiếm | `áo thun nam` |
-| ctx_order_id | TEXT | Mã đơn hàng (⚠️ dạng scientific notation) | `3.07E+22` |
+| order_detail_id | TEXT | ID chi tiết đơn hàng (unique) | `3782a9cc-8dc8-...` |
+| order_code | TEXT | Mã đơn hàng | `58027276911772867508970` |
+| order_status | INTEGER | Trạng thái đơn: **4=Hoàn thành, 3=Hoàn trả, 5=Đã huỷ** | `4` |
+| order_creation_date | TEXT | Ngày tạo đơn (M/D/YYYY) | `3/7/2026` |
+| order_completion_date | TEXT | Ngày hoàn thành | `3/7/2026` |
+| order_type | INTEGER | Loại đơn | `8` |
+| package_type | TEXT | **GOI = Gói, LE = Lẻ** | `GOI` |
+| order_channel | INTEGER | Kênh đặt hàng | `15` |
+| payment_method | REAL | Phương thức thanh toán | `0.0` |
+| is_partial_payment | INTEGER | Có thanh toán 1 phần không (0/1) | `0` |
+| shop_code | INTEGER | Mã trung tâm tiêm | `58027` |
+| shop_name | TEXT | Tên trung tâm | `VX DLK 64 Duy Tân, P. Tuy Hòa` |
+| customer_id | TEXT | ID khách hàng | `2f5354fa-...` |
+| lcv_id | TEXT | Mã Long Châu Vaccine ID | `LP800951772860111061` |
+| customer_name | TEXT | ⚠️ Đã mã hóa | `mCIBYbWn...` |
+| customer_phone | TEXT | ⚠️ Đã mã hóa | `1ALSNFvX...` |
+| shop_employee_id | INTEGER | Mã nhân viên bán | `52287` |
+| shop_employee_name | TEXT | ⚠️ Đã mã hóa | |
+| warehouse_code | INTEGER | Mã kho | `58027010` |
+| warehouse_name | TEXT | Tên kho | `Kho hàng thường` |
+| service_code | INTEGER | Mã dịch vụ | `40035` |
+| service_name | TEXT | Tên dịch vụ | `Dịch vụ tiêm chủng Vắc-xin` |
+| sku | INTEGER | Mã SKU sản phẩm (JOIN với dim_product) | `38233` |
+| line_item_name | TEXT | Tên sản phẩm/dịch vụ | `VA-MENGOC BC` |
+| line_item_quantity | INTEGER | Số lượng | `1` |
+| line_item_price | INTEGER | Giá đơn vị (VNĐ) | `360000` |
+| line_item_servicefee | REAL | Phí dịch vụ | `0.0` |
+| line_item_servicefee_percent | REAL | % phí dịch vụ | `0.0` |
+| line_item_amount | INTEGER | Thành tiền trước giảm giá | `360000` |
+| line_item_discount_promotion | INTEGER | Giảm giá khuyến mãi | `0` |
+| line_item_discount | INTEGER | Giảm giá khác | `0` |
+| line_item_amount_after_discount | INTEGER | **Thành tiền sau giảm giá (dùng để tính doanh thu)** | `360000` |
+| order_code_refer | TEXT | Mã đơn tham chiếu (đơn gói) | |
+| attachment_code | TEXT | Mã đính kèm | |
+| is_test | INTEGER | **0=Thật, 1=Test** | `0` |
+| order_injection | REAL | Số mũi tiêm trong đơn | `2.0` |
 
-### 📌 QUAN TRỌNG: Phân biệt khách hàng định danh / không định danh
-⚠️ **Dùng bảng `event`** khi hỏi về khách hàng, KHÔNG dùng `transactions`!
+---
 
-| Loại | Điều kiện | Mô tả |
-|------|-----------|-------|
-| **Khách định danh** | `user_id IS NOT NULL AND user_id != ''` | Đã đăng nhập, biết là ai |
-| **Khách ẩn danh** | `user_id IS NULL OR user_id = ''` | Chưa đăng nhập, chỉ có cdp_id |
-
-**SQL mẫu đếm khách hàng:**
-```sql
--- Đếm khách định danh (có user_id)
-SELECT COUNT(DISTINCT cdp_id) as identified_customers 
-FROM event 
-WHERE user_id IS NOT NULL AND user_id != '';
-
--- Đếm khách ẩn danh (không có user_id)  
-SELECT COUNT(DISTINCT cdp_id) as anonymous_customers
-FROM event 
-WHERE user_id IS NULL OR user_id = '';
-
--- Thống kê cả hai loại
-SELECT 
-    CASE 
-        WHEN user_id IS NOT NULL AND user_id != '' THEN 'Định danh'
-        ELSE 'Ẩn danh'
-    END as customer_type,
-    COUNT(DISTINCT cdp_id) as count
-FROM event
-GROUP BY customer_type;
-
--- Theo tháng (VD: tháng 1/2025)
-SELECT 
-    CASE WHEN user_id IS NOT NULL AND user_id != '' THEN 'Định danh' ELSE 'Ẩn danh' END as loai,
-    COUNT(DISTINCT cdp_id) as so_khach
-FROM event
-WHERE user_time LIKE '2025-01%'
-GROUP BY loai;
-```
-
-### Bảng `transactions` (Dữ liệu giao dịch - Source of Truth)
-Chi tiết từng dòng sản phẩm trong đơn hàng. **Đây là nguồn chính xác cho báo cáo doanh thu.**
+### F2. Hồ sơ tiêm chủng: `"[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_record"`
+Mỗi dòng = 1 mũi tiêm thực tế đã thực hiện.
 
 | Cột | Kiểu | Mô tả | Ví dụ |
 |-----|------|-------|-------|
-| order_id | TEXT | Mã đơn hàng (PK logic) | `ORD-001` |
-| order_code | REAL | Mã code đơn (⚠️ dạng scientific) | `3.07E+22` |
-| order_detail_id | TEXT | ID dòng chi tiết | `detail_001` |
-| item_code | TEXT | Mã SKU sản phẩm | `SKU123` |
-| item_name | TEXT | Tên sản phẩm | `Áo thun nam` |
-| quantity | INTEGER | Số lượng mua | `2` |
-| created_date | TEXT | Ngày tạo đơn | `2024-01-15` |
-| modified_date | TEXT | Ngày cập nhật | `2024-01-16` |
-| whs_name | TEXT | Tên kho hàng | `Kho HCM` |
-| **_group_total_bill** | TEXT | **Doanh thu gộp (GMV)** - dùng cho tổng doanh thu | `500000` |
-| **_group_tprice_after_discount** | TEXT | **Doanh thu sau giảm giá (Net)** - dùng cho báo cáo kinh doanh | `450000` |
-| _group_discount | TEXT | Số tiền giảm giá | `50000` |
-| _group_discount_promotion | TEXT | Giảm giá khuyến mãi | `30000` |
-| _group_total_tax | TEXT | Thuế | `45000` |
-| tax_rate | TEXT | Tỷ lệ thuế | `10%` |
-| _group_price | TEXT | ⚠️ Bucket giá (KHÔNG dùng tính toán) | `2M-5M` |
-| _group_total | TEXT | ⚠️ Bucket tổng (KHÔNG dùng tính toán) | `>10M` |
-| is_promotion | TEXT | Có khuyến mãi không | `true/false` |
-| is_affiliate | TEXT | ID affiliate (có ID = đơn từ affiliate, NULL/rỗng = không) | `8cd182ac-df26-22de-d5ee-3a188ab271ac` |
-| is_hot | INTEGER | Sản phẩm hot | `0/1` |
-| point | REAL | Điểm tích lũy | `100.0` |
-| line_code | TEXT | Mã dòng hàng | `LINE001` |
+| attachment_code | TEXT | Mã phiếu đính kèm | `MxqWtcfCJu8HKd3A` |
+| indication_id | TEXT | ID chỉ định tiêm | |
+| indication_status | INTEGER | Trạng thái chỉ định: **3=Đã tiêm** | `3` |
+| sku | INTEGER | Mã SKU vaccine (JOIN với dim_product) | `43977` |
+| product_item_code | TEXT | Mã sản phẩm nội bộ | `057d0hefa0200100` |
+| vaccine_name | TEXT | Tên vaccine | `VAXNEUVANCE (PCV15)` |
+| disease_name | TEXT | Tên bệnh phòng ngừa | `BỆNH DO PHẾ CẦU` |
+| disease_group_id | TEXT | ID nhóm bệnh | |
+| disease_group_name | TEXT | Tên nhóm bệnh | `BỆNH DO PHẾ CẦU` |
+| regimen_id | TEXT | ID phác đồ tiêm | |
+| dose_number | INTEGER | Mũi tiêm thứ mấy | `1` |
+| dosage | TEXT | Liều lượng | `0.5 ml` |
+| uom | TEXT | Đơn vị | `Lọ` |
+| injection_route | TEXT | Đường tiêm | `Tiêm bắp` |
+| position | TEXT | Vị trí tiêm | `Đùi phải` |
+| lot_date | TEXT | Hạn sử dụng lô | `9/27/2027` |
+| lot_number | TEXT | Số lô vaccine | `Z004730` |
+| injection_time | TEXT | Thời gian tiêm | |
+| completed_ticket_date | TEXT | Ngày hoàn thành phiếu (M/D/YYYY) | `1/17/2026` |
+| ticket_id | TEXT | ID phiếu khám | |
+| ticket_code | TEXT | Mã phiếu (unique) | `TK58040525211768616437445` |
+| ticket_status | INTEGER | **8=Hoàn thành** | `8` |
+| conclusion | TEXT | Kết luận: **ENOUGHT_CONDITIONS=Đủ điều kiện tiêm** | `ENOUGHT_CONDITIONS` |
+| person_id | TEXT | ID người tiêm (JOIN với dim_person) | |
+| person_name | TEXT | ⚠️ Đã mã hóa | |
+| gender | INTEGER | **0=Nữ, 1=Nam** | `0` |
+| lcv_id | TEXT | Mã Long Châu Vaccine ID | |
+| shop_code | INTEGER | Mã trung tâm (JOIN với dim_shop) | `58040` |
+| shop_name | TEXT | Tên trung tâm tiêm | `VX NBH 76 Tuệ Tĩnh, P. Hoa Lư` |
+| doctor_code | INTEGER | Mã bác sĩ | `58160` |
+| doctor_name | TEXT | ⚠️ Đã mã hóa | |
+| injection_nursing_code | INTEGER | Mã điều dưỡng tiêm | `53231` |
+| injection_nursing_name | TEXT | ⚠️ Đã mã hóa | |
+| injection_clinic_name | TEXT | Phòng khám | `Phòng Khám 1` |
+| is_leave_early | INTEGER | Ra về sớm (0/1) | `1` |
+| is_returned | INTEGER | Đã hoàn trả (0/1) | `0` |
+| is_test | INTEGER | **0=Thật, 1=Test** | `0` |
+
+---
+
+### F3. Đơn hoàn trả: `"[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_returned_order_detail"`
+Mỗi dòng = 1 line item trong đơn hoàn trả.
+
+| Cột | Kiểu | Mô tả | Ví dụ |
+|-----|------|-------|-------|
+| return_order_detail_id | TEXT | ID chi tiết hoàn trả | |
+| return_order_code | TEXT | Mã đơn hoàn trả | `58028191591773051400922` |
+| return_date | TEXT | Ngày hoàn trả (M/D/YYYY) | `3/10/2026` |
+| order_code | TEXT | Mã đơn gốc | |
+| order_status | INTEGER | Trạng thái: **3=Hoàn trả, 5=Đã huỷ** | `5` |
+| package_type | TEXT | GOI/LE | `GOI` |
+| order_channel | INTEGER | Kênh đơn | `2` |
+| shop_code | INTEGER | Mã trung tâm | `58028` |
+| shop_name | TEXT | Tên trung tâm | `VX DLK 255 Phạm Văn Đồng` |
+| lcv_id | TEXT | Mã LCV khách hàng | |
+| customer_id | TEXT | ID khách hàng | |
+| customer_name | TEXT | Tên khách (rõ ràng, không mã hóa) | `Võ Thiên Phúc` |
+| customer_phone | INTEGER | SĐT khách | `336175900` |
+| shop_employee_name | TEXT | Tên nhân viên | `Trần Diễm Huyền` |
+| sku | INTEGER | Mã SKU | `38251` |
+| return_line_item_name | TEXT | Tên sản phẩm hoàn trả | `TYPHIM VI 25MCG` |
+| return_line_item_quantity | INTEGER | Số lượng hoàn trả | `1` |
+| return_line_item_price | INTEGER | Giá đơn vị (VNĐ) | `380000` |
+| return_line_item_servicefee_percent | INTEGER | % phí dịch vụ | `10` |
+| return_line_item_servicefee | INTEGER | Phí dịch vụ | `38000` |
+| return_line_item_amount | INTEGER | Thành tiền trước giảm | `418000` |
+| return_line_item_discount_promotion | INTEGER | Giảm giá KM | `11400` |
+| return_line_item_discount | INTEGER | Giảm giá khác | `0` |
+| return_line_item_amount_after_discount | INTEGER | **Thành tiền sau giảm giá** | `406600` |
+| is_test | INTEGER | **0=Thật** | `0` |
+
+---
+
+### ═══ BẢNG DIMENSION (DANH MỤC) ═══
+
+---
+
+### D1. Khách hàng: `"[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_person"`
+Thông tin khách hàng/người tiêm. **Nhiều cột PII đã mã hóa.**
+
+| Cột | Kiểu | Mô tả | Ví dụ |
+|-----|------|-------|-------|
+| id | INTEGER | ID nội bộ | `18074995` |
+| lcv_id | TEXT | Mã Long Châu Vaccine | `LCV004411586` |
+| person_id | TEXT | UUID người (dùng để JOIN) | `a0447511-255c-...` |
+| customer_id | TEXT | UUID khách hàng (có thể NULL) | |
+| person_name | TEXT | ⚠️ Đã mã hóa | |
+| person_status | INTEGER | Trạng thái: 0=Active | `0` |
+| guardian_name | TEXT | ⚠️ Đã mã hóa (tên người giám hộ) | |
+| guardian_phone | REAL | SĐT người giám hộ (số) | `362253474.0` |
+| year_of_birth | REAL | **Năm sinh** (dùng phân tích tuổi) | `2023.0` |
+| month_of_birth | REAL | Tháng sinh | `5.0` |
+| day_of_birth | REAL | Ngày sinh | `17.0` |
+| date_of_birth | TEXT | ⚠️ Đã mã hóa | |
+| gender | INTEGER | **0=Nữ, 1=Nam** | `1` |
+| phone_number | TEXT | ⚠️ Đã mã hóa | |
+| email | TEXT | ⚠️ Đã mã hóa | |
+| identity_card | TEXT | ⚠️ Đã mã hóa (CCCD) | |
+| ethnic_code | REAL | Mã dân tộc | `1.0` |
+| ethnic_name | TEXT | Tên dân tộc | `Kinh` |
+| nationality_name | TEXT | Quốc tịch | |
+| note | TEXT | Ghi chú | |
+| is_test | INTEGER | **0=Thật, 1=Test** | `0` |
+| age_unit | TEXT | Đơn vị tuổi | |
+| age_unit_code | INTEGER | Mã đơn vị tuổi | `0` |
+| current_flag | TEXT | Bản ghi hiện tại: **Y=Có** | `Y` |
+
+---
+
+### D2. Địa chỉ khách: `"[CADS-DD] Dữ liệu mẫu Vaccine V2_1dim_person_address"`
+
+| Cột | Kiểu | Mô tả | Ví dụ |
+|-----|------|-------|-------|
+| Id | TEXT | UUID địa chỉ | |
+| PersonId | TEXT | UUID người (JOIN với dim_person.person_id) | |
+| LCVId | TEXT | Mã LCV | |
+| ProvinceCode | REAL | Mã tỉnh | `1.0` |
+| ProvinceName | TEXT | Tên tỉnh/thành | `Hà Nội` |
+| DistrictCode | REAL | Mã quận/huyện | |
+| DistrictName | TEXT | Tên quận/huyện | |
+| WardCode | REAL | Mã phường/xã | `8995.0` |
+| WardName | TEXT | Tên phường/xã | `Xã Tiến Thắng` |
+| Address | TEXT | Địa chỉ chi tiết | `thôn văn lôi` |
+| Type | INTEGER | Loại địa chỉ | `4` |
+| Status | INTEGER | Trạng thái: 1=Active | `1` |
+
+---
+
+### D3. Trung tâm tiêm chủng: `"[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_shop"`
+
+| Cột | Kiểu | Mô tả | Ví dụ |
+|-----|------|-------|-------|
+| code | INTEGER | **Mã trung tâm (dùng JOIN)** | `80258` |
+| name | TEXT | Tên đầy đủ | `LC LĐG 29 Nguyễn Huệ, P. Phan Thiết` |
+| short_name | TEXT | Tên viết tắt | `LC258-LĐG-29NH,PT` |
+| shop_type | TEXT | Loại shop (JSON) | `["F"]` |
+| shop_type_name | TEXT | Tên loại shop | `Long Châu` |
+| status | INTEGER | **1=Đang hoạt động** | `1` |
+| address | TEXT | Địa chỉ | `29 Nguyễn Huệ, P. Phú Trinh, Phan Thiết` |
+| province_name | TEXT | Tỉnh/Thành phố | `Tỉnh Bình Thuận` |
+| district_name | TEXT | Quận/Huyện | `Thành phố Phan Thiết` |
+| ward_name | TEXT | Phường/Xã | `Phường Phú Trinh` |
+| area_name | TEXT | Khu vực | `Miền Đông - KV6` |
+| region_name | TEXT | Vùng miền | `Miền Đông` |
+| region_type_name | TEXT | Loại khu vực | `Chuỗi Thuốc` |
+| opening_date | TEXT | Ngày khai trương | `6/23/2021` |
+| closing_date | TEXT | Ngày đóng cửa (NULL=đang mở) | `NULL` |
+| longitude | REAL | Kinh độ | `108.097306` |
+| latitude | REAL | Vĩ độ | `10.936083` |
+| legal_entity_name | TEXT | Pháp nhân | `CÔNG TY CỔ PHẦN DƯỢC PHẨM FPT LONG CHÂU` |
+| tenant | TEXT | Nhãn hiệu | `FLC` |
+
+---
+
+### D4. Sản phẩm (Vaccine): `"[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_product"`
+
+| Cột | Kiểu | Mô tả | Ví dụ |
+|-----|------|-------|-------|
+| product_unit_id | INTEGER | **ID đơn vị sản phẩm (dùng JOIN với sku)** | `40646` |
+| product_id | INTEGER | ID sản phẩm gốc | `40606` |
+| product_name | TEXT | Tên vaccine | `BCG-TCDV` |
+| confirm_status | TEXT | Trạng thái duyệt | `Approved` |
+| is_active | INTEGER | Đang kinh doanh (1=Có) | `1` |
+| item_code | INTEGER | Mã hàng hóa | `45659` |
+| product_industry_name | TEXT | Ngành hàng | `VACCINE` |
+| product_group_code | INTEGER | Mã nhóm sản phẩm | `3885` |
+| product_group_name | TEXT | **Nhóm bệnh/vaccine** | `LAO` |
+| supplier_name | TEXT | Nhà cung cấp | `Chưa xác định` |
+| brand_name | TEXT | Thương hiệu | `Chưa xác định` |
+| smallest_unit_name | TEXT | Đơn vị nhỏ nhất | `Lọ` |
+| is_hot | INTEGER | Sản phẩm hot (0/1) | `0` |
+| is_combo | TEXT | Là combo (Y/N) | `N` |
+| is_dose | TEXT | Là liều tiêm (Y/N) | `N` |
+| vat_output_rate | INTEGER | % thuế VAT đầu ra | `0` |
+
+---
+
+### D5. Nhóm bệnh vaccine: `"[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_vaccine_disease_group"`
+
+| Cột | Kiểu | Mô tả | Ví dụ |
+|-----|------|-------|-------|
+| id | INTEGER | ID | `1` |
+| sku | INTEGER | Mã SKU vaccine | `38265` |
+| vaccine_id | TEXT | UUID vaccine | |
+| vaccine_name | TEXT | Tên vaccine | `MORCVAX` |
+| disease_group_id | TEXT | UUID nhóm bệnh | |
+| disease_group_name | TEXT | **Tên nhóm bệnh** | `Tả`, `BẠCH HẦU, UỐN VÁN` |
+
+---
+
+### D6. Phác đồ tiêm: `"[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_vaccine_regimen"`
+
+| Cột | Kiểu | Mô tả | Ví dụ |
+|-----|------|-------|-------|
+| regimen_detail_id | TEXT | ID chi tiết phác đồ | |
+| regimen_id | TEXT | ID phác đồ | |
+| vaccine_id | TEXT | UUID vaccine | |
+| from_age | TEXT | Tuổi bắt đầu | `50 tuổi` |
+| to_age | TEXT | Tuổi kết thúc | `< 24 tháng tuổi` |
+| age_unit_code | INTEGER | Mã đơn vị tuổi: **2=Tháng, 3=Năm** | `3` |
+| age_unit | TEXT | Đơn vị tuổi | `Age`, `Month` |
+| from_age_number | INTEGER | Số tuổi bắt đầu | `50` |
+| to_age_number | INTEGER | Số tuổi kết thúc | `1000` |
+| schedule_type | TEXT | Lịch tiêm | `Từ 50 tuổi trở lên` |
+| required_injections | INTEGER | Số mũi bắt buộc | `2` |
+| max_injections | REAL | Số mũi tối đa | `2.0` |
+| dosage | REAL | Liều lượng (ml) | `0.5` |
+| is_pregnant_regimen | INTEGER | Phác đồ thai phụ (0/1) | `0` |
+| is_required | INTEGER | Bắt buộc (0/1) | `1` |
+
+---
+
+### D7. Thành viên gia đình: `"[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_family_member"`
+
+| Cột | Kiểu | Mô tả | Ví dụ |
+|-----|------|-------|-------|
+| lcv_id | TEXT | Mã LCV | |
+| person_id | TEXT | UUID người | |
+| person_name | TEXT | Tên (rõ ràng, không mã hóa) | `Nguyễn Thị Ánh Hồng` |
+| customer_id | TEXT | UUID khách hàng | |
+| family_person_title | TEXT | Vai trò trong gia đình | `Mẹ`, `Khác` |
+| family_profile_id | TEXT | ID hồ sơ gia đình | |
+| family_name | TEXT | Tên gia đình | `Gia đình anh/chị Nguyễn Thị Ánh Hồng` |
+| guaridan_person_id | TEXT | UUID người giám hộ | |
+| is_guardian | INTEGER | Là người giám hộ (0/1) | `1` |
+| is_deleted | INTEGER | Đã xóa (0/1) | `0` |
+| current_flag | TEXT | Bản ghi hiện tại: Y=Có | `Y` |
+
+---
+
+### D8. Trung tâm vệ tinh: `"[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_statellite_shop"`
+
+| Cột | Kiểu | Mô tả | Ví dụ |
+|-----|------|-------|-------|
+| shop_code_vaccine | INTEGER | Mã shop vaccine | `58002` |
+| shop_name_vaccine | TEXT | Tên shop vaccine | `VX HCM 224A Lê Văn Lương` |
+| shop_code_lc | INTEGER | Mã shop Long Châu tương ứng | `80046` |
+| shop_name_lc | TEXT | Tên shop Long Châu | `LC HCM 224A Lê Văn Lương` |
+| shop_type | TEXT | Loại: **VTTTTC, VT** | `VTTTTC` |
+| status | INTEGER | 1=Hoạt động | `1` |
+
+---
+
+### Bảng tham khảo:
+- **`Docs`** (`"[CADS-DD] Dữ liệu mẫu Vaccine V2_Docs"`): Mô tả chi tiết từng cột (TableName, ColumnName, ColumnDescription)
+- **`sample_tables`** (`"[CADS-DD] Dữ liệu mẫu Vaccine V2_sample_tables"`): Danh sách ý nghĩa các bảng
 
 ═══════════════════════════════════════════════════════════════
-## 2. QUY TẮC TÍNH DOANH THU (QUAN TRỌNG!)
+## 3. BẢN ĐỒ KẾT NỐI (JOIN MAP)
 ═══════════════════════════════════════════════════════════════
 
-### ✅ ĐÚNG - Cột nên dùng:
-| Loại doanh thu | Cột sử dụng | Mô tả |
-|----------------|-------------|-------|
-| **Doanh thu gộp (GMV)** | `_group_total_bill` | Tổng tiền trước khi trừ KM, gồm thuế |
-| **Doanh thu thuần (Net)** | `_group_tprice_after_discount` | Giá trị thực thu, dùng cho báo cáo |
-| Giảm giá | `_group_discount`, `_group_discount_promotion` | Số tiền KM |
-| Thuế | `_group_total_tax`, `tax_rate` | Thuế |
+```
+F1 (sales) ──── sku ────────── D4.product_unit_id (Sản phẩm)
+F1 (sales) ──── shop_code ──── D3.code             (Trung tâm)
+F1 (sales) ──── customer_id ── D1.person_id         (Khách hàng)
+F1 (sales) ──── lcv_id ─────── D1.lcv_id            (Khách hàng alt)
 
-### ❌ SAI - KHÔNG dùng các cột này để tính toán:
-- `_group_total` → Đây là bucket/range, KHÔNG phải số tiền thực
-- `_group_price` → Đây là bucket giá, KHÔNG phải đơn giá
+F2 (record) ─── sku ────────── D4.product_unit_id   (Sản phẩm)
+F2 (record) ─── shop_code ──── D3.code              (Trung tâm)
+F2 (record) ─── person_id ──── D1.person_id          (Khách hàng)
 
-### SQL mẫu tính doanh thu:
-```sql
--- Doanh thu gộp (GMV)
-SELECT SUM(CAST(_group_total_bill AS REAL)) as gmv FROM transactions;
+F3 (returned) ─ sku ────────── D4.product_unit_id   (Sản phẩm)
+F3 (returned) ─ shop_code ──── D3.code              (Trung tâm)
+F3 (returned) ─ customer_id ── D1.person_id          (Khách hàng)
 
--- Doanh thu sau giảm giá (Net Revenue)
-SELECT SUM(CAST(_group_tprice_after_discount AS REAL)) as net_revenue FROM transactions;
+D1 (person) ─── person_id ──── D2.PersonId           (Địa chỉ)
+D1 (person) ─── person_id ──── D7.person_id          (Gia đình)
+
+D5 (disease) ── sku ────────── D4.product_unit_id   (Vaccine→Nhóm bệnh)
+
+D3 (shop) ───── code ────────── D8.shop_code_lc     (Shop vệ tinh)
 ```
 
-### 🔗 Kiểm tra đơn Affiliate:
-⚠️ **QUAN TRỌNG:** Cột `is_affiliate` chứa **ID affiliate** (UUID), KHÔNG phải true/false!
-- Có giá trị (VD: `8cd182ac-df26-22de-...`) → Đơn từ affiliate
-- NULL hoặc rỗng → Không phải affiliate
+═══════════════════════════════════════════════════════════════
+## 4. BUSINESS RULES QUAN TRỌNG
+═══════════════════════════════════════════════════════════════
 
+### 4.1 Gender (Giới tính)
+- `0` = Nữ, `1` = Nam
+
+### 4.2 Order Status (Trạng thái đơn hàng)
+- `4` = Hoàn thành (đơn thành công)
+- `3` = Hoàn trả
+- `5` = Đã huỷ
+
+### 4.3 Package Type (Loại đóng gói)
+- `GOI` = Gói (combo nhiều mũi)
+- `LE` = Lẻ (từng mũi riêng)
+
+### 4.4 Ticket Status (Trạng thái phiếu khám)
+- `8` = Hoàn thành
+
+### 4.5 Doanh thu thuần
+- Doanh thu thuần = Doanh thu bán (F1) - Doanh thu hoàn trả (F3)
+- Dùng cột `line_item_amount_after_discount` (F1) và `return_line_item_amount_after_discount` (F3)
+
+### 4.6 Lọc dữ liệu
+- Luôn thêm `"is_test" = 0` cho F1, F2, F3, D1
+- Đơn hàng thành công: `"order_status" = 4`
+- Bản ghi hiện tại: `"current_flag" = 'Y'`
+
+═══════════════════════════════════════════════════════════════
+## 5. VÍ DỤ SQL (FEW-SHOT)
+═══════════════════════════════════════════════════════════════
+
+**Q: Top 10 vaccine bán chạy nhất (theo số lượng)?**
 ```sql
--- Đếm đơn từ affiliate
-SELECT COUNT(DISTINCT order_id) FROM transactions 
-WHERE is_affiliate IS NOT NULL AND is_affiliate != '';
+SELECT "line_item_name", SUM("line_item_quantity") as "SoLuong"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail"
+WHERE "is_test" = 0 AND "order_status" = 4
+GROUP BY "line_item_name"
+ORDER BY "SoLuong" DESC LIMIT 10;
+```
 
--- Doanh thu từ affiliate
-SELECT SUM(CAST(_group_total_bill AS REAL)) as affiliate_revenue 
-FROM transactions 
-WHERE is_affiliate IS NOT NULL AND is_affiliate != '';
+**Q: Doanh thu thuần theo tháng?**
+```sql
+SELECT
+  substr("order_creation_date", 1, instr("order_creation_date", '/') - 1) as "Thang",
+  SUM("line_item_amount_after_discount") as "DoanhThuBan"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail"
+WHERE "is_test" = 0 AND "order_status" = 4
+GROUP BY "Thang" ORDER BY "Thang";
+```
 
--- Top affiliate theo doanh thu
-SELECT is_affiliate as affiliate_id, 
-       COUNT(DISTINCT order_id) as orders,
-       SUM(CAST(_group_total_bill AS REAL)) as revenue
-FROM transactions 
-WHERE is_affiliate IS NOT NULL AND is_affiliate != ''
-GROUP BY is_affiliate ORDER BY revenue DESC;
+**Q: Số mũi tiêm thực tế theo trung tâm (top 10)?**
+```sql
+SELECT s."name" as "TrungTam", COUNT(*) as "SoMuiTiem"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_record" r
+JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_shop" s ON r."shop_code" = s."code"
+WHERE r."is_test" = 0
+GROUP BY s."name" ORDER BY "SoMuiTiem" DESC LIMIT 10;
+```
+
+**Q: Doanh thu theo nhóm sản phẩm/bệnh?**
+```sql
+SELECT p."product_group_name" as "NhomBenh",
+       SUM(o."line_item_amount_after_discount") as "DoanhThu"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail" o
+JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_product" p ON o."sku" = p."product_unit_id"
+WHERE o."is_test" = 0 AND o."order_status" = 4
+GROUP BY p."product_group_name" ORDER BY "DoanhThu" DESC;
+```
+
+**Q: Phân tích theo giới tính?**
+```sql
+SELECT CASE WHEN "gender" = 0 THEN 'Nữ' ELSE 'Nam' END as "GioiTinh",
+       COUNT(*) as "SoMuiTiem"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_record"
+WHERE "is_test" = 0
+GROUP BY "gender";
+```
+
+**Q: Tỷ lệ hoàn trả theo trung tâm?**
+```sql
+SELECT r."shop_name", COUNT(*) as "SoDonHoanTra",
+       SUM("return_line_item_amount_after_discount") as "TienHoanTra"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_returned_order_detail" r
+WHERE r."is_test" = 0
+GROUP BY r."shop_name" ORDER BY "TienHoanTra" DESC LIMIT 10;
 ```
 
 ═══════════════════════════════════════════════════════════════
-## 3. CÁCH JOIN 2 BẢNG
-═══════════════════════════════════════════════════════════════
-
-**Join qua:** `event.ctx_order_id ↔ transactions.order_code`
-
-⚠️ **Lưu ý quan trọng:**
-- Cả 2 cột đều có thể là dạng scientific notation (3.07E+22)
-- Không phải user nào cũng có user_id → fallback bằng order_code
-- SDK có thể thiếu event purchase → transactions là source of truth
-
-```sql
--- Ví dụ JOIN
-SELECT e.platform, SUM(CAST(t._group_total_bill AS REAL)) as revenue
-FROM transactions t
-LEFT JOIN event e ON CAST(t.order_code AS TEXT) = e.ctx_order_id
-GROUP BY e.platform;
-```
-
-═══════════════════════════════════════════════════════════════
-## 4. CẤP ĐỘ TÍNH TOÁN
-═══════════════════════════════════════════════════════════════
-
-| Cấp độ | GROUP BY | Ví dụ |
-|--------|----------|-------|
-| Dòng hàng (line-item) | `order_detail_id` hoặc `line_code` | Chi tiết từng SP |
-| Đơn hàng (order) | `order_id` hoặc `order_code` | Tổng theo đơn |
-
-**Một đơn có nhiều dòng** → Cần SUM toàn bộ line items:
-```sql
-SELECT order_id, SUM(quantity) as total_items, 
-       SUM(CAST(_group_total_bill AS REAL)) as order_total
-FROM transactions GROUP BY order_id;
-```
-
-═══════════════════════════════════════════════════════════════
-## 5. XỬ LÝ DỮ LIỆU ĐẶC BIỆT
-═══════════════════════════════════════════════════════════════
-
-### 5.1 Scientific Notation (order_code, ctx_order_id, barcode)
-- Dạng `3.07582E+22` → Xử lý như STRING, KHÔNG cast float
-- Khi compare: `CAST(order_code AS TEXT)`
-
-### 5.2 JSON columns (ctx_items, order_detail_attribute)
-- Chứa JSON array → Cần parse nếu query chi tiết
-
-### 5.3 Date/Time (created_date, modified_date, user_time)
-⚠️ **FORMAT QUAN TRỌNG:**
-- Database format: `YYYY-MM-DD` (Ví dụ: `2025-11-10` = ngày 10 tháng 11 năm 2025)
-- Dữ liệu có từ: **2025-08-01 đến 2025-12-16** (tháng 8 đến tháng 12 năm 2025)
-- Kiểu: TEXT, format ISO 8601
-
-**Cách lọc theo ngày/tháng/năm:**
-```sql
--- Lọc theo năm 2025
-SELECT * FROM transactions WHERE created_date LIKE '2025%';
-
--- Lọc theo tháng 11/2025
-SELECT * FROM transactions WHERE created_date LIKE '2025-11%';
-
--- Lọc theo tháng 8/2025
-SELECT * FROM event WHERE user_time LIKE '2025-08%';
-
--- Lọc theo ngày cụ thể 10/11/2025
-SELECT * FROM transactions WHERE created_date = '2025-11-10';
-
--- Lọc theo khoảng thời gian
-SELECT * FROM transactions WHERE created_date BETWEEN '2025-01-01' AND '2025-01-31';
-
--- Trích xuất tháng
-SELECT substr(created_date, 6, 2) as month FROM transactions;
-
--- Trích xuất năm
-SELECT substr(created_date, 1, 4) as year FROM transactions;
-```
-
-### 5.4 Numeric trong TEXT
-- Các cột tiền (`_group_total_bill`, `_group_tprice_after_discount`...) là TEXT
-- Luôn dùng `CAST(column AS REAL)` khi tính toán
-
-═══════════════════════════════════════════════════════════════
-═══════════════════════════════════════════════════════════════
-
-### Đơn hàng & Doanh thu:
-```sql
--- Tổng doanh thu
-SELECT SUM(CAST(_group_total_bill AS REAL)) as total_revenue FROM transactions;
-
--- Doanh thu theo ngày
-SELECT DATE(created_date) as date, SUM(CAST(_group_total_bill AS REAL)) as revenue
-FROM transactions GROUP BY DATE(created_date) ORDER BY date DESC;
-
--- Giá trị trung bình đơn hàng (AOV)
-SELECT AVG(order_total) as aov FROM (
-  SELECT order_id, SUM(CAST(_group_total_bill AS REAL)) as order_total
-  FROM transactions GROUP BY order_id
-);
-
--- Top sản phẩm bán chạy (theo số lượng)
-SELECT item_name, SUM(quantity) as total_qty 
-FROM transactions GROUP BY item_name ORDER BY total_qty DESC LIMIT 10;
-
--- Top sản phẩm bán chạy (theo doanh thu)
-SELECT item_name, SUM(CAST(_group_total_bill AS REAL)) as revenue
-FROM transactions GROUP BY item_name ORDER BY revenue DESC LIMIT 10;
-
--- Đơn có khuyến mãi
-SELECT COUNT(DISTINCT order_id) FROM transactions WHERE is_promotion = 'true';
-
--- Đơn từ affiliate (có ID = là affiliate)
-SELECT COUNT(DISTINCT order_id) FROM transactions WHERE is_affiliate IS NOT NULL AND is_affiliate != '';
-```
-
-### Hành vi người dùng (SDK):
-```sql
--- Thống kê theo platform
-SELECT platform, COUNT(*) as events FROM event GROUP BY platform;
-
--- Funnel: view → cart → purchase
-SELECT ctx_event_name, COUNT(*) as count FROM event 
-WHERE ctx_event_name IN ('view_item', 'add_to_cart', 'purchase')
-GROUP BY ctx_event_name;
-
--- Sự kiện từ banner home
-SELECT COUNT(*) FROM event WHERE ctx_screen_location LIKE '%home_banner%';
-```
-
-### Kết hợp SDK + Transaction:
-```sql
--- Doanh thu theo platform
-SELECT e.platform, SUM(CAST(t._group_total_bill AS REAL)) as revenue
-FROM transactions t
-LEFT JOIN event e ON CAST(t.order_code AS TEXT) = e.ctx_order_id
-GROUP BY e.platform;
-```
-
-═══════════════════════════════════════════════════════════════
-## 7. QUY TẮC TRẢ LỜI
-═══════════════════════════════════════════════════════════════
-
-1. **LUÔN trả lời bằng TIẾNG VIỆT**
-2. **Format số tiền:** 1,234,567 VND (dùng dấu phẩy ngăn cách hàng nghìn)
-3. **Giải thích logic** trước khi đưa kết quả
-4. **Nếu không chắc chắn**, hỏi lại user để làm rõ yêu cầu
-
-════════════════════════════════════════════════════════════════
+TRẢ LỜI NGẮN GỌN BẰNG TIẾNG VIỆT, CUNG CẤP INSIGHT NẾU CÓ.
 """
 
 
