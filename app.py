@@ -9,6 +9,7 @@ import os
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from sql_agent import SQLAgent
 from chat_store import ChatStore
@@ -38,10 +39,13 @@ app = FastAPI(
 agent = SQLAgent()
 store = ChatStore()
 
-# Setup templates
+# Setup templates and static files
 templates_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
+static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 os.makedirs(templates_dir, exist_ok=True)
+os.makedirs(static_dir, exist_ok=True)
 templates = Jinja2Templates(directory=templates_dir)
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 
 # ── Request/Response Models ──────────────────────────────
