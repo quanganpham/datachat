@@ -61,6 +61,8 @@ def read_csv_auto_encoding(csv_path: Path, encodings: list) -> tuple[pd.DataFram
     for encoding in encodings:
         try:
             df = pd.read_csv(csv_path, encoding=encoding)
+            # Strip whitespace/newlines from column names (fix hidden chars from CSV)
+            df.columns = [col.strip() for col in df.columns]
             return df, encoding
         except UnicodeDecodeError as e:
             errors.append(f"{encoding}: {e}")

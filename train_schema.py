@@ -461,77 +461,343 @@ D3 (shop) ───── code ────────── D8.shop_code_lc   
 ### 4.4 Ticket Status (Trạng thái phiếu khám)
 - `8` = Hoàn thành
 
-### 4.5 Doanh thu thuần
-- Doanh thu thuần = Doanh thu bán (F1) - Doanh thu hoàn trả (F3)
-- Dùng cột `line_item_amount_after_discount` (F1) và `return_line_item_amount_after_discount` (F3)
+### 4.5 Các loại doanh thu ⚠️
+- **Doanh thu gộp (Gross Revenue)** = `SUM("line_item_amount")` (trước giảm giá)
+- **Doanh thu sau giảm giá (Net Sales)** = `SUM("line_item_amount_after_discount")`
+- **Doanh thu thuần** = Net Sales bán (F1) − Net Returns (F3)
+- Khi user hỏi "doanh thu" chung → mặc định dùng `line_item_amount_after_discount`
+- Cẩn thận NULL: Luôn dùng `COALESCE("cot", 0)` khi tính toán
 
 ### 4.6 Lọc dữ liệu
 - Luôn thêm `"is_test" = 0` cho F1, F2, F3, D1
 - Đơn hàng thành công: `"order_status" = 4`
 - Bản ghi hiện tại: `"current_flag" = 'Y'`
 
+### 4.7 Data Range & Ngày tháng ⚠️
+- Dữ liệu chỉ có từ **tháng 1/2026 đến tháng 3/2026**
+- Nếu user hỏi Q4/2025, năm 2024... → thông báo "Không có dữ liệu cho giai đoạn này"
+- Format: M/D/YYYY (VD: `3/7/2026`)
+- Lọc theo tháng: `WHERE "order_creation_date" LIKE '3/%/2026'`
+- "Tháng trước" (nếu hiện tại tháng 3) = tháng 2 → `LIKE '2/%/2026'`
+
+### 4.8 SQLite Limitations ⚠️
+- **KHÔNG CÓ** `FULL OUTER JOIN` → thay bằng `UNION ALL` (LEFT JOIN + anti-join)
+- **CÓ** Window Functions (ROW_NUMBER, RANK, DENSE_RANK, SUM/AVG OVER) từ SQLite 3.25+
+- **CÓ** Recursive CTE (`WITH RECURSIVE`)
+- **KHÔNG CÓ** `RIGHT JOIN` → đảo thứ tự bảng dùng `LEFT JOIN`
+
 ═══════════════════════════════════════════════════════════════
-## 5. VÍ DỤ SQL (FEW-SHOT)
+## 5. VÍ DỤ SQL THEO CẤP ĐỘ (FEW-SHOT)
 ═══════════════════════════════════════════════════════════════
 
-**Q: Top 10 vaccine bán chạy nhất (theo số lượng)?**
+### ═══ LEVEL 1: BASIC (SELECT, WHERE, GROUP BY) ═══
+
+**Q1: Top 5 loại vaccine trong hệ thống?**
 ```sql
-SELECT "line_item_name", SUM("line_item_quantity") as "SoLuong"
+SELECT DISTINCT "product_name"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_product"
+WHERE "product_industry_name" = 'VACCINE'
+LIMIT 5;
+```
+
+**Q2: Tổng doanh thu gộp (gross revenue)?**
+-- Note: Gross = line_item_amount (trước giảm giá), cẩn thận NULL
+```sql
+SELECT SUM(COALESCE("line_item_amount", 0)) as "DoanhThuGop"
 FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail"
-WHERE "is_test" = 0 AND "order_status" = 4
-GROUP BY "line_item_name"
-ORDER BY "SoLuong" DESC LIMIT 10;
+WHERE "is_test" = 0 AND "order_status" = 4;
 ```
 
-**Q: Doanh thu thuần theo tháng?**
+**Q3: Bao nhiêu mũi tiêm chưa xác định đường tiêm (injection_route)?**
+-- Note: Edge Case E1 - NULL handling
 ```sql
-SELECT
-  substr("order_creation_date", 1, instr("order_creation_date", '/') - 1) as "Thang",
-  SUM("line_item_amount_after_discount") as "DoanhThuBan"
-FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail"
-WHERE "is_test" = 0 AND "order_status" = 4
-GROUP BY "Thang" ORDER BY "Thang";
+SELECT COUNT(*) as "SoMuiChuaXacDinh"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_record"
+WHERE "is_test" = 0 AND ("injection_route" IS NULL OR "injection_route" = '');
 ```
 
-**Q: Số mũi tiêm thực tế theo trung tâm (top 10)?**
+### ═══ LEVEL 2: JOIN 2-3 BẢNG ═══
+
+**Q4: Doanh thu trung tâm 'VX HCM 203'?**
+-- Note: E4 - user gõ tắt/informal → dùng LIKE '%keyword%'
 ```sql
-SELECT s."name" as "TrungTam", COUNT(*) as "SoMuiTiem"
-FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_record" r
-JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_shop" s ON r."shop_code" = s."code"
-WHERE r."is_test" = 0
-GROUP BY s."name" ORDER BY "SoMuiTiem" DESC LIMIT 10;
+SELECT s."name" as "TrungTam",
+       SUM(COALESCE(o."line_item_amount_after_discount", 0)) as "DoanhThu"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail" o
+JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_shop" s ON o."shop_code" = s."code"
+WHERE o."is_test" = 0 AND o."order_status" = 4
+  AND s."name" LIKE '%VX HCM 203%'
+GROUP BY s."name";
 ```
 
-**Q: Doanh thu theo nhóm sản phẩm/bệnh?**
+**Q5: Khách hàng chưa từng tiêm vaccine nào?**
+-- Note: E5 - Phủ định (Negation) dùng LEFT JOIN ... IS NULL
 ```sql
-SELECT p."product_group_name" as "NhomBenh",
+SELECT d."lcv_id", d."person_id"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_person" d
+LEFT JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_record" r
+  ON d."person_id" = r."person_id" AND r."is_test" = 0
+WHERE d."is_test" = 0 AND d."current_flag" = 'Y'
+  AND r."person_id" IS NULL;
+```
+
+**Q9: Khách hàng nam sinh năm 2000 đã mua vaccine "Qdenga"?**
+-- Note: E2 - "mua" = bảng sales (F1), KHÔNG PHẢI record (F2)
+```sql
+SELECT DISTINCT o."customer_id", o."lcv_id"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail" o
+JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_person" d ON o."customer_id" = d."person_id"
+WHERE o."is_test" = 0 AND o."order_status" = 4
+  AND d."gender" = 1 AND d."year_of_birth" = 2000 AND d."current_flag" = 'Y'
+  AND o."line_item_name" LIKE '%Qdenga%';
+```
+
+### ═══ LEVEL 3: ADVANCED (CTE, Window Functions, Anti-join) ═══
+
+**Q6: Người tiêm HEXAXIM gần đây nhất tại mỗi cửa hàng?**
+-- Note: ROW_NUMBER() OVER(PARTITION BY) + Bẫy: lọc is_returned=0
+```sql
+WITH ranked AS (
+  SELECT r."shop_name", r."person_id", r."vaccine_name",
+         r."completed_ticket_date",
+         ROW_NUMBER() OVER (PARTITION BY r."shop_code"
+                            ORDER BY r."completed_ticket_date" DESC) as rn
+  FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_record" r
+  WHERE r."is_test" = 0 AND r."is_returned" = 0
+    AND r."vaccine_name" LIKE '%HEXAXIM%'
+)
+SELECT "shop_name", "person_id", "vaccine_name", "completed_ticket_date"
+FROM ranked WHERE rn = 1;
+```
+
+**Q7: Trung tâm bán >100 triệu nhưng chưa từng có khách trả hàng?**
+-- Note: Bẫy J2 + HAVING + NOT EXISTS (subquery)
+```sql
+SELECT o."shop_code", o."shop_name",
        SUM(o."line_item_amount_after_discount") as "DoanhThu"
 FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail" o
-JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_product" p ON o."sku" = p."product_unit_id"
 WHERE o."is_test" = 0 AND o."order_status" = 4
-GROUP BY p."product_group_name" ORDER BY "DoanhThu" DESC;
+  AND NOT EXISTS (
+    SELECT 1 FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_returned_order_detail" ret
+    WHERE ret."shop_code" = o."shop_code" AND ret."is_test" = 0
+  )
+GROUP BY o."shop_code", o."shop_name"
+HAVING SUM(o."line_item_amount_after_discount") > 100000000;
 ```
 
-**Q: Phân tích theo giới tính?**
+**Q8: Top 3 vaccine tiêm nhiều nhất tại mỗi Tỉnh/Thành?**
+-- Note: CTE + RANK() + 2 bảng JOIN (record ↔ shop)
 ```sql
-SELECT CASE WHEN "gender" = 0 THEN 'Nữ' ELSE 'Nam' END as "GioiTinh",
-       COUNT(*) as "SoMuiTiem"
-FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_record"
-WHERE "is_test" = 0
-GROUP BY "gender";
+WITH vaccine_count AS (
+  SELECT s."province_name", r."vaccine_name", COUNT(*) as "SoMui",
+         RANK() OVER (PARTITION BY s."province_name" ORDER BY COUNT(*) DESC) as rnk
+  FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_record" r
+  JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_shop" s ON r."shop_code" = s."code"
+  WHERE r."is_test" = 0
+  GROUP BY s."province_name", r."vaccine_name"
+)
+SELECT "province_name", "vaccine_name", "SoMui"
+FROM vaccine_count WHERE rnk <= 3
+ORDER BY "province_name", rnk;
 ```
 
-**Q: Tỷ lệ hoàn trả theo trung tâm?**
+**Q10: KH và người giám hộ tiêm Cúm tháng trước?**
+-- Note: 4 bảng JOIN (F2↔D1↔D7↔D5). E3: "tháng trước" = relative date
 ```sql
-SELECT r."shop_name", COUNT(*) as "SoDonHoanTra",
-       SUM("return_line_item_amount_after_discount") as "TienHoanTra"
-FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_returned_order_detail" r
+SELECT r."person_id", fm."person_name" as "TenKH",
+       fm."family_person_title" as "VaiTro",
+       fm."family_name" as "GiaDinh",
+       r."vaccine_name", r."completed_ticket_date"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_record" r
+JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_person" d ON r."person_id" = d."person_id"
+JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_family_member" fm ON d."person_id" = fm."person_id"
+JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_vaccine_disease_group" dg ON r."sku" = dg."sku"
+WHERE r."is_test" = 0 AND d."current_flag" = 'Y' AND fm."current_flag" = 'Y'
+  AND dg."disease_group_name" LIKE '%CÚM%'
+  AND r."completed_ticket_date" LIKE '2/%/2026';
+```
+
+**Q11: Số KH độc lập và tổng mũi tiêm nhóm bệnh Dại, chia theo vùng?**
+-- Note: E7 - Many-to-many counting trap → phải dùng COUNT(DISTINCT)
+```sql
+SELECT s."region_name" as "Vung",
+       COUNT(DISTINCT r."person_id") as "SoKH_DocLap",
+       COUNT(*) as "TongMuiTiem"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_record" r
+JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_shop" s ON r."shop_code" = s."code"
+JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_vaccine_disease_group" dg ON r."sku" = dg."sku"
 WHERE r."is_test" = 0
-GROUP BY r."shop_name" ORDER BY "TienHoanTra" DESC LIMIT 10;
+  AND dg."disease_group_name" LIKE '%DẠI%'
+GROUP BY s."region_name";
 ```
+
+### ═══ LEVEL 4: EXPERT (Multi-CTE, Moving Average, Recursive CTE) ═══
+
+**Q12: Đường trung bình động 3 tháng doanh thu thuần nhóm Cúm tại HN, KH Nữ?**
+-- Note: Chained CTEs + Window frame AVG OVER (ROWS BETWEEN)
+```sql
+WITH monthly_sales AS (
+  SELECT substr(o."order_creation_date", 1, instr(o."order_creation_date", '/') - 1) as "Thang",
+         SUM(o."line_item_amount_after_discount") as "DoanhThuBan"
+  FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail" o
+  JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_product" p ON o."sku" = p."product_unit_id"
+  JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_shop" s ON o."shop_code" = s."code"
+  JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_person" d ON o."customer_id" = d."person_id"
+  WHERE o."is_test" = 0 AND o."order_status" = 4
+    AND p."product_group_name" LIKE '%CÚM%'
+    AND s."province_name" LIKE '%Hà Nội%'
+    AND d."gender" = 0 AND d."current_flag" = 'Y'
+  GROUP BY "Thang"
+),
+monthly_returns AS (
+  SELECT substr(ret."return_date", 1, instr(ret."return_date", '/') - 1) as "Thang",
+         SUM(ret."return_line_item_amount_after_discount") as "DoanhThuTra"
+  FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_returned_order_detail" ret
+  JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_product" p ON ret."sku" = p."product_unit_id"
+  JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_shop" s ON ret."shop_code" = s."code"
+  WHERE ret."is_test" = 0
+    AND p."product_group_name" LIKE '%CÚM%'
+    AND s."province_name" LIKE '%Hà Nội%'
+  GROUP BY "Thang"
+),
+net_revenue AS (
+  SELECT s."Thang",
+         COALESCE(s."DoanhThuBan", 0) - COALESCE(r."DoanhThuTra", 0) as "DoanhThuThuan"
+  FROM monthly_sales s
+  LEFT JOIN monthly_returns r ON s."Thang" = r."Thang"
+)
+SELECT "Thang", "DoanhThuThuan",
+       AVG("DoanhThuThuan") OVER (ORDER BY "Thang" ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as "TB_Dong_3Thang"
+FROM net_revenue ORDER BY "Thang";
+```
+
+**Q13: % doanh thu từng Tỉnh so với tổng cả nước?**
+-- Note: C6 - Ratio/Margin dùng SUM() OVER()
+```sql
+SELECT s."province_name" as "Tinh",
+       SUM(o."line_item_amount_after_discount") as "DoanhThu",
+       ROUND(100.0 * SUM(o."line_item_amount_after_discount") /
+             SUM(SUM(o."line_item_amount_after_discount")) OVER (), 2) as "PhanTram"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail" o
+JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_shop" s ON o."shop_code" = s."code"
+WHERE o."is_test" = 0 AND o."order_status" = 4
+GROUP BY s."province_name"
+ORDER BY "DoanhThu" DESC;
+```
+
+**Q14: Tỷ lệ tăng trưởng Q1/2026 vs Q4/2025?**
+-- Note: E3 - Dữ liệu chỉ có 1-3/2026, KHÔNG CÓ Q4/2025
+```sql
+-- Dữ liệu chỉ có từ tháng 1 đến tháng 3 năm 2026.
+-- Không có dữ liệu Q4/2025 để so sánh.
+SELECT 'Không có dữ liệu Q4/2025 trong hệ thống' as "ThongBao",
+       SUM(CASE WHEN "order_creation_date" LIKE '1/%/2026' THEN "line_item_amount_after_discount" ELSE 0 END) as "Thang1",
+       SUM(CASE WHEN "order_creation_date" LIKE '2/%/2026' THEN "line_item_amount_after_discount" ELSE 0 END) as "Thang2",
+       SUM(CASE WHEN "order_creation_date" LIKE '3/%/2026' THEN "line_item_amount_after_discount" ELSE 0 END) as "Thang3"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail"
+WHERE "is_test" = 0 AND "order_status" = 4;
+```
+
+**Q15: So sánh Tổng bán và Tổng trả mỗi vaccine (Full Outer Join)?**
+-- Note: J5 - SQLite KHÔNG CÓ FULL OUTER JOIN → dùng UNION ALL
+```sql
+WITH sales AS (
+  SELECT "line_item_name" as "Vaccine", SUM("line_item_amount_after_discount") as "TongBan", 0 as "TongTra"
+  FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail"
+  WHERE "is_test" = 0 AND "order_status" = 4
+  GROUP BY "line_item_name"
+),
+returns AS (
+  SELECT "return_line_item_name" as "Vaccine", 0 as "TongBan", SUM("return_line_item_amount_after_discount") as "TongTra"
+  FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_returned_order_detail"
+  WHERE "is_test" = 0
+  GROUP BY "return_line_item_name"
+)
+SELECT "Vaccine",
+       SUM("TongBan") as "TongBan",
+       SUM("TongTra") as "TongTra",
+       SUM("TongBan") - SUM("TongTra") as "DoanhThuThuan"
+FROM (SELECT * FROM sales UNION ALL SELECT * FROM returns)
+GROUP BY "Vaccine"
+ORDER BY "DoanhThuThuan" DESC;
+```
+
+**Q16: Cửa hàng doanh thu > trung bình hệ thống?**
+-- Note: S2 - Subquery in WHERE clause
+```sql
+SELECT o."shop_name",
+       SUM(o."line_item_amount_after_discount") as "DoanhThu"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail" o
+WHERE o."is_test" = 0 AND o."order_status" = 4
+GROUP BY o."shop_code", o."shop_name"
+HAVING SUM(o."line_item_amount_after_discount") > (
+  SELECT AVG(shop_total) FROM (
+    SELECT SUM("line_item_amount_after_discount") as shop_total
+    FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail"
+    WHERE "is_test" = 0 AND "order_status" = 4
+    GROUP BY "shop_code"
+  )
+)
+ORDER BY "DoanhThu" DESC;
+```
+
+**Q17: KH mua cả vaccine A (sku 38255) và vaccine B (sku 45856)?**
+-- Note: J5 - SELF JOIN hoặc INTERSECT
+```sql
+SELECT a."customer_id", a."lcv_id"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail" a
+WHERE a."is_test" = 0 AND a."order_status" = 4 AND a."sku" = 38255
+INTERSECT
+SELECT b."customer_id", b."lcv_id"
+FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail" b
+WHERE b."is_test" = 0 AND b."order_status" = 4 AND b."sku" = 45856;
+```
+
+**Q18: Recursive CTE - 3 ngày sau ngày mua hàng của đơn '5802727691'?**
+-- Note: S5 - Recursive CTE nâng cao
+```sql
+WITH RECURSIVE order_date AS (
+  SELECT "order_creation_date" as base_date, 0 as day_offset
+  FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail"
+  WHERE "order_code" LIKE '%5802727691%' AND "is_test" = 0
+  LIMIT 1
+),
+date_series AS (
+  SELECT base_date, day_offset FROM order_date
+  UNION ALL
+  SELECT base_date, day_offset + 1
+  FROM date_series WHERE day_offset < 3
+)
+SELECT base_date as "NgayMua",
+       day_offset as "NgayThu",
+       date(substr(base_date, -4) || '-' ||
+            printf('%02d', substr(base_date, 1, instr(base_date,'/')-1)) || '-' ||
+            printf('%02d', substr(substr(base_date, instr(base_date,'/')+1),
+                                  1, instr(substr(base_date, instr(base_date,'/')+1),'/')-1)),
+            '+' || day_offset || ' days') as "Ngay"
+FROM date_series;
+```
+
+═══════════════════════════════════════════════════════════════
+## 6. HƯỚNG DẪN XỬ LÝ PATTERN PHỨC TẠP
+═══════════════════════════════════════════════════════════════
+
+| Pattern | Khi nào dùng | Cú pháp SQLite |
+|---------|-------------|----------------|
+| Anti-join (chưa từng) | "chưa bao giờ", "không có" | `LEFT JOIN ... WHERE x IS NULL` |
+| NOT EXISTS | "trung tâm không có hoàn trả" | `WHERE NOT EXISTS (SELECT 1 ...)` |
+| Top-N mỗi nhóm | "top 3 mỗi tỉnh" | `ROW_NUMBER()/RANK() OVER(PARTITION BY)` |
+| Phần trăm / Tỷ lệ | "% doanh thu", "margin" | `SUM() OVER()` (window) hoặc subquery |
+| Full Outer Join | "tất cả, so sánh bán vs trả" | `UNION ALL` (LEFT JOIN + anti-join) |
+| Mua cả A và B | "mua đồng thời", "cả 2" | `INTERSECT` hoặc `HAVING COUNT(DISTINCT) = 2` |
+| Đếm KH độc lập | "bao nhiêu khách" (many-to-many) | `COUNT(DISTINCT "person_id")` |
+| Trung bình động | "moving average", "xu hướng" | `AVG() OVER(ROWS BETWEEN n PRECEDING AND CURRENT ROW)` |
+| Recursive CTE | "liệt kê ngày", "chuỗi" | `WITH RECURSIVE ... UNION ALL` |
+| Tăng trưởng | "growth rate", "so với kỳ trước" | `(current - previous) / previous * 100` |
 
 ═══════════════════════════════════════════════════════════════
 TRẢ LỜI NGẮN GỌN BẰNG TIẾNG VIỆT, CUNG CẤP INSIGHT NẾU CÓ.
+
 """
 
 

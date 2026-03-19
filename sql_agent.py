@@ -164,7 +164,7 @@ Chỉ trả về JSON, không có text khác."""
                 model=self.model,
                 messages=messages,
                 temperature=0,
-                max_tokens=1000
+                max_tokens=5000
             )
             
             content = response.choices[0].message.content.strip()

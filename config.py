@@ -20,17 +20,6 @@ else:
 # LLM Configuration (OpenAI)
 # ============================================
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-
-if not OPENAI_API_KEY:
-    print("❌ LỖI: Không tìm thấy OPENAI_API_KEY!")
-    print("-" * 50)
-    print("HƯỚNG DẪN XỬ LÝ:")
-    print("1. Kiểm tra xem bạn đã có file '.env' chưa (file ẩn trên Mac/Linux).")
-    print("2. Nếu chưa, hãy chạy lệnh: cp .env.example .env")
-    print("3. Mở file .env và dán key vào: OPENAI_API_KEY=sk-xxxxxx")
-    print("-" * 50)
-    sys.exit(1)
-
 OPENAI_MODEL = "gpt-4o"  # Options: gpt-4o, gpt-4o-mini, gpt-4-turbo
 
 # ============================================
