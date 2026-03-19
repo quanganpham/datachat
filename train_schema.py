@@ -422,15 +422,17 @@ Thông tin khách hàng/người tiêm. **Nhiều cột PII đã mã hóa.**
 
 ```
 F1 (sales) ──── sku ────────── D4.product_unit_id (Sản phẩm)
+F1 (sales) ──── sku ────────── D5.sku               (Nhóm bệnh - TRỰC TIẾP)
 F1 (sales) ──── shop_code ──── D3.code             (Trung tâm)
 F1 (sales) ──── customer_id ── D1.person_id         (Khách hàng)
-F1 (sales) ──── lcv_id ─────── D1.lcv_id            (Khách hàng alt)
 
 F2 (record) ─── sku ────────── D4.product_unit_id   (Sản phẩm)
+F2 (record) ─── sku ────────── D5.sku               (Nhóm bệnh - TRỰC TIẾP)
 F2 (record) ─── shop_code ──── D3.code              (Trung tâm)
 F2 (record) ─── person_id ──── D1.person_id          (Khách hàng)
 
 F3 (returned) ─ sku ────────── D4.product_unit_id   (Sản phẩm)
+F3 (returned) ─ sku ────────── D5.sku               (Nhóm bệnh - TRỰC TIẾP)
 F3 (returned) ─ shop_code ──── D3.code              (Trung tâm)
 F3 (returned) ─ customer_id ── D1.person_id          (Khách hàng)
 
@@ -441,6 +443,10 @@ D5 (disease) ── sku ────────── D4.product_unit_id   (Vac
 
 D3 (shop) ───── code ────────── D8.shop_code_lc     (Shop vệ tinh)
 ```
+
+### 3.1 QUY TẮC JOIN (QUAN TRỌNG)
+- **TỐI ƯU JOIN**: Luôn sử dụng đường dẫn JOIN ngắn nhất. 
+- **Ví dụ**: Khi cần lấy nhóm bệnh (disease group) cho đơn bán/trả/hồ sơ tiêm, hãy JOIN trực tiếp `F1/F2/F3."sku" = D5."sku"`. TUYỆT ĐỐI KHÔNG JOIN vòng qua `dim_product` (F -> D4 -> D5) để tránh làm truy vấn phức tạp và sai logic.
 
 ═══════════════════════════════════════════════════════════════
 ## 4. BUSINESS RULES QUAN TRỌNG
