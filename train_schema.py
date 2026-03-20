@@ -327,7 +327,7 @@ Thông tin khách hàng/người tiêm. **Nhiều cột PII đã mã hóa.**
 
 | Cột | Kiểu | Mô tả | Ví dụ |
 |-----|------|-------|-------|
-| product_unit_id | INTEGER | **ID đơn vị sản phẩm (dùng JOIN với sku)** | `40646` |
+| item_code | INTEGER | **ID đơn vị sản phẩm (dùng JOIN với sku)** | `40646` |
 | product_id | INTEGER | ID sản phẩm gốc | `40606` |
 | product_name | TEXT | Tên vaccine | `BCG-TCDV` |
 | confirm_status | TEXT | Trạng thái duyệt | `Approved` |
@@ -421,17 +421,17 @@ Thông tin khách hàng/người tiêm. **Nhiều cột PII đã mã hóa.**
 ═══════════════════════════════════════════════════════════════
 
 ```
-F1 (sales) ──── sku ────────── D4.product_unit_id (Sản phẩm)
+F1 (sales) ──── sku ────────── D4.item_code (Sản phẩm)
 F1 (sales) ──── sku ────────── D5.sku               (Nhóm bệnh - TRỰC TIẾP)
 F1 (sales) ──── shop_code ──── D3.code             (Trung tâm)
 F1 (sales) ──── customer_id ── D1.person_id         (Khách hàng)
 
-F2 (record) ─── sku ────────── D4.product_unit_id   (Sản phẩm)
+F2 (record) ─── sku ────────── D4.item_code   (Sản phẩm)
 F2 (record) ─── sku ────────── D5.sku               (Nhóm bệnh - TRỰC TIẾP)
 F2 (record) ─── shop_code ──── D3.code              (Trung tâm)
 F2 (record) ─── person_id ──── D1.person_id          (Khách hàng)
 
-F3 (returned) ─ sku ────────── D4.product_unit_id   (Sản phẩm)
+F3 (returned) ─ sku ────────── D4.item_code   (Sản phẩm)
 F3 (returned) ─ sku ────────── D5.sku               (Nhóm bệnh - TRỰC TIẾP)
 F3 (returned) ─ shop_code ──── D3.code              (Trung tâm)
 F3 (returned) ─ customer_id ── D1.person_id          (Khách hàng)
@@ -439,7 +439,7 @@ F3 (returned) ─ customer_id ── D1.person_id          (Khách hàng)
 D1 (person) ─── person_id ──── D2.PersonId           (Địa chỉ)
 D1 (person) ─── person_id ──── D7.person_id          (Gia đình)
 
-D5 (disease) ── sku ────────── D4.product_unit_id   (Vaccine→Nhóm bệnh)
+D5 (disease) ── sku ────────── D4.item_code   (Vaccine→Nhóm bệnh)
 
 D3 (shop) ───── code ────────── D8.shop_code_lc     (Shop vệ tinh)
 ```
@@ -646,7 +646,7 @@ WITH monthly_sales AS (
   SELECT substr(o."order_creation_date", 1, instr(o."order_creation_date", '/') - 1) as "Thang",
          SUM(o."line_item_amount_after_discount") as "DoanhThuBan"
   FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_sales_order_detail" o
-  JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_product" p ON o."sku" = p."product_unit_id"
+  JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_product" p ON o."sku" = p."item_code"
   JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_shop" s ON o."shop_code" = s."code"
   JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_person" d ON o."customer_id" = d."person_id"
   WHERE o."is_test" = 0 AND o."order_status" = 4
@@ -659,7 +659,7 @@ monthly_returns AS (
   SELECT substr(ret."return_date", 1, instr(ret."return_date", '/') - 1) as "Thang",
          SUM(ret."return_line_item_amount_after_discount") as "DoanhThuTra"
   FROM "[CADS-DD] Dữ liệu mẫu Vaccine V2_vaccine_returned_order_detail" ret
-  JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_product" p ON ret."sku" = p."product_unit_id"
+  JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_product" p ON ret."sku" = p."item_code"
   JOIN "[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_shop" s ON ret."shop_code" = s."code"
   WHERE ret."is_test" = 0
     AND p."product_group_name" LIKE '%CÚM%'
