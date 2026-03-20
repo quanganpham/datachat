@@ -27,7 +27,8 @@ from pathlib import Path
 CSV_FOLDER = "./csv_data"
 
 # Đường dẫn file database output
-OUTPUT_DB_PATH = "./my_data.db"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_DB_PATH = os.path.join(BASE_DIR, "my_data.db")
 
 # Danh sách các encoding sẽ thử (theo thứ tự ưu tiên)
 # - utf-8-sig: UTF-8 với BOM (thường từ Excel "Save as UTF-8 CSV")
