@@ -278,7 +278,7 @@ Thông tin khách hàng/người tiêm. **Nhiều cột PII đã mã hóa.**
 
 ---
 
-### D2. Địa chỉ khách: `"[CADS-DD] Dữ liệu mẫu Vaccine V2_1dim_person_address"`
+### D2. Địa chỉ khách: `"[CADS-DD] Dữ liệu mẫu Vaccine V2_dim_person_address"`
 
 | Cột | Kiểu | Mô tả | Ví dụ |
 |-----|------|-------|-------|

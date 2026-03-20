@@ -124,6 +124,8 @@ def csv_to_sqlite(csv_folder: str, db_path: str, encodings: list = None):
     
     for csv_file in csv_files:
         table_name = csv_file.stem  # Lấy tên file (không có .csv)
+        # Fix: Xóa số 1 trong tên bảng để tránh AI nhầm lẫn (ví dụ V2_1dim_person_address -> V2_dim_person_address)
+        table_name = table_name.replace("V2_1dim_", "V2_dim_")
         
         try:
             # Đọc CSV với auto-detect encoding
