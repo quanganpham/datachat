@@ -1,5 +1,5 @@
 """
-Vanna AI SQL Agent Configuration
+Vanna AI SQL Agent Configuration (Multi-Dataset)
 """
 import os
 import sys
@@ -23,9 +23,33 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_MODEL = "gpt-4o"  # Options: gpt-4o, gpt-4o-mini, gpt-4-turbo
 
 # ============================================
-# Database Configuration
+# Database Configuration (Multi-Dataset)
 # ============================================
-DATABASE_PATH = os.path.join(BASE_DIR, "my_data.db")
+VACCINE_DB_PATH = os.path.join(BASE_DIR, "vaccine.db")
+LONGCHAU_DB_PATH = os.path.join(BASE_DIR, "longchau.db")
+
+# Legacy support - default database path
+DATABASE_PATH = VACCINE_DB_PATH
+
+# Dataset registry
+DATASETS = {
+    "vaccine": {
+        "name": "Tiêm Chủng Long Châu",
+        "short_name": "Vaccine",
+        "icon": "💉",
+        "description": "Dữ liệu tiêm chủng vaccine",
+        "db_path": VACCINE_DB_PATH,
+        "color": "#01B5B4",
+    },
+    "longchau": {
+        "name": "Nhà Thuốc Long Châu",
+        "short_name": "Nhà Thuốc",
+        "icon": "💊",
+        "description": "Dữ liệu nhà thuốc và dược phẩm",
+        "db_path": LONGCHAU_DB_PATH,
+        "color": "#2563EB",
+    },
+}
 
 # ============================================
 # Server Configuration

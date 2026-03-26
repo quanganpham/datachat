@@ -1,17 +1,17 @@
 """
-CSV to SQLite Database Converter
-=================================
-Script để nhập các file CSV vào một file SQLite database (.db)
+CSV to SQLite Database Converter (Multi-Dataset)
+==================================================
+Import CSV files from multiple dataset folders into separate SQLite databases.
 
 Cách sử dụng:
-    1. Đặt các file CSV vào thư mục "csv_data" (hoặc sửa CSV_FOLDER bên dưới)
+    1. Đặt CSV vào csv_data/vaccin/ và csv_data/LC_data/
     2. Chạy: python csv_to_db.py
-    3. File database sẽ được tạo tại OUTPUT_DB_PATH
+    3. Sẽ tạo ra vaccine.db và longchau.db
 
 Lưu ý:
-    - Tên file CSV sẽ trở thành tên bảng (ví dụ: nhan_vien.csv -> bảng "nhan_vien")
+    - Tên file CSV sẽ trở thành tên bảng
     - Dòng đầu tiên của CSV phải là tên các cột
-    - Tự động phát hiện encoding (UTF-8, Windows-1252, Windows-1258, Latin-1)
+    - Tự động phát hiện encoding
 """
 
 import sqlite3
@@ -23,19 +23,24 @@ from pathlib import Path
 # Cấu hình (Configuration)
 # ============================================
 
-# Thư mục chứa các file CSV
-CSV_FOLDER = "./csv_data"
-
-# Đường dẫn file database output
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-OUTPUT_DB_PATH = os.path.join(BASE_DIR, "my_data.db")
+CSV_BASE = os.path.join(BASE_DIR, "csv_data")
+
+# Cấu hình cho từng dataset
+DATASETS = {
+    "vaccine": {
+        "csv_folder": os.path.join(CSV_BASE, "vaccin"),
+        "db_path": os.path.join(BASE_DIR, "vaccine.db"),
+        "table_name_fix": lambda name: name.replace("V2_1dim_", "V2_dim_"),
+    },
+    "longchau": {
+        "csv_folder": os.path.join(CSV_BASE, "LC_data"),
+        "db_path": os.path.join(BASE_DIR, "longchau.db"),
+        "table_name_fix": lambda name: name,  # Giữ nguyên
+    },
+}
 
 # Danh sách các encoding sẽ thử (theo thứ tự ưu tiên)
-# - utf-8-sig: UTF-8 với BOM (thường từ Excel "Save as UTF-8 CSV")
-# - utf-8: UTF-8 chuẩn
-# - cp1252: Windows Western European (rất phổ biến khi export từ Excel)
-# - cp1258: Windows Vietnamese (encoding tiếng Việt cũ)
-# - latin-1: ISO-8859-1 (đọc được mọi byte, dùng làm fallback)
 ENCODINGS_TO_TRY = ["utf-8-sig", "utf-8", "cp1252", "cp1258", "latin-1"]
 
 
@@ -76,7 +81,7 @@ def read_csv_auto_encoding(csv_path: Path, encodings: list) -> tuple[pd.DataFram
     raise ValueError(f"Không thể đọc file với các encoding: {encodings}\nChi tiết: {errors}")
 
 
-def csv_to_sqlite(csv_folder: str, db_path: str, encodings: list = None):
+def csv_to_sqlite(csv_folder: str, db_path: str, table_name_fix=None, encodings: list = None):
     """
     Đọc tất cả file CSV trong thư mục và nhập vào SQLite database.
     Tự động phát hiện encoding của từng file.
@@ -84,6 +89,7 @@ def csv_to_sqlite(csv_folder: str, db_path: str, encodings: list = None):
     Args:
         csv_folder: Đường dẫn thư mục chứa các file CSV
         db_path: Đường dẫn file database output
+        table_name_fix: Hàm tùy chỉnh tên bảng (optional)
         encodings: Danh sách encoding để thử (mặc định dùng ENCODINGS_TO_TRY)
     """
     if encodings is None:
@@ -104,19 +110,15 @@ def csv_to_sqlite(csv_folder: str, db_path: str, encodings: list = None):
         print(f"❌ Lỗi: Không tìm thấy file CSV nào trong '{csv_folder}'")
         return False
     
-    print("=" * 60)
-    print("📊 CSV TO SQLITE CONVERTER")
-    print("=" * 60)
     print(f"📁 Thư mục CSV: {csv_folder.absolute()}")
     print(f"💾 Database output: {Path(db_path).absolute()}")
     print(f"📄 Tìm thấy {len(csv_files)} file CSV")
-    print(f"🔤 Encodings sẽ thử: {', '.join(encodings)}")
     print()
     
     # Xóa database cũ nếu tồn tại
     if os.path.exists(db_path):
         os.remove(db_path)
-        print(f"🗑️  Đã xóa database cũ: {db_path}")
+        print(f"🗑️  Đã xóa database cũ: {os.path.basename(db_path)}")
     
     # Kết nối database
     conn = sqlite3.connect(db_path)
@@ -125,8 +127,10 @@ def csv_to_sqlite(csv_folder: str, db_path: str, encodings: list = None):
     
     for csv_file in csv_files:
         table_name = csv_file.stem  # Lấy tên file (không có .csv)
-        # Fix: Xóa số 1 trong tên bảng để tránh AI nhầm lẫn (ví dụ V2_1dim_person_address -> V2_dim_person_address)
-        table_name = table_name.replace("V2_1dim_", "V2_dim_")
+        
+        # Áp dụng fix tên bảng nếu có
+        if table_name_fix:
+            table_name = table_name_fix(table_name)
         
         try:
             # Đọc CSV với auto-detect encoding
@@ -152,18 +156,60 @@ def csv_to_sqlite(csv_folder: str, db_path: str, encodings: list = None):
     
     conn.close()
     
-    print("=" * 60)
-    print(f"✅ HOÀN TẤT: {success_count}/{len(csv_files)} bảng được tạo")
-    print(f"💾 Database: {Path(db_path).absolute()}")
-    print("=" * 60)
+    print(f"✅ HOÀN TẤT: {success_count}/{len(csv_files)} bảng được tạo → {os.path.basename(db_path)}")
     print()
-    print("📝 Bước tiếp theo:")
-    print(f"   1. Mở file config.py")
-    print(f"   2. Sửa DATABASE_PATH = \"{db_path}\"")
-    print(f"   3. Cập nhật SCHEMA_PROMPT trong train_schema.py (hoặc chạy train_schema.py để xem schema)")
-    print(f"   4. Chạy: python main.py")
     
     return True
+
+
+def verify_database(db_path: str):
+    """Kiểm tra TẤT CẢ các bảng trong database có truy vấn được không."""
+    if not os.path.exists(db_path):
+        print(f"❌ Database không tồn tại: {db_path}")
+        return False
+    
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    
+    # Lấy danh sách bảng
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    tables = cursor.fetchall()
+    
+    db_name = os.path.basename(db_path)
+    print(f"\n🔍 KIỂM TRA DATABASE: {db_name}")
+    print("─" * 50)
+    
+    all_ok = True
+    for (table_name,) in tables:
+        try:
+            # Test SELECT
+            cursor.execute(f'SELECT COUNT(*) FROM "{table_name}"')
+            row_count = cursor.fetchone()[0]
+            
+            # Test lấy cột
+            cursor.execute(f'PRAGMA table_info("{table_name}")')
+            columns = cursor.fetchall()
+            col_names = [c[1] for c in columns]
+            
+            # Test truy vấn thực tế
+            cursor.execute(f'SELECT * FROM "{table_name}" LIMIT 1')
+            sample = cursor.fetchone()
+            
+            status = "✅" if row_count > 0 else "⚠️ TRỐNG"
+            print(f"  {status} {table_name}: {row_count:,} dòng, {len(col_names)} cột")
+            
+        except Exception as e:
+            print(f"  ❌ {table_name}: LỖI - {e}")
+            all_ok = False
+    
+    conn.close()
+    
+    if all_ok:
+        print(f"\n✅ Tất cả {len(tables)} bảng trong {db_name} hoạt động tốt!")
+    else:
+        print(f"\n⚠️ Có bảng bị lỗi trong {db_name}!")
+    
+    return all_ok
 
 
 def show_db_info(db_path: str):
@@ -206,8 +252,28 @@ def show_db_info(db_path: str):
 
 
 if __name__ == "__main__":
-    # Chạy chuyển đổi (tự động phát hiện encoding)
-    csv_to_sqlite(CSV_FOLDER, OUTPUT_DB_PATH)
+    print("=" * 60)
+    print("📊 CSV TO SQLITE CONVERTER (Multi-Dataset)")
+    print("=" * 60)
+    print()
     
-    # Hiển thị thông tin database đã tạo
-    show_db_info(OUTPUT_DB_PATH)
+    for dataset_key, cfg in DATASETS.items():
+        print(f"\n{'━' * 60}")
+        print(f"📦 DATASET: {dataset_key.upper()}")
+        print(f"{'━' * 60}")
+        
+        csv_to_sqlite(
+            cfg["csv_folder"],
+            cfg["db_path"],
+            table_name_fix=cfg.get("table_name_fix"),
+        )
+    
+    # Kiểm tra tất cả databases
+    print(f"\n{'═' * 60}")
+    print("🔍 KIỂM TRA KẾT NỐI TẤT CẢ CÁC BẢNG")
+    print(f"{'═' * 60}")
+    
+    for dataset_key, cfg in DATASETS.items():
+        verify_database(cfg["db_path"])
+    
+    print("\n✅ HOÀN TẤT! Các database đã sẵn sàng.")

@@ -1,8 +1,8 @@
 """
-SQL Agent Web Application
-=========================
+SQL Agent Web Application (Multi-Dataset)
+==========================================
 FastAPI server for the SQL Agent chat interface.
-Supports conversation history and memory.
+Supports multiple datasets (Vaccine + Long Châu Pharmacy).
 """
 
 import os
@@ -13,30 +13,29 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from sql_agent import SQLAgent
 from chat_store import ChatStore
-from config import HOST, PORT, DATABASE_PATH
+from config import HOST, PORT, DATASETS
 
 # ── Startup Checks ───────────────────────────────────────
-if not os.path.exists(DATABASE_PATH):
-    print("=" * 60)
-    print("❌ LỖI: Không tìm thấy file database!")
-    print(f"Đường dẫn mục tiêu: {DATABASE_PATH}")
-    print("-" * 60)
-    print("HƯỚNG DẪN XỬ LÝ:")
-    print("1. Kiểm tra xem bạn đã có file 'my_data.db' chưa.")
-    print("2. Nếu chưa, hãy chạy lệnh sau để import dữ liệu từ CSV:")
-    print("   python csv_to_db.py")
-    print("=" * 60)
-    # Don't exit here to allow for troubleshooting, but the agent won't work
+for key, cfg in DATASETS.items():
+    if not os.path.exists(cfg["db_path"]):
+        print(f"⚠️ Database cho [{key}] chưa tồn tại: {cfg['db_path']}")
+        print(f"   Chạy: python csv_to_db.py")
 
 # Initialize FastAPI app
 app = FastAPI(
-    title="SQL Agent",
+    title="SQL Agent - Multi-Dataset",
     description="Trợ lý SQL thông minh - Hỏi đáp dữ liệu bằng tiếng Việt",
-    version="2.0.0"
+    version="3.0.0"
 )
 
-# Initialize SQL Agent and Chat Store
-agent = SQLAgent()
+# Initialize SQL Agents for each dataset
+agents = {}
+for key in DATASETS:
+    try:
+        agents[key] = SQLAgent(dataset=key)
+    except Exception as e:
+        print(f"⚠️ Không thể khởi tạo agent [{key}]: {e}")
+
 store = ChatStore()
 
 # Setup templates and static files
@@ -53,6 +52,7 @@ app.mount("/static", StaticFiles(directory=static_dir), name="static")
 class ChatRequest(BaseModel):
     question: str
     conversation_id: str | None = None
+    dataset: str = "vaccine"  # "vaccine" or "longchau"
 
 
 class ChatResponse(BaseModel):
@@ -79,14 +79,37 @@ async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
+# ── Dataset API ──────────────────────────────────────────
+
+@app.get("/datasets")
+async def list_datasets():
+    """List available datasets with metadata."""
+    return {
+        key: {
+            "name": cfg["name"],
+            "short_name": cfg["short_name"],
+            "icon": cfg["icon"],
+            "description": cfg["description"],
+            "color": cfg["color"],
+            "available": key in agents,
+        }
+        for key, cfg in DATASETS.items()
+    }
+
+
 # ── Chat API ─────────────────────────────────────────────
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
     """
     Process a natural language question with conversation memory.
-    If conversation_id is not provided, creates a new conversation.
+    Supports dataset selection per request.
     """
+    dataset = request.dataset
+    if dataset not in agents:
+        raise HTTPException(status_code=400, detail=f"Dataset '{dataset}' không khả dụng.")
+    
+    agent = agents[dataset]
     conv_id = request.conversation_id
 
     # Create new conversation if needed
@@ -171,7 +194,12 @@ async def delete_conversation(conv_id: str):
 @app.get("/health")
 async def health():
     """Health check endpoint."""
-    return {"status": "ok", "message": "SQL Agent is running", "version": "2.0.0"}
+    return {
+        "status": "ok",
+        "message": "SQL Agent is running",
+        "version": "3.0.0",
+        "datasets": list(agents.keys())
+    }
 
 
 # ── Run ──────────────────────────────────────────────────
@@ -180,15 +208,15 @@ if __name__ == "__main__":
     import uvicorn
     
     print("=" * 50)
-    print("🤖 SQL Agent v2.0 - Chat History & Memory")
+    print("🤖 SQL Agent v3.0 - Multi-Dataset")
     print("=" * 50)
     print()
     print(f"🌐 Server: http://{HOST}:{PORT}")
     print()
-    print("📝 Tính năng mới:")
-    print("   • Lưu lịch sử hội thoại")
-    print("   • AI nhớ ngữ cảnh cuộc trò chuyện")
-    print("   • Chuyển đổi giữa các cuộc hội thoại")
+    print("📊 Datasets:")
+    for key, cfg in DATASETS.items():
+        status = "✅" if key in agents else "❌"
+        print(f"   {status} {cfg['icon']} {cfg['name']}")
     print()
     
     uvicorn.run(app, host=HOST, port=PORT)

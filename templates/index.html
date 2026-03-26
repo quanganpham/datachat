@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tiêm Chủng Long Châu - DataChat</title>
+    <title>Long Châu - DataChat</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -115,15 +115,15 @@
             position: relative; z-index: 5; min-width: 0;
         }
         .header {
-            padding: 1rem 1.5rem;
+            padding: 0.75rem 1.5rem;
             background: linear-gradient(135deg, #01B5B4 0%, #02A09F 100%);
             border-bottom: none;
             display: flex; align-items: center; justify-content: space-between;
             box-shadow: 0 2px 12px rgba(1,181,180,0.25);
         }
-        .logo { display: flex; align-items: center; gap: 1rem; }
+        .logo { display: flex; align-items: center; gap: 0.75rem; }
         .logo-icon {
-            width: 56px; height: 56px;
+            width: 44px; height: 44px;
             border-radius: 50%; overflow: hidden;
             flex-shrink: 0;
             background: white;
@@ -133,12 +133,11 @@
             width: 100%; height: 100%; object-fit: cover;
         }
         .logo-text h1 {
-            font-size: 1.65rem; font-weight: 700;
+            font-size: 1.3rem; font-weight: 700;
             color: white; letter-spacing: -0.3px;
-            -webkit-text-fill-color: white;
         }
-        .logo-text p { font-size: 0.9rem; color: rgba(255,255,255,0.8); margin-top: 2px; }
-        .header-actions { display: flex; gap: 0.5rem; }
+        .logo-text p { font-size: 0.8rem; color: rgba(255,255,255,0.8); margin-top: 1px; }
+        .header-actions { display: flex; gap: 0.5rem; align-items: center; }
         .btn-icon {
             width: 36px; height: 36px; border-radius: 10px;
             border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.15);
@@ -148,6 +147,42 @@
         }
         .btn-icon:hover { background: rgba(255,255,255,0.3); color: white; border-color: rgba(255,255,255,0.5); }
         .hamburger { display: none; }
+
+        /* ── Dataset Switcher ── */
+        .dataset-switcher {
+            display: flex;
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            padding: 3px;
+            gap: 2px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .dataset-btn {
+            padding: 0.4rem 0.85rem;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+        .dataset-btn:hover {
+            color: white;
+            background: rgba(255,255,255,0.1);
+        }
+        .dataset-btn.active {
+            background: white;
+            color: var(--accent);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            font-weight: 600;
+        }
 
         /* ── Chat container ── */
         .chat-area {
@@ -213,12 +248,25 @@
         .message-content { max-width: 78%; }
         .message-bubble {
             padding: 0.85rem 1.1rem; border-radius: 14px;
-            line-height: 1.6; font-size: 0.95rem;
+            line-height: 1.7; font-size: 0.92rem;
         }
         .message.user .message-bubble { background: var(--accent); border-bottom-right-radius: 4px; color: white; }
         .message.assistant .message-bubble {
             background: var(--bg-elevated); border: 1px solid var(--border);
             border-bottom-left-radius: 4px;
+        }
+
+        /* ── Markdown rendering in messages ── */
+        .message.assistant .message-bubble p { margin-bottom: 0.5rem; }
+        .message.assistant .message-bubble p:last-child { margin-bottom: 0; }
+        .message.assistant .message-bubble strong { color: var(--text-primary); font-weight: 600; }
+        .message.assistant .message-bubble ul, .message.assistant .message-bubble ol {
+            margin: 0.4rem 0 0.6rem 1.2rem; padding: 0;
+        }
+        .message.assistant .message-bubble li { margin-bottom: 0.25rem; }
+        .message.assistant .message-bubble code {
+            background: rgba(1,181,180,0.1); padding: 0.15rem 0.4rem;
+            border-radius: 4px; font-size: 0.85em; color: var(--accent);
         }
 
         /* ── SQL & Data ── */
@@ -238,89 +286,101 @@
         .copy-btn {
             padding: 0.2rem 0.4rem; border: none; border-radius: 5px;
             background: transparent; color: var(--text-muted);
-            font-size: 0.65rem; cursor: pointer; transition: all 0.2s;
+            font-size: 0.65rem; cursor: pointer; transition: all 0.15s;
         }
         .copy-btn:hover { background: var(--accent); color: white; }
         .sql-code {
-            padding: 0.85rem; font-family: 'JetBrains Mono','Fira Code',monospace;
-            font-size: 0.8rem; color: #2d3748;
-            overflow-x: auto; white-space: pre-wrap;
+            padding: 0.75rem 1rem; font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.75rem; line-height: 1.6; overflow-x: auto;
+            white-space: pre-wrap; word-break: break-word;
+            color: #334155;
         }
+        .sql-keyword { color: #7c3aed; font-weight: 600; }
+        .sql-string { color: #ea580c; }
+        .sql-number { color: #0d9488; }
+        .sql-function { color: #2563eb; }
+
         .data-container {
-            margin-top: 0.75rem; border: 1px solid var(--border);
+            margin-top: 0.5rem; border: 1px solid var(--border);
             border-radius: 10px; overflow: hidden;
         }
         .data-header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0.6rem 0.85rem; background: rgba(34,197,94,0.1);
+            padding: 0.6rem 0.85rem; background: rgba(241,109,35,0.08);
             border-bottom: 1px solid var(--border);
         }
         .data-header span {
-            font-size: 0.7rem; font-weight: 600; color: var(--success);
+            font-size: 0.7rem; font-weight: 600; color: var(--accent-orange);
             display: flex; align-items: center; gap: 0.4rem;
         }
-        .data-table-wrap { overflow-x: auto; }
-        .data-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
-        .data-table th, .data-table td {
-            padding: 0.5rem 0.85rem; text-align: left;
-            border-bottom: 1px solid var(--border);
+        .data-table-wrap { overflow-x: auto; max-height: 350px; }
+        .data-table {
+            width: 100%; border-collapse: collapse; font-size: 0.78rem;
         }
         .data-table th {
-            background: var(--bg-elevated); font-weight: 600;
-            color: var(--text-secondary); text-transform: uppercase;
-            font-size: 0.65rem; letter-spacing: 0.05em;
+            background: var(--bg-elevated); padding: 0.55rem 0.75rem;
+            text-align: left; font-weight: 600; color: var(--text-primary);
+            border-bottom: 2px solid var(--border); white-space: nowrap;
+            position: sticky; top: 0; z-index: 1;
         }
-        .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+        .data-table td {
+            padding: 0.45rem 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.04);
+            color: var(--text-secondary); max-width: 250px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        .data-table tbody tr:nth-child(even) { background: rgba(0,0,0,0.015); }
+        .data-table tbody tr:hover { background: rgba(1,181,180,0.05); }
+
+        /* ── Input area ── */
+        .input-area { padding: 0 0 0.5rem; }
+        .input-wrapper {
+            display: flex; gap: 0.5rem;
+            background: var(--bg-input); border: 1px solid var(--border);
+            border-radius: 14px; padding: 0.5rem 0.5rem 0.5rem 1rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            transition: border-color 0.2s;
+        }
+        .input-wrapper:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+        #questionInput {
+            flex: 1; border: none; outline: none;
+            font-size: 0.95rem; color: var(--text-primary);
+            background: transparent; font-family: inherit;
+        }
+        #questionInput::placeholder { color: var(--text-muted); }
+        .send-btn {
+            padding: 0.55rem 1.25rem; background: var(--gradient-1);
+            border: none; border-radius: 10px; color: white;
+            font-weight: 600; font-size: 0.85rem; cursor: pointer;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .send-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-glow); }
+        .send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         /* ── Loading ── */
-        .loading-dots { display: flex; gap: 0.25rem; padding: 0.5rem 0; }
+        .loading-dots { display: flex; gap: 4px; padding: 0.4rem 0; }
         .loading-dots span {
-            width: 7px; height: 7px; background: var(--accent);
-            border-radius: 50%; animation: pulse 1.4s infinite;
+            width: 8px; height: 8px; background: var(--accent);
+            border-radius: 50%; animation: bounce 1.4s infinite;
         }
         .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
         .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes pulse {
-            0%,80%,100% { transform: scale(0.6); opacity: 0.4; }
-            40% { transform: scale(1); opacity: 1; }
+        @keyframes bounce {
+            0%,80%,100% { transform: scale(0); }
+            40% { transform: scale(1); }
         }
-
-        /* ── Input area ── */
-        .input-area { padding: 1rem 0 0; }
-        .input-wrapper {
-            display: flex; gap: 0.6rem; padding: 0.6rem;
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 14px; transition: all 0.2s;
-        }
-        .input-wrapper:focus-within {
-            border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow);
-        }
-        .input-wrapper input {
-            flex: 1; padding: 0.65rem; border: none; background: transparent;
-            color: var(--text-primary); font-size: 0.9rem;
-            font-family: inherit; outline: none;
-        }
-        .input-wrapper input::placeholder { color: var(--text-muted); }
-        .send-btn {
-            padding: 0.65rem 1.25rem; border: none; border-radius: 10px;
-            background: var(--gradient-cta); color: white;
-            font-size: 0.85rem; font-weight: 600; cursor: pointer;
-            transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
-        }
-        .send-btn:hover:not(:disabled) {
-            transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-glow);
-        }
-        .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         /* ── Responsive ── */
         @media (max-width: 768px) {
-            .sidebar { position: fixed; left: 0; top: 0; height: 100vh; z-index: 100; transform: translateX(-100%); }
-            .sidebar.open { transform: translateX(0); }
-            .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; }
-            .sidebar.open + .sidebar-overlay { display: block; }
-            .hamburger { display: flex; }
+            .sidebar { position: fixed; left: 0; top: 0; height: 100%; transform: translateX(-100%); z-index: 100; }
+            .sidebar.open { transform: translateX(0); box-shadow: 4px 0 20px rgba(0,0,0,0.1); }
+            .sidebar-overlay {
+                display: none; position: fixed; top: 0; left: 0;
+                width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 99;
+            }
+            .sidebar.open ~ .sidebar-overlay { display: block; }
+            .hamburger { display: flex !important; }
             .chat-area { padding: 0.75rem; }
-            .message-content { max-width: 88%; }
+            .message-content { max-width: 90%; }
+            .dataset-switcher { display: none; }
         }
     </style>
 </head>
@@ -349,12 +409,20 @@
                 <div class="logo">
                     <div class="logo-icon"><img src="/static/logo.png" alt="Long Châu"></div>
                     <div class="logo-text">
-                        <h1>Tiêm Chủng Long Châu</h1>
-                        <p>DataChat - Phân tích dữ liệu vaccine</p>
+                        <h1 id="headerTitle">Tiêm Chủng Long Châu</h1>
+                        <p id="headerSubtitle">DataChat - Phân tích dữ liệu vaccine</p>
                     </div>
                 </div>
             </div>
             <div class="header-actions">
+                <div class="dataset-switcher" id="datasetSwitcher">
+                    <button class="dataset-btn active" data-dataset="vaccine" onclick="switchDataset('vaccine')">
+                        💉 Vaccine
+                    </button>
+                    <button class="dataset-btn" data-dataset="longchau" onclick="switchDataset('longchau')">
+                        💊 Nhà Thuốc
+                    </button>
+                </div>
                 <button class="btn-icon" onclick="createNewChat()" title="Hội thoại mới">✨</button>
             </div>
         </header>
@@ -362,10 +430,10 @@
         <div class="chat-area">
             <div class="chat-container" id="chatContainer">
                 <div class="welcome" id="welcomeScreen">
-                    <div class="welcome-icon">💉</div>
+                    <div class="welcome-icon" id="welcomeIcon">💉</div>
                     <h2>Xin chào!</h2>
-                    <p>Tôi là trợ lý phân tích dữ liệu Tiêm Chủng Long Châu. Hãy hỏi tôi bất kỳ điều gì về dữ liệu vaccine bằng tiếng Việt.</p>
-                    <div class="examples">
+                    <p id="welcomeText">Tôi là trợ lý phân tích dữ liệu Tiêm Chủng Long Châu. Hãy hỏi tôi bất kỳ điều gì về dữ liệu vaccine bằng tiếng Việt.</p>
+                    <div class="examples" id="exampleButtons">
                         <button class="example-btn" onclick="askExample(this)">💉 Top 5 vaccine bán chạy nhất</button>
                         <button class="example-btn" onclick="askExample(this)">📊 Doanh thu theo khu vực</button>
                         <button class="example-btn" onclick="askExample(this)">🏥 Số mũi tiêm theo trung tâm</button>
@@ -388,15 +456,74 @@
     <script>
         // ── State ──
         let currentConversationId = null;
+        let currentDataset = 'vaccine';
         const chatContainer = document.getElementById('chatContainer');
         const welcomeScreen = document.getElementById('welcomeScreen');
         const questionInput = document.getElementById('questionInput');
         const sendBtn = document.getElementById('sendBtn');
 
+        // ── Dataset Config ──
+        const DATASET_CONFIG = {
+            vaccine: {
+                title: 'Tiêm Chủng Long Châu',
+                subtitle: 'DataChat - Phân tích dữ liệu vaccine',
+                welcomeIcon: '💉',
+                welcomeText: 'Tôi là trợ lý phân tích dữ liệu Tiêm Chủng Long Châu. Hãy hỏi tôi bất kỳ điều gì về dữ liệu vaccine bằng tiếng Việt.',
+                examples: [
+                    '💉 Top 5 vaccine bán chạy nhất',
+                    '📊 Doanh thu theo khu vực',
+                    '🏥 Số mũi tiêm theo trung tâm'
+                ],
+                placeholder: 'Hỏi về dữ liệu vaccine...'
+            },
+            longchau: {
+                title: 'Nhà Thuốc Long Châu',
+                subtitle: 'DataChat - Phân tích dữ liệu nhà thuốc',
+                welcomeIcon: '💊',
+                welcomeText: 'Tôi là trợ lý phân tích dữ liệu Nhà Thuốc Long Châu. Hãy hỏi tôi bất kỳ điều gì về dữ liệu dược phẩm bằng tiếng Việt.',
+                examples: [
+                    '💊 Top 10 sản phẩm bán chạy nhất',
+                    '📊 Phân bổ sản phẩm theo ngành hàng',
+                    '🏪 Số đơn hàng theo nhóm giá'
+                ],
+                placeholder: 'Hỏi về dữ liệu nhà thuốc...'
+            }
+        };
+
         // ── Init ──
         document.addEventListener('DOMContentLoaded', () => {
             loadConversations();
         });
+
+        // ── Dataset Switching ──
+        function switchDataset(dataset) {
+            if (dataset === currentDataset) return;
+            currentDataset = dataset;
+
+            // Update active button
+            document.querySelectorAll('.dataset-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.dataset === dataset);
+            });
+
+            // Update header
+            const cfg = DATASET_CONFIG[dataset];
+            document.getElementById('headerTitle').textContent = cfg.title;
+            document.getElementById('headerSubtitle').textContent = cfg.subtitle;
+
+            // Update welcome screen
+            document.getElementById('welcomeIcon').textContent = cfg.welcomeIcon;
+            document.getElementById('welcomeText').textContent = cfg.welcomeText;
+            const exBtns = document.getElementById('exampleButtons');
+            exBtns.innerHTML = cfg.examples.map(ex =>
+                `<button class="example-btn" onclick="askExample(this)">${ex}</button>`
+            ).join('');
+
+            // Update input placeholder
+            questionInput.placeholder = cfg.placeholder;
+
+            // Create new chat for new dataset
+            createNewChat();
+        }
 
         // ── Sidebar ──
         function toggleSidebar() {
@@ -428,19 +555,16 @@
 
         async function selectConversation(convId) {
             currentConversationId = convId;
-            // Highlight active
             document.querySelectorAll('.conv-item').forEach(el => el.classList.remove('active'));
             const activeEl = [...document.querySelectorAll('.conv-item')].find(el => el.onclick.toString().includes(convId));
             if (activeEl) activeEl.classList.add('active');
 
-            // Load messages
             try {
                 const res = await fetch(`/conversations/${convId}/messages`);
                 const data = await res.json();
                 renderMessages(data.messages);
             } catch (e) { console.error('Failed to load messages:', e); }
 
-            // Close sidebar on mobile
             document.getElementById('sidebar').classList.remove('open');
         }
 
@@ -474,7 +598,6 @@
             welcomeScreen.style.display = 'flex';
             questionInput.focus();
             document.getElementById('sidebar').classList.remove('open');
-            // Refresh list to deselect
             await loadConversations();
         }
 
@@ -502,12 +625,97 @@
             if (welcomeScreen) welcomeScreen.style.display = 'none';
         }
 
+        // ── Markdown Rendering ──
+        function renderMarkdown(text) {
+            // Escape HTML first
+            let html = escapeHtml(text);
+
+            // Bold: **text**
+            html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+            // Italic: *text*
+            html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+            // Inline code: `text`
+            html = html.replace(/`(.+?)`/g, '<code>$1</code>');
+
+            // Unordered list items: - item or • item
+            html = html.replace(/^[\-•]\s+(.+)$/gm, '<li>$1</li>');
+
+            // Ordered list items: 1. item
+            html = html.replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>');
+
+            // Wrap consecutive <li> in <ul>
+            html = html.replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>');
+
+            // Line breaks
+            html = html.replace(/\n/g, '<br>');
+
+            // Clean up extra <br> around lists
+            html = html.replace(/<br><ul>/g, '<ul>');
+            html = html.replace(/<\/ul><br>/g, '</ul>');
+            html = html.replace(/<br><li>/g, '<li>');
+
+            return html;
+        }
+
+        // ── SQL Syntax Highlighting ──
+        function highlightSQL(sql) {
+            const escaped = escapeHtml(sql);
+            const keywords = ['SELECT', 'FROM', 'WHERE', 'JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN',
+                'ON', 'AND', 'OR', 'NOT', 'IN', 'AS', 'GROUP BY', 'ORDER BY', 'HAVING',
+                'LIMIT', 'OFFSET', 'UNION', 'DISTINCT', 'COUNT', 'SUM', 'AVG', 'MAX', 'MIN',
+                'CASE', 'WHEN', 'THEN', 'ELSE', 'END', 'IS', 'NULL', 'LIKE', 'BETWEEN',
+                'WITH', 'DESC', 'ASC', 'CAST', 'INTEGER', 'TEXT', 'REAL', 'COALESCE',
+                'GROUP_CONCAT', 'SUBSTR', 'INSTR', 'REPLACE', 'TRIM', 'ROUND'];
+
+            let result = escaped;
+
+            // Highlight strings (single-quoted)
+            result = result.replace(/'([^']*)'/g, '<span class="sql-string">\'$1\'</span>');
+
+            // Highlight numbers
+            result = result.replace(/\b(\d+\.?\d*)\b/g, '<span class="sql-number">$1</span>');
+
+            // Highlight keywords (case-insensitive)
+            keywords.forEach(kw => {
+                const regex = new RegExp(`\\b(${kw})\\b`, 'gi');
+                result = result.replace(regex, '<span class="sql-keyword">$1</span>');
+            });
+
+            return result;
+        }
+
+        // ── Number Formatting ──
+        function formatCellValue(val) {
+            if (val === null || val === undefined || val === 'None') return '—';
+            const str = String(val);
+            // Format large numbers with comma separators
+            const num = Number(str);
+            if (!isNaN(num) && str.match(/^\d+\.?\d*$/)) {
+                if (Number.isInteger(num) && num >= 1000) {
+                    return num.toLocaleString('vi-VN');
+                }
+                if (!Number.isInteger(num)) {
+                    return num.toLocaleString('vi-VN', { maximumFractionDigits: 2 });
+                }
+            }
+            return escapeHtml(str);
+        }
+
         function addMessageUI(content, type, extra = null) {
             hideWelcome();
             const msg = document.createElement('div');
             msg.className = `message ${type}`;
 
-            let bubbleContent = `<p>${escapeHtml(content)}</p>`;
+            let bubbleContent = '';
+
+            if (type === 'user') {
+                bubbleContent = `<p>${escapeHtml(content)}</p>`;
+            } else {
+                // Render markdown for assistant messages
+                bubbleContent = renderMarkdown(content);
+            }
 
             if (extra) {
                 if (extra.sql) {
@@ -517,7 +725,7 @@
                                 <span>📝 SQL Query</span>
                                 <button class="copy-btn" onclick="copySQL(this)">Sao chép</button>
                             </div>
-                            <pre class="sql-code">${escapeHtml(extra.sql)}</pre>
+                            <pre class="sql-code">${highlightSQL(extra.sql)}</pre>
                         </div>`;
                 }
                 if (extra.data && extra.columns && extra.data.length > 0) {
@@ -531,7 +739,7 @@
                                 <table class="data-table">
                                     <thead><tr>${extra.columns.map(c => `<th>${escapeHtml(c)}</th>`).join('')}</tr></thead>
                                     <tbody>${rows.map(row =>
-                                        `<tr>${row.map(cell => `<td>${escapeHtml(String(cell ?? ''))}</td>`).join('')}</tr>`
+                                        `<tr>${row.map(cell => `<td>${formatCellValue(cell)}</td>`).join('')}</tr>`
                                     ).join('')}</tbody>
                                 </table>
                             </div>
@@ -598,14 +806,14 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         question,
-                        conversation_id: currentConversationId
+                        conversation_id: currentConversationId,
+                        dataset: currentDataset
                     })
                 });
 
                 const data = await res.json();
                 removeLoading();
 
-                // Update conversation ID (may be new)
                 if (data.conversation_id) {
                     currentConversationId = data.conversation_id;
                 }
@@ -617,7 +825,6 @@
                     row_count: data.row_count
                 });
 
-                // Refresh sidebar
                 await loadConversations();
 
             } catch (err) {

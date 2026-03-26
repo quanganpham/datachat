@@ -1,8 +1,8 @@
 """
-SQL Agent - Core Module
-========================
+SQL Agent - Core Module (Multi-Dataset)
+========================================
 Custom SQL agent using OpenAI GPT-4o directly with SQLite database.
-No Vanna dependency required.
+Supports multiple datasets (Vaccine, Long Châu Pharmacy).
 """
 
 import sqlite3
@@ -10,8 +10,15 @@ import json
 import re
 from datetime import datetime
 from openai import OpenAI
-from config import OPENAI_API_KEY, OPENAI_MODEL, DATABASE_PATH
-from train_schema import SCHEMA_PROMPT
+from config import OPENAI_API_KEY, OPENAI_MODEL, DATASETS
+from train_schema import VACCINE_SCHEMA_PROMPT
+from train_schema_lc import LONGCHAU_SCHEMA_PROMPT
+
+# Map dataset keys to their schema prompts
+SCHEMA_PROMPTS = {
+    "vaccine": VACCINE_SCHEMA_PROMPT,
+    "longchau": LONGCHAU_SCHEMA_PROMPT,
+}
 
 
 class SQLAgent:
@@ -21,15 +28,17 @@ class SQLAgent:
     2. Generates SQL using OpenAI
     3. Executes SQL on SQLite
     4. Returns formatted Vietnamese response
+    
+    Supports multiple datasets via dataset parameter.
     """
     
-    def __init__(self):
-        """Initialize the SQL Agent."""
+    def __init__(self, dataset="vaccine"):
+        """Initialize the SQL Agent for a specific dataset."""
         self.client = OpenAI(api_key=OPENAI_API_KEY)
         self.model = OPENAI_MODEL
-        self.db_path = DATABASE_PATH
-        # Base prompt without date context
-        self._base_prompt = SCHEMA_PROMPT
+        self.dataset = dataset
+        self.db_path = DATASETS[dataset]["db_path"]
+        self._base_prompt = SCHEMA_PROMPTS[dataset]
         
         # Dangerous SQL commands to block
         self.blocked_keywords = [
@@ -50,7 +59,6 @@ class SQLAgent:
 **Năm hiện tại:** {today.year}
 
 Khi user hỏi về "hôm nay", "tuần này", "tháng này" → sử dụng năm {today.year}.
-Dữ liệu trong database có từ tháng 1/2026 đến tháng 3/2026 (format: M/D/YYYY, ví dụ: 3/7/2026).
 
 """
         return date_context + self._base_prompt
@@ -141,21 +149,28 @@ Dữ liệu trong database có từ tháng 1/2026 đến tháng 3/2026 (format: 
 
 Câu hỏi: {question}
 
-Yêu cầu:
-1. Chỉ trả về JSON với format: {{"sql": "SELECT ...", "explanation": "Giải thích ngắn gọn"}}
-2. SQL phải tương thích với SQLite
-3. Giải thích bằng tiếng Việt
-4. Nếu không thể tạo SQL, trả về: {{"sql": null, "explanation": "Lý do không thể tạo SQL"}}
-5. Nếu người dùng đề cập "ở trên", "vừa rồi", "kết quả đó" → hãy sử dụng ngữ cảnh từ lịch sử hội thoại.
+HƯỚNG DẪN QUAN TRỌNG:
+1. Nếu câu hỏi yêu cầu truy vấn dữ liệu → tạo SQL query và giải thích.
+2. Nếu câu hỏi là follow-up/tiếp nối (ví dụ: "giải thích cách làm", "tại sao lại ra kết quả này", "chi tiết hơn") → Hãy xem lại lịch sử hội thoại (conversation history) ở trên và trả lời dựa trên ngữ cảnh trước đó. Giải thích CHI TIẾT từng bước.
+3. Nếu câu hỏi hoàn toàn không liên quan đến dữ liệu (chào hỏi, hỏi thời tiết...) → trả lời trực tiếp.
 
-Chỉ trả về JSON, không có text khác."""
+Trả lời CHÍNH XÁC dạng JSON:
+{{
+  "sql": "SELECT ...",
+  "explanation": "Giải thích ngắn gọn bằng tiếng Việt"
+}}
 
-        # Build messages with history
+Nếu KHÔNG cần SQL (follow-up hoặc câu hỏi chung), trả về:
+{{
+  "sql": null,
+  "explanation": "Câu trả lời chi tiết, đầy đủ bằng tiếng Việt. Dùng markdown: **bold**, bullet list, số thứ tự khi liệt kê."
+}}"""
+
         messages = [{"role": "system", "content": self.system_prompt}]
         
+        # Add conversation history if available
         if history:
-            for msg in history[-40:]:  # Last 20 pairs
-                messages.append({"role": msg["role"], "content": msg["content"]})
+            messages.extend(history)
         
         messages.append({"role": "user", "content": prompt})
 
@@ -164,141 +179,114 @@ Chỉ trả về JSON, không có text khác."""
                 model=self.model,
                 messages=messages,
                 temperature=0,
-                max_tokens=5000
+                max_tokens=2000,
+                response_format={"type": "json_object"}
             )
             
-            content = response.choices[0].message.content.strip()
-            
-            # Clean up response - remove markdown code blocks if present
-            if content.startswith("```"):
-                content = re.sub(r'^```(?:json)?\n?', '', content)
-                content = re.sub(r'\n?```$', '', content)
-            
-            result = json.loads(content)
-            return result
-            
-        except json.JSONDecodeError as e:
+            result = json.loads(response.choices[0].message.content)
             return {
-                "sql": None,
-                "explanation": f"Lỗi parse JSON từ OpenAI: {str(e)}"
+                "sql": result.get("sql"),
+                "explanation": result.get("explanation", "")
             }
         except Exception as e:
             return {
                 "sql": None,
-                "explanation": f"Lỗi gọi OpenAI: {str(e)}"
+                "explanation": f"❌ Lỗi khi tạo SQL: {str(e)}"
             }
     
-    def generate_response(self, question: str, sql: str, sql_result: dict) -> str:
+    def generate_answer(self, question: str, sql: str, data: list, columns: list, 
+                        row_count: int, error: str = None, history: list = None) -> str:
         """
-        Generate a natural language response in Vietnamese.
-        IMPORTANT: Only uses the SQL query and result from the CURRENT question,
-        not from any previous conversation history.
+        Generate a natural language answer from SQL results.
+        Uses conversation history for context-aware responses.
         """
-        if not sql_result["success"]:
-            return f"❌ Lỗi khi chạy SQL: {sql_result['error']}"
+        if error:
+            context = f"""Câu hỏi: {question}
+SQL đã thử: {sql}
+Lỗi: {error}
+
+Hãy giải thích lỗi và gợi ý cách hỏi lại bằng tiếng Việt."""
+        else:
+            # Format data for LLM
+            data_preview = data[:20] if data else []
+            data_str = ""
+            if columns and data_preview:
+                data_str = f"Cột: {columns}\nDữ liệu ({row_count} dòng):\n"
+                for row in data_preview:
+                    data_str += str(row) + "\n"
+            
+            context = f"""Câu hỏi: {question}
+SQL: {sql}
+{data_str}
+
+Hãy trả lời câu hỏi dựa trên kết quả trên bằng tiếng Việt, rõ ràng và có cấu trúc.
+Dùng markdown formatting: **bold** cho điểm quan trọng, bullet list khi liệt kê, format số với dấu phẩy ngăn cách hàng nghìn.
+Không cần lặp lại SQL query."""
+
+        messages = [{"role": "system", "content": self.system_prompt}]
         
-        # Format data for the prompt
-        data_preview = sql_result["data"][:20]  # Limit to 20 rows for prompt
+        if history:
+            messages.extend(history)
         
-        prompt = f"""Dựa vào kết quả truy vấn SQL VỪA CHẠY, hãy trả lời câu hỏi của người dùng bằng tiếng Việt.
-
-⚠️ CHÚ Ý: Chỉ sử dụng kết quả SQL bên dưới đây (KHÔNG dùng kết quả SQL từ lịch sử hội thoại trước đó).
-
-Câu hỏi hiện tại: {question}
-
-SQL VỪA CHẠY (query mới nhất): {sql}
-
-Kết quả MỚI NHẤT ({sql_result['row_count']} dòng):
-Columns: {sql_result['columns']}
-Data: {data_preview}
-
-Yêu cầu:
-1. Trả lời bằng tiếng Việt, rõ ràng và dễ hiểu
-2. Nếu có số liệu, format đẹp (ví dụ: 1,234,567)
-3. Tóm tắt insights quan trọng nếu có
-4. Không cần lặp lại SQL query"""
-
+        messages.append({"role": "user", "content": context})
+        
         try:
             response = self.client.chat.completions.create(
                 model=self.model,
-                messages=[
-                    {"role": "system", "content": "Bạn là trợ lý phân tích dữ liệu. Luôn trả lời bằng tiếng Việt. Chỉ phân tích kết quả SQL MỚI NHẤT được cung cấp."},
-                    {"role": "user", "content": prompt}
-                ],
+                messages=messages,
                 temperature=0.3,
-                max_tokens=2000
+                max_tokens=1500
             )
-            
-            return response.choices[0].message.content.strip()
-            
+            return response.choices[0].message.content
         except Exception as e:
-            return f"❌ Lỗi tạo câu trả lời: {str(e)}"
+            return f"❌ Lỗi khi tạo câu trả lời: {str(e)}"
     
     def chat(self, question: str, history: list = None) -> dict:
         """
-        Main chat method - handles the full flow.
-        
-        Args:
-            question: The user's question
-            history: Optional list of previous messages for conversation context
+        Full chat pipeline: Question → SQL → Execute → Answer.
         
         Returns:
-            dict with 'answer', 'sql', 'sql_explanation', 'data', 'error'
+            dict with 'question', 'sql', 'sql_explanation', 'answer', 
+                  'data', 'columns', 'row_count', 'error'
         """
-        result = {
-            "question": question,
-            "sql": None,
-            "sql_explanation": None,
-            "data": None,
-            "columns": None,
-            "row_count": 0,
-            "answer": None,
-            "error": None
-        }
+        # Step 1: Generate SQL
+        sql_result = self.generate_sql(question, history=history)
+        sql = sql_result["sql"]
+        sql_explanation = sql_result["explanation"]
         
-        # Step 1: Generate SQL (with history for context understanding)
-        sql_gen = self.generate_sql(question, history=history)
-        result["sql"] = sql_gen.get("sql")
-        result["sql_explanation"] = sql_gen.get("explanation")
-        
-        if not result["sql"]:
-            result["answer"] = sql_gen.get("explanation", "Không thể tạo câu truy vấn SQL.")
-            return result
+        # If no SQL needed (general chat)
+        if not sql:
+            return {
+                "question": question,
+                "sql": None,
+                "sql_explanation": sql_explanation,
+                "answer": sql_explanation,
+                "data": None,
+                "columns": None,
+                "row_count": 0,
+                "error": None
+            }
         
         # Step 2: Execute SQL
-        sql_result = self.execute_sql(result["sql"])
-        result["data"] = sql_result["data"]
-        result["columns"] = sql_result["columns"]
-        result["row_count"] = sql_result["row_count"]
+        exec_result = self.execute_sql(sql)
         
-        if not sql_result["success"]:
-            result["error"] = sql_result["error"]
-            result["answer"] = f"❌ Lỗi SQL: {sql_result['error']}"
-            return result
+        # Step 3: Generate answer
+        answer = self.generate_answer(
+            question, sql,
+            exec_result["data"],
+            exec_result["columns"],
+            exec_result["row_count"],
+            exec_result["error"],
+            history=history
+        )
         
-        # Step 3: Generate response (ONLY using current SQL result, not history)
-        result["answer"] = self.generate_response(question, result["sql"], sql_result)
-        
-        return result
-
-
-# Test the agent
-if __name__ == "__main__":
-    print("🤖 Testing SQL Agent...")
-    print("=" * 50)
-    
-    agent = SQLAgent()
-    
-    # Test question
-    test_question = "Thống kê tổng doanh thu theo nhóm sản phẩm (product_group_name) và cho biết tỉnh thành có doanh thu cao nhất cho từng nhóm?"
-    print(f"❓ Question: {test_question}")
-    print()
-    
-    response = agent.chat(test_question)
-    
-    print(f"🔍 SQL: {response['sql']}")
-    print(f"📝 Explanation: {response['sql_explanation']}")
-    print(f"📊 Row count: {response['row_count']}")
-    print()
-    print(f"💬 Answer:")
-    print(response['answer'])
+        return {
+            "question": question,
+            "sql": sql,
+            "sql_explanation": sql_explanation,
+            "answer": answer,
+            "data": exec_result["data"] if exec_result["success"] else None,
+            "columns": exec_result["columns"] if exec_result["success"] else None,
+            "row_count": exec_result["row_count"],
+            "error": exec_result["error"]
+        }

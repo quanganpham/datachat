@@ -5,7 +5,10 @@ Provides detailed schema documentation for AI SQL generation.
 """
 
 import sqlite3
-from config import DATABASE_PATH
+from config import VACCINE_DB_PATH
+
+# Use vaccine DB for schema inspection
+DATABASE_PATH = VACCINE_DB_PATH
 
 
 def get_schema_info():
@@ -421,27 +424,27 @@ Thông tin khách hàng/người tiêm. **Nhiều cột PII đã mã hóa.**
 ═══════════════════════════════════════════════════════════════
 
 ```
-F1 (sales) ──── sku ────────── D4.item_code (Sản phẩm)
+F1 (sales) ──── sku ────────── D4.item_code          (Sản phẩm)
 F1 (sales) ──── sku ────────── D5.sku               (Nhóm bệnh - TRỰC TIẾP)
-F1 (sales) ──── shop_code ──── D3.code             (Trung tâm)
-F1 (sales) ──── customer_id ── D1.person_id         (Khách hàng)
+F1 (sales) ──── shop_code ──── D3.code              (Trung tâm)
+F1 (sales) ──── customer_id ── D1.customer_id       (Khách hàng)
 
-F2 (record) ─── sku ────────── D4.item_code   (Sản phẩm)
+F2 (record) ─── sku ────────── D4.item_code          (Sản phẩm)
 F2 (record) ─── sku ────────── D5.sku               (Nhóm bệnh - TRỰC TIẾP)
 F2 (record) ─── shop_code ──── D3.code              (Trung tâm)
-F2 (record) ─── person_id ──── D1.person_id          (Khách hàng)
+F2 (record) ─── person_id ──── D1.person_id         (Khách hàng)
 
-F3 (returned) ─ sku ────────── D4.item_code   (Sản phẩm)
+F3 (returned) ─ sku ────────── D4.item_code          (Sản phẩm)
 F3 (returned) ─ sku ────────── D5.sku               (Nhóm bệnh - TRỰC TIẾP)
 F3 (returned) ─ shop_code ──── D3.code              (Trung tâm)
-F3 (returned) ─ customer_id ── D1.person_id          (Khách hàng)
+F3 (returned) ─ customer_id ── D1.customer_id       (Khách hàng)
 
-D1 (person) ─── person_id ──── D2.PersonId           (Địa chỉ)
-D1 (person) ─── person_id ──── D7.person_id          (Gia đình)
+D1 (person) ─── person_id ──── D2.PersonId           (Địa chỉ) ⚠️ Ít dữ liệu trùng
+D1 (person) ─── customer_id ── D7.customer_id        (Gia đình)
 
-D5 (disease) ── sku ────────── D4.item_code   (Vaccine→Nhóm bệnh)
+D5 (disease) ── sku ────────── D4.item_code          (Vaccine→Nhóm bệnh)
 
-D3 (shop) ───── code ────────── D8.shop_code_lc     (Shop vệ tinh)
+D3 (shop) ───── code ────────── D8.shop_code_vaccine (Shop vệ tinh vaccine)
 ```
 
 ### 3.1 QUY TẮC JOIN (QUAN TRỌNG)
@@ -805,6 +808,9 @@ FROM date_series;
 TRẢ LỜI NGẮN GỌN BẰNG TIẾNG VIỆT, CUNG CẤP INSIGHT NẾU CÓ.
 
 """
+
+# Alias for multi-dataset support
+VACCINE_SCHEMA_PROMPT = SCHEMA_PROMPT
 
 
 if __name__ == "__main__":

@@ -1,0 +1,501 @@
+﻿product_id,attribute_name,attribute_option_id,value
+4,isFixedDisplayType,,FALSE
+25,widthLogistics,,0
+27,status,9783,Quản lý tồn kho
+37,attributeProduct,9631,Ngừng đặt hàng
+42,productSpecs,0,Hộp 5 Vỉ x 10 Viên
+69,heightLogistics,,0
+75,producer,3683,CAMBODIA PHARMACEUTICAL
+103,marketOrCompany,9710,Hàng công ty
+109,isFixedDisplayType,,FALSE
+112,vatInput,12323,Thuế giá trị đầu vào: IPVAT 8%-HHTN
+124,status,9775,Quản lý số lô
+125,status,9784,Sản phẩm bị thu hồi
+139,widthLogistics,,0
+142,displayCode,10170,4 - KHÔNG HIỂN THỊ
+145,displayCode,10170,4 - KHÔNG HIỂN THỊ
+145,productSpecs,0,Chai
+147,attributeProduct,9631,Ngừng đặt hàng
+156,supplier,10423,CÔNG TY CỔ PHẦN SAO THÁI DƯƠNG
+171,heightLogistics,,0
+181,status,9783,Quản lý tồn kho
+183,registNum,0,VN-12373-11
+186,widthLogistics,,0
+187,vatOutput,9637,VAT đầu ra 8%
+188,vatOutput,9642,VAT đầu ra 5%
+192,marketOrCompany,9710,Hàng công ty
+194,heightLogistics,,0
+200,widthLogistics,,0
+203,id,,203
+206,id,,206
+214,registNum,0,0
+218,marketOrCompany,9710,Hàng công ty
+220,saleChannel,10166,Online & Offline
+223,manufactor,8075,Việt Nam
+230,status,9775,Quản lý số lô
+230,vatOutput,9643,VAT đầu ra 10%
+236,attributeProduct,9634,Hàng tặng
+237,attributeProduct,9634,Hàng tặng
+243,status,9805,Thuốc kê đơn
+248,directions,,
+254,vatOutput,9637,VAT đầu ra 8%
+266,lengthLogistics,,0
+266,registNum,0,GC-231-14
+274,status,9803,Hàng đặc trị
+276,isSellAlone,,FALSE
+291,attributeShop,9672,Khách đặt mới lấy
+295,heightLogistics,,0
+302,id,,302
+304,status,9774,Quản lý date
+313,preserve,9676,HÀNG THƯỜNG
+319,isFixedDisplayType,,FALSE
+345,attributeProduct,9636,Khác
+361,registNum,0,190000221/PCBA-HCM
+378,isFixedDisplayType,,TRUE
+380,unit,9786,cm
+393,producer,5375,KHONG
+394,status,9783,Quản lý tồn kho
+408,status,9775,Quản lý số lô
+409,saleChannel,10166,Online & Offline
+423,displayCode,10169,3 - HIỂN THỊ TRA CỨU
+435,status,9774,Quản lý date
+438,id,,438
+446,vatOutput,9637,VAT đầu ra 8%
+447,displayCode,10170,4 - KHÔNG HIỂN THỊ
+457,status,9805,Thuốc kê đơn
+468,saleChannel,10166,Online & Offline
+470,lengthLogistics,,0
+472,vatOutput,9642,VAT đầu ra 5%
+498,vatInput,9658,Thuế GTGT đầu vào 5% hàng hóa trong nước
+510,vatInput,9658,Thuế GTGT đầu vào 5% hàng hóa trong nước
+511,preserve,9676,HÀNG THƯỜNG
+512,widthLogistics,,0
+521,isFixedDisplayType,,FALSE
+522,widthLogistics,,0
+523,heightLogistics,,16
+524,isSellAlone,,FALSE
+531,attributeShop,9672,Khách đặt mới lấy
+539,dosageForms,42,Siro
+549,manufactors,8075,Việt Nam
+549,vatOutput,9637,VAT đầu ra 8%
+553,conversionNum,,10
+556,vatInput,9658,Thuế GTGT đầu vào 5% hàng hóa trong nước
+567,marketOrCompany,9710,Hàng công ty
+571,directions,,
+573,substanceName,,
+589,brandType,8140,Quảng cáo
+598,usageRouteLC,12699,Uống
+599,status,9775,Quản lý số lô
+610,status,10171,Chặn đặt lẻ
+633,id,,633
+643,status,9783,Quản lý tồn kho
+660,status,9783,Quản lý tồn kho
+666,isFixedDisplayType,,FALSE
+670,displayCode,10170,4 - KHÔNG HIỂN THỊ
+672,manufactors,8075,Việt Nam
+681,registNum,0,VD-20564-14
+708,status,9774,Quản lý date
+713,registNum,0,0
+715,brandOrigin,257,Hàn Quốc
+715,productSpecs,0,Hộp x 7g
+739,displayCode,10170,4 - KHÔNG HIỂN THỊ
+741,isFixedDisplayType,,FALSE
+763,isFixedDisplayType,,FALSE
+764,id,,764
+772,isSellAlone,,FALSE
+789,attributeProduct,9636,Khác
+793,heightLogistics,,0
+801,producer,5375,KHONG
+806,heightLogistics,,0
+813,manufactors,8075,Việt Nam
+816,directions,,
+821,status,9775,Quản lý số lô
+831,status,9778,Hàng hot
+832,supplierSpecs,9679,Thùng
+834,widthLogistics,,0
+843,directions,,
+844,attributeShop,9665,TẠM HẾT HÀNG
+864,ingredientFor,9736,1 viên
+875,id,,875
+879,conversionNum,,0
+879,usageRouteLC,12699,Uống
+884,lengthLogistics,,0
+893,expirationDate,9708,48 tháng
+893,status,9774,Quản lý date
+893,widthLogistics,,0
+899,conversionNum,,0
+914,isFixedDisplayType,,FALSE
+918,registNum,0,0
+925,status,9783,Quản lý tồn kho
+955,isSellAlone,,FALSE
+962,status,9775,Quản lý số lô
+963,conversionNum,,0
+976,heightLogistics,,0
+977,widthLogistics,,1
+985,isSellAlone,,FALSE
+990,status,9783,Quản lý tồn kho
+994,producer,3583,Boston
+1035,heightLogistics,,0
+1039,vatOutput,9637,VAT đầu ra 8%
+1041,id,,1041
+1043,saleChannel,10166,Online & Offline
+1050,status,9783,Quản lý tồn kho
+1050,supplierSpecs,9679,Thùng
+1057,vatInput,9657,Thuế giá trị đầu vào: IPVAT 10%-HHTN
+1084,brandOrigin,268,Việt Nam
+1084,isSellAlone,,FALSE
+1087,isSellAlone,,FALSE
+1088,conversionNum,,0
+1088,lengthLogistics,,0
+1094,productSpecs,0,Chai
+1099,displayCode,10168,2 - HIỂN THỊ KHÔNG GIÁ
+1101,gender,,
+1104,status,9774,Quản lý date
+1107,manufactors,8075,Việt Nam
+1109,saleChannel,10166,Online & Offline
+1113,saleChannel,10166,Online & Offline
+1121,productSpecs,0,Hộp 10 Vỉ x 10 Viên
+1126,manufactor,8075,Việt Nam
+1130,vatInput,9657,Thuế giá trị đầu vào: IPVAT 10%-HHTN
+1131,expirationDate,9700,36 tháng
+1133,id,,1133
+1136,status,14840,SP Có Seal
+1139,widthLogistics,,4.7
+1155,vatOutput,9637,VAT đầu ra 8%
+1180,marketOrCompany,9710,Hàng công ty
+1192,heightLogistics,,0
+1196,brandOrigin,268,Việt Nam
+1198,isFixedDisplayType,,FALSE
+1211,supplier,10944,CÔNG TY CỔ PHẦN DƯỢC PHẨM IP
+1212,lengthLogistics,,0
+1217,ingredientFor,9738,5ml
+1232,isSellAlone,,FALSE
+1239,marketOrCompany,9710,Hàng công ty
+1239,vatInput,9658,Thuế GTGT đầu vào 5% hàng hóa trong nước
+1255,heightLogistics,,0
+1260,preserve,9677,2-8 ĐỘ
+1266,saleChannel,10166,Online & Offline
+1268,vatInput,9658,Thuế GTGT đầu vào 5% hàng hóa trong nước
+1275,isSellAlone,,FALSE
+1275,status,9783,Quản lý tồn kho
+1276,isFixedDisplayType,,FALSE
+1276,lengthLogistics,,0
+1282,attributeShop,9672,Khách đặt mới lấy
+1290,isFixedDisplayType,,FALSE
+1296,conversionNum,,0
+1305,brand,2980,Vcp
+1314,expirationDate,9700,36 tháng
+1322,isSellAlone,,FALSE
+1323,attributeCommons,12286,Ngừng đặt hàng
+1353,vatInput,12323,Thuế giá trị đầu vào: IPVAT 8%-HHTN
+1354,lengthLogistics,,0
+1358,displayCode,10170,4 - KHÔNG HIỂN THỊ
+1361,id,,1361
+1380,dosageForms,32,Thuốc mỡ
+1382,vatInput,9658,Thuế GTGT đầu vào 5% hàng hóa trong nước
+1396,isSellAlone,,FALSE
+1414,directions,,
+1421,id,,1421
+1427,conversionNum,,0
+1428,manufactor,8075,Việt Nam
+1435,gender,,
+1437,gender,,
+1439,isSellAlone,,FALSE
+1441,isFixedDisplayType,,FALSE
+1450,directions,,
+1451,vatInput,12323,Thuế giá trị đầu vào: IPVAT 8%-HHTN
+1456,registNum,0,0
+1464,substanceName,,
+1471,gender,,
+1477,displayCode,10170,4 - KHÔNG HIỂN THỊ
+1485,isFixedDisplayType,,FALSE
+1488,marketOrCompany,9710,Hàng công ty
+1495,substanceName,,
+1499,displayCode,10168,2 - HIỂN THỊ KHÔNG GIÁ
+1518,widthLogistics,,0
+1520,conversionNum,,96
+1520,supplier,11397,CHI NHÁNH CÔNG TY TNHH THƯƠNG MẠI VÀ DƯỢC PHẨM SANG TẠI HÀ NỘI
+1521,vatInput,9658,Thuế GTGT đầu vào 5% hàng hóa trong nước
+1522,saleChannel,10166,Online & Offline
+1527,saleChannel,10166,Online & Offline
+1531,productSpecs,0,Hộp 4 Gói
+1534,widthLogistics,,0
+1542,supplier,11687,CÔNG TY TNHH MEDPACK PLUS
+1543,substanceName,,
+1545,usageRouteLC,12699,Uống
+1562,saleChannel,10166,Online & Offline
+1569,ingredientFor,9736,1 viên
+1576,objectUse,339,Người bị táo bón
+1580,brandOrigin,268,Việt Nam
+1581,id,,1581
+1588,gender,,
+1593,vatOutput,9643,VAT đầu ra 10%
+1603,dosageForms,12586,Dung dịch tiêm
+1606,lengthLogistics,,0
+1609,brand,1157,Khapharco
+1618,status,9775,Quản lý số lô
+1624,heightLogistics,,0
+1643,gender,,
+1646,status,9783,Quản lý tồn kho
+1659,gender,,
+1664,productSpecs,0,Hộp
+1667,attributeShop,9667,TEM HỒNG
+1670,productSpecs,0,Chai
+1677,gender,,
+1689,manufactor,8075,Việt Nam
+1694,conversionNum,,60
+1698,widthLogistics,,0
+1714,producers,5275,MYLAN LABORATORIES LIMITED
+1714,productSpecs,0,Hộp 30 Viên
+1720,widthLogistics,,0
+1725,status,9783,Quản lý tồn kho
+1728,directions,,
+1733,displayCode,10170,4 - KHÔNG HIỂN THỊ
+1737,lengthLogistics,,0
+1738,weightVolume,0,20ml
+1745,displayCode,10168,2 - HIỂN THỊ KHÔNG GIÁ
+1746,usageRouteLC,12699,Uống
+1751,gender,,
+1757,saleChannel,10166,Online & Offline
+1762,status,9775,Quản lý số lô
+1763,lengthLogistics,,0
+1772,manufactors,8075,Việt Nam
+1774,attributeShop,14108,SP rút hàng
+1791,attributeShop,9666,Khách đặt mới lấy
+1791,status,9783,Quản lý tồn kho
+1793,importsAddress,0,"Số 47 Hàng Trống, P. Hàng Trống, Q. Hoàn Kiếm, Hà Nội"
+1801,gender,,
+1811,attributeShop,9666,Khách đặt mới lấy
+1826,status,9774,Quản lý date
+1834,status,9805,Thuốc kê đơn
+1848,isFixedDisplayType,,FALSE
+1859,saleChannel,10166,Online & Offline
+1862,supplierSpecs,9679,Thùng
+1863,registNum,0,8.9311E+11
+1881,id,,1881
+1883,status,9774,Quản lý date
+1887,status,9805,Thuốc kê đơn
+1888,vatOutput,9637,VAT đầu ra 8%
+1893,heightLogistics,,0
+1904,vatInput,12323,Thuế giá trị đầu vào: IPVAT 8%-HHTN
+1905,status,9775,Quản lý số lô
+1937,lengthLogistics,,65
+1946,id,,1946
+1962,marketOrCompany,9710,Hàng công ty
+1964,productSpecs,0,Gói
+1967,isSellAlone,,FALSE
+1973,usageRouteLC,12699,Uống
+1974,displayCode,10167,1 - HIỂN THỊ CÓ GIÁ
+1984,productSpecs,0,Hộp 60 Viên
+1991,lengthLogistics,,0
+2008,productSpecs,0,Hộp 1 Lọ x 5ml
+2016,id,,2016
+2035,expirationDate,9700,36 tháng
+2047,preserve,9676,HÀNG THƯỜNG
+2050,producers,6462,CÔNG TY CỔ PHẦN DƯỢC PHẨM VĨNH PHÚC
+2084,status,9805,Thuốc kê đơn
+2095,marketOrCompany,9710,Hàng công ty
+2097,heightLogistics,,0
+2103,displayCode,10168,2 - HIỂN THỊ KHÔNG GIÁ
+2109,expirationDate,9700,36 tháng
+2118,producer,3760,CÔNG TY CỔ PHẦN DƯỢC HÀ TĨNH
+2118,status,9783,Quản lý tồn kho
+2119,status,9781,Hàng mãn tính
+2128,productSpecs,0,Hộp 2 Vỉ x 10 Viên
+2133,vatOutput,9642,VAT đầu ra 5%
+2163,substanceName,,
+2198,producer,4544,DONGBANG FUTURE
+2201,vatOutput,9642,VAT đầu ra 5%
+2208,isFixedDisplayType,,FALSE
+2211,status,9775,Quản lý số lô
+2220,status,9783,Quản lý tồn kho
+2233,supplierSpecs,9679,Thùng
+2237,widthLogistics,,0
+2243,conversionNum,,132
+2246,substanceName,,
+2252,productSpecs,0,Chai
+2262,conversionNum,,40
+2265,isSellAlone,,FALSE
+2266,registNum,0,192/2019/ĐKSP
+2275,lengthLogistics,,0
+2290,attributeShop,9668,SP NGỪNG KINH DOANH
+2293,status,9775,Quản lý số lô
+2294,vatOutput,9642,VAT đầu ra 5%
+2295,supplierSpecs,9679,Thùng
+2299,substanceName,,
+2299,id,,2299
+2302,preserve,9676,HÀNG THƯỜNG
+2321,brandOrigin,254,Tây Ban Nha
+2328,id,,2328
+2336,attributeProduct,9628,Khách đặt mới lấy
+2348,producers,7020,PATHEON INC.
+2351,attributeShop,9673,Khách đặt mới lấy
+2358,status,9805,Thuốc kê đơn
+2359,supplier,10841,HỘ KINH DOANH - NHÀ THUỐC HCM
+2365,brandOrigin,268,Việt Nam
+2371,heightLogistics,,0
+2381,manufactor,7969,Ấn Độ
+2381,saleChannel,10166,Online & Offline
+2384,preserve,9676,HÀNG THƯỜNG
+2385,marketOrCompany,9710,Hàng công ty
+2387,substanceName,,
+2401,conversionNum,,0
+2403,widthLogistics,,0
+2406,usageRouteLC,12699,Uống
+2412,lengthLogistics,,0
+2417,dosageForms,1,Viên nén
+2433,producer,6433,CÔNG TY CỔ PHẦN DƯỢC APIMED
+2435,isSellAlone,,FALSE
+2436,directions,,
+2458,lengthLogistics,,0
+2479,supplierSpecs,9679,Thùng
+2485,displayCode,10167,1 - HIỂN THỊ CÓ GIÁ
+2487,attributeShop,9672,Khách đặt mới lấy
+2488,supplierSpecs,9679,Thùng
+2522,registNum,0,0
+2527,status,9775,Quản lý số lô
+2530,vatOutput,9642,VAT đầu ra 5%
+2536,widthLogistics,,4.7
+2572,status,9783,Quản lý tồn kho
+2580,expirationDate,9700,36 tháng
+2595,warning,507,Phụ nữ có thai
+2600,lengthLogistics,,0
+2608,supplier,11680,CHI NHÁNH CÔNG TY CỔ PHẦN DƯỢC PHẨM KHÁNH HÒA
+2613,attributeShop,9672,Khách đặt mới lấy
+2615,status,9775,Quản lý số lô
+2633,preserve,9676,HÀNG THƯỜNG
+2634,gender,,
+2636,lengthLogistics,,0
+2637,status,9775,Quản lý số lô
+2645,status,9783,Quản lý tồn kho
+2645,vatOutput,9642,VAT đầu ra 5%
+2646,gender,,
+2651,lengthLogistics,,6.3
+2652,conversionNum,,0
+2655,isSellAlone,,FALSE
+2667,id,,2667
+2668,marketOrCompany,9710,Hàng công ty
+2670,status,9774,Quản lý date
+2680,unit,9786,cm
+2686,manufactor,8070,Hoa Kỳ
+2689,productSpecs,0,Hộp 60 Viên
+2689,status,9774,Quản lý date
+2694,status,9775,Quản lý số lô
+2696,lengthLogistics,,10.5
+2707,manufactors,8075,Việt Nam
+2708,dosageForms,27,Dạng bột
+2712,productSpecs,0,Hộp 4 Vỉ x 4 Viên
+2739,supplier,10841,HỘ KINH DOANH - NHÀ THUỐC HCM
+2749,dosageForms,12536,Cốm pha dung dịch uống
+2758,productSpecs,0,Hộp 10 Vỉ x 10 Viên
+2766,ageUse,438,Trên 12 tuổi
+2778,manufactor,8075,Việt Nam
+2786,productSpecs,0,Hộp 2 Vỉ x 15 Viên
+2788,isSellAlone,,FALSE
+2789,directions,,
+2794,brandOrigin,249,Ấn Độ
+2801,status,9783,Quản lý tồn kho
+2817,isSellAlone,,FALSE
+2826,widthLogistics,,0
+2832,gender,,
+2833,expirationDate,9702,24 tháng
+2848,registNum,0,8.9311E+11
+2848,supplier,13153,CÔNG TY TNHH DƯỢC PHẨM ÂN ĐỨC
+2857,producers,6158,"YOUNG CHEMICAL CO.,LTD"
+2871,manufactor,8075,Việt Nam
+2872,attributeProduct,9634,Hàng tặng
+2875,heightLogistics,,0
+2875,status,10171,Chặn đặt lẻ
+2884,id,,2884
+2889,productSpecs,0,Hộp 3 vỉ x 10 viên
+2895,displayCode,10170,4 - KHÔNG HIỂN THỊ
+2904,attributeShop,9666,Khách đặt mới lấy
+2905,substanceName,,Lecifex 500
+2906,attributeProduct,9636,Khác
+2919,isFixedDisplayType,,FALSE
+2944,vatInput,9658,Thuế GTGT đầu vào 5% hàng hóa trong nước
+2952,manufactor,7969,Ấn Độ
+2959,heightLogistics,,0
+2963,saleChannel,10166,Online & Offline
+2966,status,9803,Hàng đặc trị
+2973,status,9775,Quản lý số lô
+2982,substanceName,,CO-TRUPRIL
+2991,lengthLogistics,,0
+2995,substanceName,,CITROPHOLI
+3005,substanceName,,
+3018,brand,1663,Usarichpharm
+3019,displayCode,10170,4 - KHÔNG HIỂN THỊ
+3022,productSpecs,0,Hộp 5 vỉ x 10 viên
+3027,heightLogistics,,0
+3030,unit,9786,cm
+3030,widthLogistics,,11
+3032,status,9775,Quản lý số lô
+3046,vatOutput,9642,VAT đầu ra 5%
+3051,supplier,10841,HỘ KINH DOANH - NHÀ THUỐC HCM
+3051,vatOutput,9642,VAT đầu ra 5%
+3053,status,9775,Quản lý số lô
+3053,widthLogistics,,0
+3055,vatOutput,9642,VAT đầu ra 5%
+3056,supplier,13158,CÔNG TY CỔ PHẦN PYMEPHARCO
+3056,supplierSpecs,9679,Thùng
+3056,id,,3056
+3058,manufactor,8075,Việt Nam
+3062,supplier,13229,CÔNG TY TNHH Y-MED HEALTHCARE
+3063,productSpecs,0,Hộp 10 Vỉ x 10 Viên
+3073,vatInput,12323,Thuế giá trị đầu vào: IPVAT 8%-HHTN
+3077,directions,,
+3082,skin,490,Da khô
+3092,brand,606,Veet
+3100,isSellAlone,,FALSE
+3116,displayCode,10170,4 - KHÔNG HIỂN THỊ
+3116,widthLogistics,,0
+3137,isFixedDisplayType,,FALSE
+3144,usageRouteLC,12699,Uống
+3160,objectUse,329,Người cao tuổi
+3165,supplier,11520,CÔNG TY TNHH DƯỢC PHẨM ĐỨC ANH
+3171,dosageForms,12516,Viên nén bao phim tan trong ruột
+3174,brandOrigin,268,Việt Nam
+3187,widthLogistics,,0
+3196,widthLogistics,,0
+3198,conversionNum,,0
+3198,weightVolume,0,70ml
+3205,manufactor,8075,Việt Nam
+3212,marketOrCompany,9710,Hàng công ty
+3221,ingredientFor,9736,1 viên
+3222,manufactor,7952,Pháp
+3226,ageUse,441,Trên 6 tuổi
+3234,lengthLogistics,,0
+3237,directions,,
+3239,supplier,10421,CÔNG TY CỔ PHẦN DƯỢC PHẨM AN ĐÔNG
+3242,marketOrCompany,9710,Hàng công ty
+3243,ingredientFor,9736,1 viên
+3247,id,,3247
+3251,dosageForms,13,Hoàn cứng
+3251,gender,,
+3254,marketOrCompany,9710,Hàng công ty
+3258,producer,5600,MINH LONG I
+3262,widthLogistics,,0
+3278,productSpecs,0,Chai
+3284,registNum,0,381/170000164/PCBPL-BYT
+3287,brandType,8140,Quảng cáo
+3293,expirationDate,14168,72 tháng
+3316,saleChannel,10166,Online & Offline
+3320,vatInput,9658,Thuế GTGT đầu vào 5% hàng hóa trong nước
+3322,isFixedDisplayType,,FALSE
+3330,supplier,10447,CÔNG TY CỔ PHẦN TM VIỆT NỮ
+3331,vatInput,9658,Thuế GTGT đầu vào 5% hàng hóa trong nước
+3334,registNum,0,VN-16595-13
+3335,gender,,
+3336,supplier,11992,CHI NHÁNH CÔNG TY CỔ PHẦN DƯỢC PHẨM AMPHARCO U.S.A (TỈNH ĐỒNG NAI)
+3341,productSpecs,0,Hộp 10 vỉ x 10 viên
+3345,directions,,
+3360,directions,,
+3369,directions,,
+3374,supplier,10858,HỘ KINH DOANH NGUYỄN THỊ TRÚC LINH
+3375,vatInput,9658,Thuế GTGT đầu vào 5% hàng hóa trong nước
+3384,heightLogistics,,0
+3387,displayCode,10168,2 - HIỂN THỊ KHÔNG GIÁ
+3390,isSellAlone,,FALSE
+3391,id,,3391
+3394,marketOrCompany,9710,Hàng công ty
+3400,attributeShop,9670,SP NGỪNG KINH DOANH
