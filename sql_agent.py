@@ -206,6 +206,21 @@ SQL đã thử: {sql}
 Lỗi: {error}
 
 Hãy giải thích lỗi và gợi ý cách hỏi lại bằng tiếng Việt."""
+        elif row_count == 0 or not data:
+            # ⚠️ CRITICAL: Explicit empty result handling to prevent hallucination
+            context = f"""Câu hỏi: {question}
+SQL: {sql}
+
+⚠️ KẾT QUẢ: SQL đã chạy thành công nhưng trả về **0 dòng dữ liệu** (không có kết quả).
+
+TUYỆT ĐỐI KHÔNG ĐƯỢC bịa/tự tạo số liệu. Hãy:
+1. Thông báo rõ ràng rằng truy vấn không trả về kết quả nào
+2. Phân tích nguyên nhân có thể:
+   - Dữ liệu mẫu (sample data) có giới hạn, có thể không đủ dữ liệu cho điều kiện lọc
+   - Các bảng JOIN có thể không có dữ liệu trùng khớp trong mẫu
+   - Điều kiện WHERE có thể quá hẹp
+3. Gợi ý cách hỏi lại hoặc truy vấn khác
+Trả lời bằng tiếng Việt, dùng markdown."""
         else:
             # Format data for LLM
             data_preview = data[:20] if data else []
@@ -219,7 +234,8 @@ Hãy giải thích lỗi và gợi ý cách hỏi lại bằng tiếng Việt.""
 SQL: {sql}
 {data_str}
 
-Hãy trả lời câu hỏi dựa trên kết quả trên bằng tiếng Việt, rõ ràng và có cấu trúc.
+⚠️ CHỈ trả lời dựa trên dữ liệu thực tế ở trên. TUYỆT ĐỐI KHÔNG ĐƯỢC bịa thêm số liệu không có trong kết quả.
+Hãy trả lời câu hỏi bằng tiếng Việt, rõ ràng và có cấu trúc.
 Dùng markdown formatting: **bold** cho điểm quan trọng, bullet list khi liệt kê, format số với dấu phẩy ngăn cách hàng nghìn.
 Không cần lặp lại SQL query."""
 
