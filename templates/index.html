@@ -659,9 +659,54 @@
             return html;
         }
 
-        // ── SQL Syntax Highlighting ──
+        // ── SQL Formatting & Syntax Highlighting ──
+        function formatSQL(sql) {
+            // Normalize whitespace
+            let s = sql.replace(/\s+/g, ' ').trim();
+
+            // Major clauses → new line (no indent)
+            const majorClauses = [
+                'SELECT', 'FROM', 'WHERE', 'GROUP BY', 'ORDER BY', 'HAVING',
+                'LIMIT', 'OFFSET', 'UNION ALL', 'UNION', 'INSERT', 'UPDATE', 'DELETE',
+                'VALUES', 'SET'
+            ];
+            majorClauses.forEach(clause => {
+                const re = new RegExp(`\\b(${clause})\\b`, 'gi');
+                s = s.replace(re, '\n$1');
+            });
+
+            // JOIN variants → new line (no indent)
+            s = s.replace(/\b((?:LEFT|RIGHT|INNER|OUTER|CROSS|FULL)\s+JOIN|JOIN)\b/gi, '\n$1');
+
+            // Sub-clauses → new line + indent
+            const subClauses = ['AND', 'OR'];
+            subClauses.forEach(clause => {
+                const re = new RegExp(`\\b(${clause})\\b`, 'gi');
+                s = s.replace(re, '\n  $1');
+            });
+
+            // ON → indent
+            s = s.replace(/\b(ON)\b/gi, '\n  $1');
+
+            // CASE/WHEN/THEN/ELSE/END → indented
+            s = s.replace(/\b(WHEN)\b/gi, '\n    $1');
+            s = s.replace(/\b(THEN)\b/gi, ' $1');
+            s = s.replace(/\b(ELSE)\b/gi, '\n    $1');
+            s = s.replace(/\b(END)\b/gi, '\n  $1');
+
+            // Clean up leading newline
+            s = s.replace(/^\n/, '');
+
+            // Clean up multiple blank lines
+            s = s.replace(/\n{3,}/g, '\n\n');
+
+            return s;
+        }
+
         function highlightSQL(sql) {
-            const escaped = escapeHtml(sql);
+            // Step 1: Format the SQL with line breaks and indentation
+            const formatted = formatSQL(sql);
+            const escaped = escapeHtml(formatted);
             const keywords = ['SELECT', 'FROM', 'WHERE', 'JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN',
                 'ON', 'AND', 'OR', 'NOT', 'IN', 'AS', 'GROUP BY', 'ORDER BY', 'HAVING',
                 'LIMIT', 'OFFSET', 'UNION', 'DISTINCT', 'COUNT', 'SUM', 'AVG', 'MAX', 'MIN',
